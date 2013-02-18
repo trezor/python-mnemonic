@@ -1,0 +1,14 @@
+Mnemonic code for deterministic keys
+====================================
+
+A scheme for translating binary data (usually master seeds for deterministic
+keys, but it can be applied to any binary data) into a group of easy to remember
+words also known as mnemonic code or mnemonic sentence.
+
+Such mnemonic code or mnemonic sentence is much easier to work with than working
+with the binary data directly (or its hexadecimal interpretation). The sentence
+could be writen down on paper (e.g. for storing in a secure location such as
+safe), told over telephone or other voice communication method, or memorized in
+ones memory (also called as brainwallet).
+
+See BIP_0039.txt for full specification.

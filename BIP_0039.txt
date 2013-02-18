@@ -1,0 +1,50 @@
+{{bip}}
+
+<pre>
+  BIP: BIP-0039
+  Title: Mnemonic code for deterministic keys
+  Author: Pavol Rusnak <stick@gk2.sk>
+          Marek Palatinus <info@bitcoin.cz>
+  Status: Draft
+  Type: Standards Track
+  Created: 14-02-2013
+</pre>
+
+==Abstract==
+
+This BIP proposes a scheme for translating binary data (usually master seeds for deterministic keys, but it can be applied to any binary data) into a group of easy to remember words also known as mnemonic code or mnemonic sentence.
+
+==Motivation==
+
+Such mnemonic code or mnemonic sentence is much easier to work with than working with the binary data directly (or its hexadecimal interpretation). The sentence could be writen down on paper (e.g. for storing in a secure location such as safe), told over telephone or other voice communication method, or memorized in ones memory (also called as brainwallet).
+
+==Backwards Compatibility==
+
+As this BIP is written, only one Bitcoin client (Electrum) implements the feature but it uses a different wordlist than the proposed one. Because the wordlists do not overlap, it's easy for the software to determine which mnemonic scheme was used and thus it can support both schemes.
+
+==Rationale==
+
+Our proposal is inspired by Electrum implementation, but we enhanced it to have the following features:
+
+a) avoid similar words
+   - words as "build" and "built" or "woman" and "women" not only make remembering the sentence difficult, but also it's more error prone
+
+b) smart selection of words
+   - wordlists are created in such way that it's enough to type just first two-three letters to unambiguously identify the word
+
+b) localized wordlists
+   - makes it easier for people to remember the code in their native language
+   - by using wordlists with no colliding words among languages, it's easy to determine which language was used just by checking the first word of the sentence
+
+3) sorted wordlists
+   - allow more efficient lookup of the code words (i.e. one can use binary search instead of linear search)
+
+==Specification==
+
+
+
+==Reference Implementation==
+
+Reference implementation is available from http://github.com/prusnak/mnemonic
+
+Check the README file for documentation how to use it.
