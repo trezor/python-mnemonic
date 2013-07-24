@@ -26,11 +26,11 @@ from mnemonic import Mnemonic
 mnemo = Mnemonic()
 mnemo.load('words/electrum.txt')
 
-data = 'Hello World!'
-print 'input    :', data, hexlify(data)
+data = 'Hello World!1234'
+print 'input    : %s [len=%d] [hex=%s]' % (data, len(data), hexlify(data))
 
 code = mnemo.encode(data)
-print 'mnemonic :', ' '.join(code)
+print 'mnemonic :', code
 
-out = mnemo.decode(code)
-print 'output   :', out, hexlify(out)
+data = mnemo.decode(code)
+print 'output   : %s [len=%d] [hex=%s]' % (data, len(data), hexlify(data))
