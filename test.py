@@ -24,13 +24,13 @@ from binascii import hexlify
 from mnemonic import Mnemonic
 
 mnemo = Mnemonic()
-mnemo.load('words/electrum.txt')
+mnemo.load('words/bip0039_en.txt')
 
 data = 'Hello World!1234'
-print 'input    : %s [len=%d] [hex=%s]' % (data, len(data), hexlify(data))
+print 'input    : %s [bits=%d] [hex=%s]' % (data, len(data) * 8, hexlify(data))
 
 code = mnemo.encode(data)
-print 'mnemonic :', code
+print 'mnemonic : %s [len=%d]' % (code, len(code.split(' ')))
 
 data = mnemo.decode(code)
-print 'output   : %s [len=%d] [hex=%s]' % (data, len(data), hexlify(data))
+print 'output   : %s [bits=%d] [hex=%s]' % (data, len(data) * 8, hexlify(data))
