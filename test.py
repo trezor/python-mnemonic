@@ -21,13 +21,13 @@
 #
 
 from binascii import hexlify
-import random
+from random import choice
 from mnemonic import Mnemonic
 
 mnemo = Mnemonic()
 
 for i in range(12):
-	data = ''.join(chr(random.choice(range(0,256))) for x in range(8 * (i % 3 + 2)))
+	data = ''.join(chr(choice(range(0,256))) for x in range(8 * (i % 3 + 2)))
 	print 'input    : %s (%d bits)' % (hexlify(data), len(data) * 8)
 	code = mnemo.encode(data)
 	print 'mnemonic : %s (%d words)' % (code, len(code.split(' ')))
