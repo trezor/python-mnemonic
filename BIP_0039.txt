@@ -5,6 +5,7 @@
   Title:   Mnemonic code for deterministic keys
   Author:  Pavol Rusnak <stick@gk2.sk>
            Marek Palatinus <info@bitcoin.cz>
+           Aaron Voisine <voisine@gmail.com>
   Status:  Draft
   Type:    Standards Track
   Created: 14-02-2013
