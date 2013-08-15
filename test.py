@@ -21,16 +21,16 @@
 #
 
 from binascii import hexlify
+import random
 from mnemonic import Mnemonic
 
 mnemo = Mnemonic()
-mnemo.load('words/bip0039_en.txt')
 
-data = 'Hello World!1234'
-print 'input    : %s [bits=%d] [hex=%s]' % (data, len(data) * 8, hexlify(data))
-
-code = mnemo.encode(data)
-print 'mnemonic : %s [len=%d]' % (code, len(code.split(' ')))
-
-data = mnemo.decode(code)
-print 'output   : %s [bits=%d] [hex=%s]' % (data, len(data) * 8, hexlify(data))
+for i in range(12):
+	data = ''.join(chr(random.choice(range(0,256))) for x in range(8 * (i % 3 + 2)))
+	print 'input    : %s (%d bits)' % (hexlify(data), len(data) * 8)
+	code = mnemo.encode(data)
+	print 'mnemonic : %s (%d words)' % (code, len(code.split(' ')))
+	data = mnemo.decode(code)
+	print 'output   : %s (%d bits)' % (hexlify(data), len(data) * 8)
+	print
