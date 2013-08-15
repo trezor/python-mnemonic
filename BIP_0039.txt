@@ -89,6 +89,6 @@ mnemonic for wordlist of 1626 words look like this:
 
 ==Reference Implementation==
 
-Reference implementation is available from http://github.com/prusnak/mnemonic
+Reference implementation is available from http://github.com/trezor/mnemonic
 
 Check the README file for documentation how to use it.
