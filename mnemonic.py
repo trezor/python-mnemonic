@@ -30,46 +30,41 @@ import struct
 class Mnemonic(object):
 
 	def __init__(self):
-		self.adj = [w.strip() for w in open('words/bip0039_adj.txt', 'r').readlines()]
-		self.adv = [w.strip() for w in open('words/bip0039_adv.txt', 'r').readlines()]
-		self.noun = [w.strip() for w in open('words/bip0039_noun.txt', 'r').readlines()]
-		self.verb = [w.strip() for w in open('words/bip0039_verb.txt', 'r').readlines()]
-		if len(self.adj) != 2048:
-			raise Exception('Adjectives wordlist should contain 1024 words.')
-		if len(self.adv) != 1024:
-			raise Exception('Adverbs wordlist should contain 1024 words.')
-		if len(self.noun) != 2048:
-			raise Exception('Nouns wordlist should contain 1024 words.')
-		if len(self.verb) != 1024:
-			raise Exception('Verbs wordlist should contain 1024 words.')
+		self.radix = 1626 # 1626^3 > 2^32
+		self.wordlist = [w.strip() for w in open('words/bip0039.txt', 'r').readlines()]
+		if len(self.wordlist) != self.radix:
+			raise Exception('Wordlist should contain %d words.' % self.radix)
 
 	def encode(self, data):
-		if len(data) % 8 != 0:
-			raise Exception('Data length not divisable by 8 (64 bits)!')
+		if len(self.wordlist) != self.radix:
+			raise Exception('Wordlist does not contain %d items!' % self.radix)
+		if len(data) % 4 != 0:
+			raise Exception('Data length not divisable by 4!')
 		result = []
-		for i in range(len(data)/8):
-			num = (struct.unpack_from('>Q', data, 8*i)[0]) & 0xFFFFFFFFFFFFFFFF
-			result.append(self.adj[(num >> 53) & 0x7FF])
-			result.append(self.noun[(num >> 42) & 0x7FF])
-			result.append(self.adv[(num >> 32) & 0x3FF])
-			result.append(self.verb[(num >> 22) & 0x3FF])
-			result.append(self.adj[(num >> 11) & 0x7FF])
-			result.append(self.noun[num & 0x7FF] + '.')
+		pw1, pw2, pw3 = 0, 0, 0
+		for i in range(len(data)/4):
+			num = (struct.unpack_from('>I', data, 4*i)[0]) & 0xFFFFFFFF
+			w1 = (num + pw1) % self.radix
+			w2 = ((num / self.radix) + w1 + pw2) % self.radix
+			w3 = ((num / self.radix / self.radix) + w2 + pw3) % self.radix
+			result += [ self.wordlist[w1], self.wordlist[w2], self.wordlist[w3] ]
+			pw1, pw2, pw3 = w1, w2, w3
 		return ' '.join(result)
 
 	def decode(self, code):
-		code = [w.rstrip('.') for w in code.split(' ') if w]
+		if len(self.wordlist) != self.radix:
+			raise Exception('Wordlist does not contain %d items!' % self.radix)
+		code = [w for w in code.split(' ') if w]
 		if len(code) % 3 != 0:
-			raise Exception('Mnemonic code length not divisible by 6!')
+			raise Exception('Mnemonic code length not divisible by 3!')
 		result = ''
-		for i in range(len(code)/6):
-			word1, word2, word3, word4, word5, word6 = code[6*i : 6*(i+1)]
-			w1 = self.adj.index(word1)
-			w2 = self.noun.index(word2)
-			w3 = self.adv.index(word3)
-			w4 = self.verb.index(word4)
-			w5 = self.adj.index(word5)
-			w6 = self.noun.index(word6)
-			num = (w1 << 53) + (w2 << 42) + (w3 << 32) + (w4 << 22) + (w5 << 11) + w6
-			result += struct.pack('>Q', num)
+		pw1, pw2, pw3 = 0, 0, 0
+		for i in range(len(code)/3):
+			word1, word2, word3 = code[3*i : 3*(i+1)]
+			w1 = self.wordlist.index(word1)
+			w2 = self.wordlist.index(word2)
+			w3 = self.wordlist.index(word3)
+			num = ((w1 - pw1) % self.radix + self.radix * ((w2 - w1 - pw2) % self.radix) + self.radix * self.radix * ((w3 - w2 - pw3) % self.radix))
+			result += struct.pack('>I', num)
+			pw1, pw2, pw3 = w1, w2, w3
 		return result
