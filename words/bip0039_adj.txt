@@ -483,7 +483,6 @@ eastern
 easy
 eccentric
 echoing
-ecliptic
 economic
 ecstatic
 edgy
@@ -1093,6 +1092,7 @@ mild
 milky
 minced
 mindful
+mingled
 minimum
 minor
 mint
