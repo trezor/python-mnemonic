@@ -22,7 +22,7 @@
 
 from binascii import hexlify
 from random import choice
-from mnemonic import Mnemonic
+from mnemonic_s import Mnemonic
 
 mnemo = Mnemonic()
 
