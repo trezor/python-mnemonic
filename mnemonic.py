@@ -30,10 +30,13 @@ import struct
 class Mnemonic(object):
 
 	def __init__(self):
-		self.radix = 1626 # 1626^3 > 2^32
+		self.radix = 2048
 		self.wordlist = [w.strip() for w in open('wordlist/english.txt', 'r').readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
+
+	def paritybit(self, num):
+		return bin(num).count('1') % 2
 
 	def encode(self, data):
 		if len(self.wordlist) != self.radix:
@@ -41,14 +44,13 @@ class Mnemonic(object):
 		if len(data) % 4 != 0:
 			raise Exception('Data length not divisable by 4!')
 		result = []
-		ow1, ow2, ow3 = 0, 0, 0
 		for i in range(len(data)/4):
 			num = (struct.unpack_from('>I', data, 4*i)[0]) & 0xFFFFFFFF
-			w1 = (num + ow1) % self.radix
-			w2 = ((num / self.radix) + w1 + ow2) % self.radix
-			w3 = ((num / self.radix / self.radix) + w2 + ow3) % self.radix
+			num |= self.paritybit(num) << 32
+			w1 = (num) % self.radix
+			w2 = ((num / self.radix) + w1) % self.radix
+			w3 = ((num / self.radix / self.radix) + w2) % self.radix
 			result += [ self.wordlist[w1], self.wordlist[w2], self.wordlist[w3] ]
-			ow1, ow2, ow3 = w1, w2, w3
 		return ' '.join(result)
 
 	def decode(self, code):
@@ -58,13 +60,13 @@ class Mnemonic(object):
 		if len(code) % 3 != 0:
 			raise Exception('Mnemonic code length not divisible by 3!')
 		result = ''
-		ow1, ow2, ow3 = 0, 0, 0
 		for i in range(len(code)/3):
 			word1, word2, word3 = code[3*i : 3*(i+1)]
 			w1 = self.wordlist.index(word1)
 			w2 = self.wordlist.index(word2)
 			w3 = self.wordlist.index(word3)
-			num = ((w1 - ow1) % self.radix + self.radix * ((w2 - w1 - ow2) % self.radix) + self.radix * self.radix * ((w3 - w2 - ow3) % self.radix))
-			result += struct.pack('>I', num)
-			ow1, ow2, ow3 = w1, w2, w3
+			num = (w1 % self.radix + self.radix * ((w2 - w1) % self.radix) + self.radix * self.radix * ((w3 - w2) % self.radix))
+			if self.paritybit(num & 0xFFFFFFFF) != (num >> 32):
+				raise Exception('Mnemonic code checksum mismatch')
+			result += struct.pack('>I', num & 0xFFFFFFFF)
 		return result
