@@ -2,13 +2,13 @@
 
 <pre>
   BIP:     BIP-0039
-  Title:   Mnemonic code for deterministic keys
+  Title:   Mnemonic code for generating deterministic keys
   Author:  Pavol Rusnak <stick@gk2.sk>
            Marek Palatinus <info@bitcoin.cz>
            Aaron Voisine <voisine@gmail.com>
   Status:  Draft
   Type:    Standards Track
-  Created: 04-09-2013
+  Created: 10-09-2013
 </pre>
 
 ==Abstract==
@@ -74,18 +74,25 @@ the sentence has to be divisable by 3) and reconstructs the original binary data
 
 Words can repeat in the sentence more than one time.
 
-The conversion table between input lengths and output lengths for most common
-usecases looks like this:
+Wordlist contains 2048 words (instead of the original count 1626), allowing
+the code to compute the checksum of the whole mnemonic sequence. This leads to
+better user experience, because user can be notified if the mnemonic sequence
+is wrong, instead of showing the confusing data generated from the wrong
+sequence. Each 32 bits of input data add 1 bit of checksum.
 
-+--------------+---------------+----------------+
-| input (bits) | input (bytes) | output (words) |
-+--------------+---------------+----------------+
-|      128     |       16      |        12      |
-|      160     |       20      |        15      |
-|      192     |       24      |        18      |
-|      224     |       28      |        21      |
-|      256     |       32      |        24      |
-+--------------+---------------+----------------+
+See the following table for relation between input lengths, output lengths and
+checksum sizes for the most common usecases:
+
++--------+---------+---------+----------+
+| input  |  input  | output  | checksum |
+| (bits) | (bytes) | (words) |  (bits)  |
++--------+---------+---------+----------+
+|   128  |    16   |    12   |     4    |
+|   160  |    20   |    15   |     5    |
+|   192  |    24   |    18   |     6    |
+|   224  |    28   |    21   |     7    |
+|   256  |    32   |    24   |     8    |
++--------+---------+---------+----------+
 
 ==Test vectors==
 
