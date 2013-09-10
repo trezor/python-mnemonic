@@ -126,6 +126,13 @@ class MnemonicTest(unittest.TestCase):
 
         self._check_list('english', vectors)
 
+    def test_failed_checksum(self):
+        code = 'bless cloud wheel regular tiny venue bird web grief security dignity language'
+        mnemo = Mnemonic('english')
+
+        with self.assertRaises(Exception):
+            mnemo.decode(code)
+
     def test_detection(self):
         self.assertEqual('english', Mnemonic.detect_language('eat'))
 
