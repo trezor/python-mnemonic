@@ -38,7 +38,7 @@ will be used, so this is not an issue.
 ==Rationale==
 
 Our proposal is inspired by implementation used in Electrum, but we enhanced
-the wordlist so it meets the following criteria:
+the wordlist and algorithm so it meets the following criteria:
 
 a) smart selection of words
    - wordlist is created in such way that it's enough to type just first four
@@ -62,6 +62,11 @@ d) localized wordlists
      determine which language was used just by checking the first word of
      the sentence
 
+e) mnemonic checksum
+   - this leads to better user experience, because user can be notified
+     if the mnemonic sequence is wrong, instead of showing the confusing
+     data generated from the wrong sequence. 
+
 ==Specification==
 
 Our proposal implements two methods - "encode" and "decode".
@@ -74,11 +79,9 @@ the sentence has to be divisable by 3) and reconstructs the original binary data
 
 Words can repeat in the sentence more than one time.
 
-Wordlist contains 2048 words (instead of the original count 1626), allowing
-the code to compute the checksum of the whole mnemonic sequence. This leads to
-better user experience, because user can be notified if the mnemonic sequence
-is wrong, instead of showing the confusing data generated from the wrong
-sequence. Each 32 bits of input data add 1 bit of checksum.
+Wordlist contains 2048 words (instead of 1626 words in Electrum), allowing
+the code to compute the checksum of the whole mnemonic sequence.
+Each 32 bits of input data add 1 bit of checksum.
 
 See the following table for relation between input lengths, output lengths and
 checksum sizes for the most common usecases:
@@ -96,42 +99,135 @@ checksum sizes for the most common usecases:
 
 ==Test vectors==
 
-input    : 19458fe8dace41e60617c6667874f6be (128 bits)
-mnemonic : bless cloud wheel regular tiny venue birth web grief security dignity language (12 words)
+input:    00000000 (32 bits)
+mnemonic: abandon abandon abandon (3 words)
 
-input    : 2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145 (192 bits)
-mnemonic : code laugh useless view chunk property agent rebuild swedish fiction used spoon convince rank role hold race company (18 words)
+input:    7f7f7f7f (32 bits)
+mnemonic: legal wing taxi (3 words)
 
-input    : cbeb354834fffb79bc952458705d2205f79c515e4c91043dc16f3dd6139b3219 (256 bits)
-mnemonic : sketch flavor eyebrow height youth rope various pet fish little embryo arena just chicken jump mourn advance unique fork knock general slice short caught (24 words)
+input:    80808080 (32 bits)
+mnemonic: lethal adult bundle (3 words)
 
-input    : ea88c6efbc4028994b8b4ebc0345a474 (128 bits)
-mnemonic : try educate robust joke act erosion color hedge rock blow hat tribe (12 words)
+input:    ffffffff (32 bits)
+mnemonic: zoo zoo zone (3 words)
 
-input    : bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18 (192 bits)
-mnemonic : river ignore recycle like tobacco armor straw season despair bosnian sibling burden defy sunset typical harvest sad shadow (18 words)
+input:    0000000000000000 (64 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon (6 words)
 
-input    : 0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f (256 bits)
-mnemonic : approach response map protect both glass fabric remember place upset satisfy slave gravity irish romance squad involve grain excuse pioneer gauge flight open white (24 words)
+input:    7f7f7f7f7f7f7f7f (64 bits)
+mnemonic: legal wing taxi yard water salad (6 words)
 
-input    : 666fbb72dada90d6c8f627d77450f366 (128 bits)
-mnemonic : grief last swamp reject pond history car sentence stone patrol diamond slam (12 words)
+input:    8080808080808080 (64 bits)
+mnemonic: lethal adult bunker absurd also dog (6 words)
 
-input    : 29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659 (192 bits)
-mnemonic : chunk oak another audit vendor degree iron very year surprise retreat cook blossom obey crowd riot belt slogan (18 words)
+input:    ffffffffffffffff (64 bits)
+mnemonic: zoo zoo zoo zoo zoo young (6 words)
 
-input    : 869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e (256 bits)
-mnemonic : magnet vacuum van exotic gear tactic march ready matrix coat chin after grief huge genuine jet travel prepare race approach evil excuse burial skirt (24 words)
+input:    000000000000000000000000 (96 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon (9 words)
 
-input    : d0263588b1deee8186818319515c6691 (128 bits)
-mnemonic : soda country ghost glove unusual dose blouse cope bless medal block car (12 words)
+input:    7f7f7f7f7f7f7f7f7f7f7f7f (96 bits)
+mnemonic: legal wing taxi yard water salmon worry urge lecture (9 words)
 
-input    : 48754ef698334cf9cc5494ccca6a0294bf30224066576a7c (192 bits)
-mnemonic : embrace poverty royal cope cruise lake cotton movie slam false letter chuckle venue awesome accident sing hen tight (18 words)
+input:    808080808080808080808080 (96 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lens (9 words)
 
-input    : ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
-mnemonic : unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty (24 words)
+input:    ffffffffffffffffffffffff (96 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo year (9 words)
+
+input:    00000000000000000000000000000000 (128 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (12 words)
+
+input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (128 bits)
+mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi worth (12 words)
+
+input:    80808080808080808080808080808080 (128 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker abandon (12 words)
+
+input:    ffffffffffffffffffffffffffffffff (128 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo worth (12 words)
+
+input:    0000000000000000000000000000000000000000 (160 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (15 words)
+
+input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (160 bits)
+mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon winner (15 words)
+
+input:    8080808080808080808080808080808080808080 (160 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain abandon (15 words)
+
+input:    ffffffffffffffffffffffffffffffffffffffff (160 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo winner (15 words)
+
+input:    000000000000000000000000000000000000000000000000 (192 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (18 words)
+
+input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (192 bits)
+mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wave (18 words)
+
+input:    808080808080808080808080808080808080808080808080 (192 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal abandon (18 words)
+
+input:    ffffffffffffffffffffffffffffffffffffffffffffffff (192 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wave (18 words)
+
+input:    00000000000000000000000000000000000000000000000000000000 (224 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (21 words)
+
+input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (224 bits)
+mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard usage (21 words)
+
+input:    80808080808080808080808080808080808080808080808080808080 (224 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd abandon (21 words)
+
+input:    ffffffffffffffffffffffffffffffffffffffffffffffffffffffff (224 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo usage (21 words)
+
+input:    0000000000000000000000000000000000000000000000000000000000000000 (256 bits)
+mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (24 words)
+
+input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (256 bits)
+mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry team (24 words)
+
+input:    8080808080808080808080808080808080808080808080808080808080808080 (256 bits)
+mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve abandon (24 words)
+
+input:    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (256 bits)
+mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo team (24 words)
+
+input:    19458fe8dace41e60617c6667874f6be (128 bits)
+mnemonic: bless cloud wheel regular tiny venue birth web grief security dignity language (12 words)
+
+input:    2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145 (192 bits)
+mnemonic: sketch flavor eyebrow height youth rope various pet fish little embryo arena just chicken jump mourn advance unique fork knock general slice short caught (24 words)
+
+input:    ea88c6efbc4028994b8b4ebc0345a474 (128 bits)
+mnemonic: try educate robust joke act erosion color hedge rock blow hat tribe (12 words)
+
+input:    bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18 (192 bits)
+mnemonic: river ignore recycle like tobacco armor straw season despair bosnian sibling burden defy sunset typical harvest sad shadow (18 words)
+
+input:    0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f (256 bits)
+mnemonic: approach response map protect both glass fabric remember place upset satisfy slave gravity irish romance squad involve grain excuse pioneer gauge flight open white (24 words)
+
+input:    666fbb72dada90d6c8f627d77450f366 (128 bits)
+mnemonic: grief last swamp reject pond history car sentence stone patrol diamond slam (12 words)
+
+input:    29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659 (192 bits)
+mnemonic: chunk oak another audit vendor degree iron very year surprise retreat cook blossom obey crowd riot belt slogan (18 words)
+
+input:    869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e (256 bits)
+mnemonic: magnet vacuum van exotic gear tactic march ready matrix coat chin after grief huge genuine jet travel prepare race approach evil excuse burial skirt (24 words)
+
+input:    d0263588b1deee8186818319515c6691 (128 bits)
+mnemonic: soda country ghost glove unusual dose blouse cope bless medal block car (12 words)
+
+input:    48754ef698334cf9cc5494ccca6a0294bf30224066576a7c (192 bits)
+mnemonic: embrace poverty royal cope cruise lake cotton movie slam false letter chuckle venue awesome accident sing hen tight (18 words)
+
+input:    ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
+mnemonic: unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty (24 words)
 
 ==Reference Implementation==
 
-Reference implementation is available from http://github.com/trezor/mnemonic
+Reference implementation including wordlists is available from http://github.com/trezor/mnemonic
