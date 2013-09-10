@@ -53,6 +53,7 @@ alarm
 album
 alcohol
 alert
+alien
 alive
 all
 alley
@@ -159,6 +160,7 @@ barrel
 base
 basic
 basket
+bastard
 bat
 bath
 battle
@@ -187,6 +189,7 @@ bicycle
 bid
 big
 bike
+bill
 biology
 bird
 birth
@@ -234,9 +237,9 @@ brave
 bread
 breeze
 brick
+bride
 bridge
 brief
-bright
 bring
 broke
 broken
@@ -263,7 +266,6 @@ busy
 butter
 buy
 buyer
-cab
 cabin
 cable
 cage
@@ -292,6 +294,7 @@ case
 cash
 casino
 casual
+cat
 catalog
 catch
 category
@@ -321,6 +324,7 @@ cherry
 chest
 chew
 chicken
+chief
 child
 chin
 choice
@@ -407,6 +411,7 @@ cream
 create
 credit
 crew
+crime
 crisp
 critic
 critical
@@ -675,6 +680,7 @@ fatigue
 fault
 favor
 favorite
+feature
 federal
 fee
 feel
@@ -717,6 +723,7 @@ floor
 flower
 fluid
 fly
+foam
 focus
 fog
 follow
@@ -727,6 +734,7 @@ forest
 forget
 fork
 fortune
+forum
 forward
 fossil
 foster
@@ -744,6 +752,7 @@ front
 frown
 frozen
 fruit
+fuel
 full
 fun
 funny
@@ -815,21 +824,21 @@ group
 grow
 guard
 guess
+guide
 guilt
 guitar
-gut
+gun
 gym
 habit
 hair
-half
 hammer
 hand
-hang
 happy
 harbor
 hard
 harsh
 harvest
+hat
 have
 hazard
 head
@@ -841,7 +850,7 @@ hello
 helmet
 help
 hen
-here
+hero
 hidden
 hide
 high
@@ -853,7 +862,6 @@ hockey
 hold
 hole
 holiday
-holy
 home
 honest
 honey
@@ -869,9 +877,7 @@ hot
 hotel
 hour
 house
-how
 hub
-hug
 huge
 human
 humble
@@ -947,7 +953,6 @@ item
 ivory
 jacket
 jar
-jaw
 jazz
 jealous
 jeans
@@ -970,7 +975,6 @@ juror
 just
 keen
 keep
-kept
 key
 kick
 kid
@@ -985,7 +989,6 @@ knee
 knife
 knock
 knot
-know
 known
 korean
 lab
@@ -1008,7 +1011,6 @@ laugh
 law
 lawn
 lawsuit
-lay
 layer
 leader
 learn
@@ -1027,6 +1029,7 @@ lesson
 lethal
 letter
 level
+liar
 liberal
 liberty
 library
@@ -1039,6 +1042,7 @@ limb
 limit
 line
 link
+lion
 liquid
 list
 little
@@ -1053,7 +1057,6 @@ logic
 logo
 lonely
 long
-look
 loop
 lost
 lot
@@ -1072,6 +1075,7 @@ machine
 mad
 magic
 magnet
+maid
 mail
 major
 make
@@ -1102,9 +1106,10 @@ maximum
 may
 maybe
 meadow
-meal
 measure
+meat
 mechanic
+medal
 media
 medical
 melody
@@ -1118,6 +1123,7 @@ merchant
 mercy
 merit
 merry
+mess
 message
 method
 mexican
@@ -1127,7 +1133,6 @@ might
 migrant
 mild
 militia
-milk
 mill
 mimic
 mind
@@ -1153,7 +1158,6 @@ monitor
 monkey
 monster
 month
-mood
 moon
 moral
 more
@@ -1166,6 +1170,7 @@ motor
 mourn
 mouse
 move
+movie
 much
 murder
 murmur
@@ -1185,7 +1190,6 @@ narrow
 nasty
 nation
 nature
-nazi
 near
 neck
 need
@@ -1199,7 +1203,6 @@ net
 network
 neutral
 never
-new
 news
 next
 nice
@@ -1233,7 +1236,6 @@ obvious
 occur
 ocean
 odd
-odds
 odor
 off
 offer
@@ -1272,7 +1274,6 @@ output
 outside
 oval
 oven
-over
 own
 owner
 oxygen
@@ -1323,6 +1324,7 @@ piano
 pick
 picnic
 picture
+piece
 pig
 pill
 pilot
@@ -1333,7 +1335,6 @@ pipe
 pistol
 pizza
 place
-plane
 plant
 plastic
 plate
@@ -1348,11 +1349,10 @@ poem
 point
 poke
 polar
-policy
+police
 pond
 pony
 pool
-poor
 popular
 porch
 port
@@ -1377,6 +1377,7 @@ pride
 primary
 print
 priority
+prison
 private
 prize
 probably
@@ -1533,12 +1534,12 @@ salad
 salmon
 salt
 same
+sample
 sand
 satisfy
 sauce
 sausage
 save
-saw
 say
 scale
 scan
@@ -1554,6 +1555,7 @@ screen
 screw
 script
 sea
+seafood
 search
 season
 seat
@@ -1586,6 +1588,7 @@ shake
 shallow
 share
 shed
+sheep
 shell
 sheriff
 shield
@@ -1690,6 +1693,7 @@ spin
 spirit
 split
 sponsor
+spoon
 sport
 spot
 spray
@@ -1779,7 +1783,6 @@ tail
 take
 talent
 talk
-tall
 tank
 tape
 target
@@ -1787,6 +1790,7 @@ task
 tattoo
 taxi
 teach
+team
 tell
 tempt
 ten
@@ -1803,7 +1807,6 @@ theory
 there
 they
 thick
-thigh
 thing
 think
 this
@@ -1866,6 +1869,7 @@ trim
 trip
 trophy
 trouble
+truck
 truly
 trunk
 trust
@@ -1957,6 +1961,7 @@ vintage
 violin
 virtual
 virtue
+virus
 visa
 visit
 visual
@@ -1970,12 +1975,10 @@ vote
 voyage
 wage
 wagon
-walk
 wall
 want
 warfare
 warm
-warn
 warrior
 watch
 water
@@ -2002,8 +2005,6 @@ where
 whip
 whisper
 white
-who
-why
 widow
 width
 wife
@@ -2011,6 +2012,7 @@ wild
 will
 win
 wind
+wine
 wing
 winner
 winter
@@ -2038,8 +2040,6 @@ wrong
 yard
 year
 yellow
-yes
-yet
 yield
 you
 young
