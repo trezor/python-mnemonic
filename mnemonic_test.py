@@ -50,7 +50,7 @@ class MnemonicTest(unittest.TestCase):
             self.assertEqual(v[1], code)
             self.assertEqual(v[0], data)
 
-            print "input:   ", v[0], "(%d bits)" % len(v[0]*4)
+            print "input:   ", v[0], "(%d bits)" % len(v[0] * 4)
             print "mnemonic:", code, "(%d words)" % len(code.split(' '))
             print
 

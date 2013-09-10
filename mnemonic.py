@@ -91,5 +91,5 @@ class Mnemonic(object):
 		assert len(c) == len(b) / 32
 		if self.checksum(b) != c:
 			raise Exception('Mnemonic checksum error')
-		b = hex(int(b, 2))[2:].rstrip('L').zfill(len(b)/4)
+		b = hex(int(b, 2))[2:].rstrip('L').zfill(len(b) / 4)
 		return binascii.unhexlify(b)
