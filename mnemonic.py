@@ -20,12 +20,9 @@
 #
 # The code is inspired by Electrum mnemonic code by ThomasV
 #
-# Note about US patent no 5892470:
-# In our implementation the mnemonic word depends on the previous words.
-# In the original patent, the word choice is independent from the previous words.
-#
 
 import struct
+import binascii
 
 class Mnemonic(object):
 
@@ -35,22 +32,29 @@ class Mnemonic(object):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
 
-	def paritybit(self, num):
-		return bin(num).count('1') % 2
+	def checksum(self, b):
+		l = len(b) / 32
+		c = 0
+		for i in range(32):
+			c ^= int(b[i * l:(i + 1) * l], 2)
+		c = bin(c)[2:].zfill(l)
+		return c
 
 	def encode(self, data):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		if len(data) % 4 != 0:
 			raise Exception('Data length not divisable by 4!')
+		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
+		assert len(b) % 32 == 0
+		c = self.checksum(b)
+		assert len(c) == len(b) / 32
+		e = b + c
+		assert len(e) % 33 == 0
 		result = []
-		for i in range(len(data)/4):
-			num = (struct.unpack_from('>I', data, 4*i)[0]) & 0xFFFFFFFF
-			num |= self.paritybit(num) << 32
-			w1 = (num) % self.radix
-			w2 = ((num / self.radix) + w1) % self.radix
-			w3 = ((num / self.radix / self.radix) + w2) % self.radix
-			result += [ self.wordlist[w1], self.wordlist[w2], self.wordlist[w3] ]
+		for i in range(len(e) / 11):
+			idx = int(e[i * 11:(i + 1) * 11], 2)
+			result.append(self.wordlist[idx])
 		return ' '.join(result)
 
 	def decode(self, code):
@@ -59,14 +63,15 @@ class Mnemonic(object):
 		code = [w for w in code.split(' ') if w]
 		if len(code) % 3 != 0:
 			raise Exception('Mnemonic code length not divisible by 3!')
-		result = ''
-		for i in range(len(code)/3):
-			word1, word2, word3 = code[3*i : 3*(i+1)]
-			w1 = self.wordlist.index(word1)
-			w2 = self.wordlist.index(word2)
-			w3 = self.wordlist.index(word3)
-			num = (w1 % self.radix + self.radix * ((w2 - w1) % self.radix) + self.radix * self.radix * ((w3 - w2) % self.radix))
-			if self.paritybit(num & 0xFFFFFFFF) != (num >> 32):
-				raise Exception('Mnemonic code checksum mismatch')
-			result += struct.pack('>I', num & 0xFFFFFFFF)
-		return result
+		e = [ bin(self.wordlist.index(w))[2:].zfill(11) for w in code ]
+		e = ''.join(e)
+		l = len(e)
+		assert l % 33 == 0
+		b = e[:l / 33 * 32]
+		c = e[l / 33 * 32:]
+		assert len(b) % 32 == 0
+		assert len(c) == len(b) / 32
+		if self.checksum(b) != c:
+			raise Exception('Mnemonic checksum error')
+		b = hex(int(b, 2))[2:-1].zfill(len(b)/4)
+		return binascii.unhexlify(b)
