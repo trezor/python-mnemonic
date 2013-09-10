@@ -103,8 +103,8 @@ Encoding:
 1. Read input data (I).
 2. Make sure its length (L) is divisable by 32 bits.
 3. Compute the length of the checkum (LC). LC = L/32
-4. Splitting I into chunks of LC bits (I1, I2, I3, ...).
-5. XOR them altogether and produce checksum C. C = I1 xor I2 xor I3 ... xor In.
+4. Split I into chunks of LC bits (I1, I2, I3, ...).
+5. XOR them altogether and produce the checksum C. C = I1 xor I2 xor I3 ... xor In.
 5. Concatenate I and C into encoded data (E). Length of E is divisable by 33 bits.
 6. Keep taking 11 bits from E until there are none left.
 7. Treat them as integer W, add word with index W to the output.
