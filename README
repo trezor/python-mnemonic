@@ -69,6 +69,7 @@ e) mnemonic checksum
 
 ==Specification==
 
+<pre>
 Our proposal implements two methods - "encode" and "decode".
 
 The first method takes a binary data which have to length (L) in bytes divisable
@@ -96,9 +97,11 @@ checksum sizes for the most common usecases:
 |   224  |    28   |    21   |     7    |
 |   256  |    32   |    24   |     8    |
 +--------+---------+---------+----------+
+</pre>
 
-Algorithm:
+===Algorithm:===
 
+<pre>
 Encoding:
 1. Read input data (I).
 2. Make sure its length (L) is divisable by 32 bits.
@@ -119,8 +122,11 @@ Decoding:
 7. If it's not we have invalid mnemonic code.
 8. Treat B as binary data and return it as output.
 
+</pre>
+
 ==Test vectors==
 
+<pre>
 input:    00000000 (32 bits)
 mnemonic: abandon abandon abandon (3 words)
 
@@ -249,6 +255,7 @@ mnemonic: embrace poverty royal cope cruise lake cotton movie slam false letter 
 
 input:    ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
 mnemonic: unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty (24 words)
+</pre>
 
 ==Reference Implementation==
 
