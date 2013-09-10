@@ -96,7 +96,41 @@ checksum sizes for the most common usecases:
 
 ==Test vectors==
 
-TODO
+input    : 19458fe8dace41e60617c6667874f6be (128 bits)
+mnemonic : bless cloud wheel regular tiny venue birth web grief security dignity language (12 words)
+
+input    : 2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145 (192 bits)
+mnemonic : code laugh useless view chunk property agent rebuild swedish fiction used spoon convince rank role hold race company (18 words)
+
+input    : cbeb354834fffb79bc952458705d2205f79c515e4c91043dc16f3dd6139b3219 (256 bits)
+mnemonic : sketch flavor eyebrow height youth rope various pet fish little embryo arena just chicken jump mourn advance unique fork knock general slice short caught (24 words)
+
+input    : ea88c6efbc4028994b8b4ebc0345a474 (128 bits)
+mnemonic : try educate robust joke act erosion color hedge rock blow hat tribe (12 words)
+
+input    : bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18 (192 bits)
+mnemonic : river ignore recycle like tobacco armor straw season despair bosnian sibling burden defy sunset typical harvest sad shadow (18 words)
+
+input    : 0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f (256 bits)
+mnemonic : approach response map protect both glass fabric remember place upset satisfy slave gravity irish romance squad involve grain excuse pioneer gauge flight open white (24 words)
+
+input    : 666fbb72dada90d6c8f627d77450f366 (128 bits)
+mnemonic : grief last swamp reject pond history car sentence stone patrol diamond slam (12 words)
+
+input    : 29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659 (192 bits)
+mnemonic : chunk oak another audit vendor degree iron very year surprise retreat cook blossom obey crowd riot belt slogan (18 words)
+
+input    : 869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e (256 bits)
+mnemonic : magnet vacuum van exotic gear tactic march ready matrix coat chin after grief huge genuine jet travel prepare race approach evil excuse burial skirt (24 words)
+
+input    : d0263588b1deee8186818319515c6691 (128 bits)
+mnemonic : soda country ghost glove unusual dose blouse cope bless medal block car (12 words)
+
+input    : 48754ef698334cf9cc5494ccca6a0294bf30224066576a7c (192 bits)
+mnemonic : embrace poverty royal cope cruise lake cotton movie slam false letter chuckle venue awesome accident sing hen tight (18 words)
+
+input    : ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
+mnemonic : unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty (24 words)
 
 ==Reference Implementation==
 
