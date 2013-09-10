@@ -23,14 +23,32 @@
 
 import struct
 import binascii
+import os
 
 class Mnemonic(object):
+	directory = 'wordlist'
 
 	def __init__(self, language):
 		self.radix = 2048
-		self.wordlist = [w.strip() for w in open('wordlist/%s.txt' % language, 'r').readlines()]
+		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self.directory, language), 'r').readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
+
+	@classmethod
+	def list_languages(cls):
+		return [ f.split('.')[0] for f in os.listdir(cls.directory) ]
+
+	@classmethod
+	def detect_language(cls, code):
+		first = code.split(' ')[0]
+		languages = cls.list_languages()
+
+		for lang in languages:
+			mnemo = cls(lang)
+			if first in mnemo.wordlist:
+				return lang
+
+		raise Exception("Language not detected")
 
 	def checksum(self, b):
 		l = len(b) / 32
