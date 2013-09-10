@@ -29,13 +29,13 @@ from mnemonic import Mnemonic
 class MnemonicTest(unittest.TestCase):
     '''
     def test_random(self):
-        mnemo = Mnemonic()
+        mnemo = Mnemonic('english')
 
         for i in range(12):
             data = ''.join(chr(choice(range(0,256))) for _ in range(8 * (i % 3 + 2)))
-            print ''%s (%d bits)' % (hexlify(data), len(data) * 8)
+            print '%s (%d bits)' % (hexlify(data), len(data) * 8)
             code = mnemo.encode(data)
-            print ''%s (%d words)' % (code, len(code.split(' ')))
+            print '%s (%d words)' % (code, len(code.split(' ')))
             data = mnemo.decode(code)
             print 'output   : %s (%d bits)' % (hexlify(data), len(data) * 8)
             print
@@ -125,6 +125,40 @@ class MnemonicTest(unittest.TestCase):
             ]
 
         self._check_list('english', vectors)
+
+    def test_detection(self):
+        self.assertEqual('english', Mnemonic.detect_language('eat'))
+
+        with self.assertRaises(Exception):
+            Mnemonic.detect_language('xxxxxxx')
+
+    def test_collision(self):
+        # Check for the same words accross wordlists.
+        # This is prohibited because of auto-detection feature of language.
+
+        words = []
+        languages = Mnemonic.list_languages()
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+            words += mnemo.wordlist
+
+        words_unique = list(set(words[:]))
+        self.assertEquals(len(words), len(words_unique))
+
+    def test_sorted_unique(self):
+        # Check for duplicated words in wordlist
+
+        print "------------------------------------"
+        print "Test of sorted and unique wordlists:"
+
+        languages = Mnemonic.list_languages()
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+            unique = list(set(mnemo.wordlist))
+            unique.sort()
+
+            print "Language '%s'" % lang
+            self.assertListEqual(unique, mnemo.wordlist)
 
 def __main__():
     unittest.main()
