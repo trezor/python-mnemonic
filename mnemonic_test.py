@@ -54,6 +54,48 @@ class MnemonicTest(unittest.TestCase):
             print "mnemonic:", code, "(%d words)" % len(code.split(' '))
             print
 
+    def test_corner(self):
+        data = []
+        for l in range(4, 32 + 1, 4):
+            for b in ['00', '7f', '80', 'ff']:
+                data.append(b * l)
+        codes = [
+            'abandon abandon abandon',
+            'legal wing taxi',
+            'lethal adult bundle',
+            'zoo zoo zone',
+            'abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salad',
+            'lethal adult bunker absurd also dog',
+            'zoo zoo zoo zoo zoo young',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge lecture',
+            'lethal adult bunker absurd also domain achieve aunt lens',
+            'zoo zoo zoo zoo zoo zoo zoo zoo year',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge legal wing taxi worth',
+            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo worth',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon winner',
+            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo winner',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wave',
+            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wave',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard usage',
+            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo usage',
+            'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
+            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry team',
+            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo team',
+        ]
+        vectors = zip(data, codes)
+        self._check_list('english', vectors)
+
     def test_english(self):
         vectors = \
            [('19458fe8dace41e60617c6667874f6be',
