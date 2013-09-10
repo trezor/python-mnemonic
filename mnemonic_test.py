@@ -41,8 +41,8 @@ class MnemonicTest(unittest.TestCase):
             print
     '''
 
-    def _check_list(self, vectors):
-        mnemo = Mnemonic()
+    def _check_list(self, language, vectors):
+        mnemo = Mnemonic(language)
         for v in vectors:
             code = mnemo.encode(unhexlify(v[0]))
             data = hexlify(mnemo.decode(code))
@@ -54,7 +54,7 @@ class MnemonicTest(unittest.TestCase):
             print "mnemonic:", code, "(%d words)" % len(code.split(' '))
             print
 
-    def test_vectors(self):
+    def test_english(self):
         vectors = \
            [('19458fe8dace41e60617c6667874f6be',
             'bless cloud wheel regular tiny venue birth web grief security dignity language'),
@@ -82,7 +82,7 @@ class MnemonicTest(unittest.TestCase):
             'unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty'),
             ]
 
-        self._check_list(vectors)
+        self._check_list('english', vectors)
 
 def __main__():
     unittest.main()

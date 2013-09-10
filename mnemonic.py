@@ -26,9 +26,9 @@ import binascii
 
 class Mnemonic(object):
 
-	def __init__(self):
+	def __init__(self, language):
 		self.radix = 2048
-		self.wordlist = [w.strip() for w in open('wordlist/english.txt', 'r').readlines()]
+		self.wordlist = [w.strip() for w in open('wordlist/%s.txt' % language, 'r').readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
 
