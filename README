@@ -259,4 +259,4 @@ mnemonic: unlikely victory dentist round swear weapon squeeze traffic insist log
 
 ==Reference Implementation==
 
-Reference implementation including wordlists is available from http://github.com/trezor/mnemonic
+Reference implementation including wordlists is available from http://github.com/trezor/python-mnemonic

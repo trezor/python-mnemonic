@@ -26,17 +26,19 @@ import binascii
 import os
 
 class Mnemonic(object):
-	directory = 'wordlist'
-
 	def __init__(self, language):
 		self.radix = 2048
-		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self.directory, language), 'r').readlines()]
+		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self._get_directory(), language), 'r').readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
 
 	@classmethod
+	def _get_directory(cls):
+		return os.path.join(os.path.dirname(__file__), 'wordlist')
+
+	@classmethod
 	def list_languages(cls):
-		return [ f.split('.')[0] for f in os.listdir(cls.directory) if f.endswith('.txt') ]
+		return [ f.split('.')[0] for f in os.listdir(cls._get_directory()) if f.endswith('.txt') ]
 
 	@classmethod
 	def detect_language(cls, code):
