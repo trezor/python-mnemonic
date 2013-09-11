@@ -167,6 +167,25 @@ class MnemonicTest(unittest.TestCase):
             print "Language '%s'" % lang
             self.assertListEqual(unique, mnemo.wordlist)
 
+    def test_root_len(self):
+        print "------------------------------------"
+        print "Test of word prefixes:"
+
+        languages = Mnemonic.list_languages()
+        problems_found = 0
+
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+            prefixes = []
+            for w in mnemo.wordlist:
+                pref = w[:5]
+                if pref in prefixes:
+                    print "Duplicate prefix", pref, "for word", w
+                    problems_found += 1
+
+                prefixes.append(pref)
+
+        self.assertEqual(problems_found, 0)
 def __main__():
     unittest.main()
 if __name__ == "__main__":
