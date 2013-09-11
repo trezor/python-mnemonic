@@ -5,7 +5,6 @@ use_setuptools()
 #python setup.py sdist upload
 
 from setuptools import setup
-from stratum import version
 
 setup(name='mnemonic',
       version='0.3',
