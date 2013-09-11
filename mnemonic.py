@@ -36,7 +36,7 @@ class Mnemonic(object):
 
 	@classmethod
 	def list_languages(cls):
-		return [ f.split('.')[0] for f in os.listdir(cls.directory) ]
+		return [ f.split('.')[0] for f in os.listdir(cls.directory) if f.endswith('.txt') ]
 
 	@classmethod
 	def detect_language(cls, code):
