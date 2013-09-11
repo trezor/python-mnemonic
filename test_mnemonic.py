@@ -33,9 +33,9 @@ class MnemonicTest(unittest.TestCase):
 
         for i in range(12):
             data = ''.join(chr(choice(range(0,256))) for _ in range(8 * (i % 3 + 2)))
-            print '%s (%d bits)' % (hexlify(data), len(data) * 8)
+            print 'input    : %s (%d bits)' % (hexlify(data), len(data) * 8)
             code = mnemo.encode(data)
-            print '%s (%d words)' % (code, len(code.split(' ')))
+            print 'mnemonic : %s (%d words)' % (code, len(code.split(' ')))
             data = mnemo.decode(code)
             print 'output   : %s (%d bits)' % (hexlify(data), len(data) * 8)
             print
@@ -50,8 +50,8 @@ class MnemonicTest(unittest.TestCase):
             self.assertEqual(v[1], code)
             self.assertEqual(v[0], data)
 
-            print "input:   ", v[0], "(%d bits)" % len(v[0] * 4)
-            print "mnemonic:", code, "(%d words)" % len(code.split(' '))
+            print "input    :", v[0], "(%d bits)" % len(v[0] * 4)
+            print "mnemonic :", code, "(%d words)" % len(code.split(' '))
             print
 
     def test_corner(self):
@@ -61,37 +61,37 @@ class MnemonicTest(unittest.TestCase):
                 data.append(b * l)
         codes = [
             'abandon abandon abandon',
-            'legal wing taxi',
-            'lethal adult bundle',
+            'liberty wing ten',
+            'line advance burial',
             'zoo zoo zone',
             'abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salad',
-            'lethal adult bunker absurd also dog',
+            'liberty wing ten year wave saturday',
+            'line advance burst abuse always double',
             'zoo zoo zoo zoo zoo young',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge lecture',
-            'lethal adult bunker absurd also domain achieve aunt lens',
-            'zoo zoo zoo zoo zoo zoo zoo zoo year',
+            'liberty wing ten year wave sauce worry used letter',
+            'line advance burst abuse always down acid author light',
+            'zoo zoo zoo zoo zoo zoo zoo zoo yell',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge legal wing taxi worth',
-            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker abandon',
+            'liberty wing ten year wave sauce worry used liberty wing ten worth',
+            'line advance burst abuse always down acid author line advance burst abandon',
             'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo worth',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon winner',
-            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain abandon',
+            'liberty wing ten year wave sauce worry used liberty wing ten year wave sauce winner',
+            'line advance burst abuse always down acid author line advance burst abuse always down abandon',
             'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo winner',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wave',
-            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal abandon',
-            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wave',
+            'liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty way',
+            'line advance burst abuse always down acid author line advance burst abuse always down acid author line abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo way',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard usage',
-            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd abandon',
-            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo usage',
+            'liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty wing ten year useful',
+            'line advance burst abuse always down acid author line advance burst abuse always down acid author line advance burst abuse abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo useful',
             'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
-            'legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry team',
-            'lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve abandon',
-            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo team',
+            'liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry tennis',
+            'line advance burst abuse always down acid author line advance burst abuse always down acid author line advance burst abuse always down acid abandon',
+            'zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo tennis',
         ]
         vectors = zip(data, codes)
         self._check_list('english', vectors)
@@ -99,29 +99,29 @@ class MnemonicTest(unittest.TestCase):
     def test_english(self):
         vectors = \
            [('19458fe8dace41e60617c6667874f6be',
-            'bless cloud wheel regular tiny venue birth web grief security dignity language'),
+            'block coast when remind title version bizarre website half seminar disease learn'),
             ('2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145',
-            'code laugh useless view chunk property agent rebuild swedish fiction used spoon convince rank role hold race company'),
+            'column leisure utter violin city puppy ahead region sword fiscal usual squad core rebel rough hospital rank continue'),
             ('cbeb354834fffb79bc952458705d2205f79c515e4c91043dc16f3dd6139b3219',
-            'sketch flavor eyebrow height youth rope various pet fish little embryo arena just chicken jump mourn advance unique fork knock general slice short caught'),
+            'slam foot famous history youth rubber velvet pig flip lot endless argue knee choice kingdom mutual adverse unlike friday language glance smile sibling ceiling'),
             ('ea88c6efbc4028994b8b4ebc0345a474',
-            'try educate robust joke act erosion color hedge rock blow hat tribe'),
+            'tuna elegant rose key action ever company hip rotate body hero trip'),
             ('bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18',
-            'river ignore recycle like tobacco armor straw season despair bosnian sibling burden defy sunset typical harvest sad shadow'),
+            'rookie include relax local toilet army stuff seed diamond both silent bus deny sure unaware here same shell'),
             ('0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f',
-            'approach response map protect both glass fabric remember place upset satisfy slave gravity irish romance squad involve grain excuse pioneer gauge flight open white'),
+            'april rhythm math purchase bounce govern fancy report pocket usage scan slow gun jazz round stage jacket guess explain pledge girl forest organ widow'),
             ('666fbb72dada90d6c8f627d77450f366',
-            'grief last swamp reject pond history car sentence stone patrol diamond slam'),
+            'half leg swing remove post horror carpet settle street pencil dilemma slight'),
             ('29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659',
-            'chunk oak another audit vendor degree iron very year surprise retreat cook blossom obey crowd riot belt slogan'),
+            'city october answer aunt verb depart jealous viable yell swallow ride corn board odd cup rocket bench snack'),
             ('869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e',
-            'magnet vacuum van exotic gear tactic march ready matrix coat chin after grief huge genuine jet travel prepare race approach evil excuse burial skirt'),
+            'march valley vast fact glad talk maximum recycle member collect chunk age half icon globe junk trial prison rank april exhaust explain bush slice'),
             ('d0263588b1deee8186818319515c6691',
-            'soda country ghost glove unusual dose blouse cope bless medal block car'),
+            'soon craft goal grain uphold drama boat correct block mess blouse carpet'),
             ('48754ef698334cf9cc5494ccca6a0294bf30224066576a7c',
-            'embrace poverty royal cope cruise lake cotton movie slam false letter chuckle venue awesome accident sing hen tight'),
+            'end pretty runway correct curtain lawsuit cover myth slight fault link citizen version awful accord skate holiday tiny'),
             ('ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364',
-            'unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty'),
+            'unveil village derive rumor switch wear stand trap iraqi lunch french data cross wind little sock jeans sky reason dollar thumb mill mistake net'),
             ]
 
         self._check_list('english', vectors)
@@ -151,6 +151,16 @@ class MnemonicTest(unittest.TestCase):
 
         words_unique = list(set(words[:]))
         self.assertEquals(len(words), len(words_unique))
+
+    def test_validchars(self):
+        # check if wordlists contain valid characters
+        languages = Mnemonic.list_languages()
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+            letters = set(sum([list(w) for w in mnemo.wordlist] ,[]))
+            print "Language '%s'" % lang
+            for l in letters:
+                self.assertIn(l, 'abcdefghijklmnopqrstuvwxyz')
 
     def test_sorted_unique(self):
         # Check for duplicated words in wordlist

@@ -3,7 +3,6 @@ ability
 able
 about
 above
-absence
 absent
 absorb
 absurd
@@ -38,7 +37,6 @@ affair
 affect
 afford
 afraid
-african
 after
 again
 age
@@ -67,6 +65,7 @@ alter
 always
 amateur
 amazing
+among
 amount
 analyst
 anchor
@@ -88,8 +87,8 @@ apart
 apology
 appear
 apple
-approach
 approve
+april
 arch
 arctic
 area
@@ -110,7 +109,6 @@ article
 artist
 artwork
 ash
-asian
 ask
 aspect
 assault
@@ -126,6 +124,7 @@ attitude
 attract
 auction
 audit
+august
 aunt
 author
 auto
@@ -148,6 +147,7 @@ bag
 balance
 balcony
 ball
+balloon
 banana
 band
 bang
@@ -160,7 +160,6 @@ barrel
 base
 basic
 basket
-bastard
 bat
 bath
 battle
@@ -184,7 +183,6 @@ betray
 better
 between
 beyond
-bible
 bicycle
 bid
 big
@@ -194,7 +192,6 @@ biology
 bird
 birth
 bishop
-bitch
 bizarre
 black
 blame
@@ -207,8 +204,9 @@ block
 blood
 blossom
 blouse
-blow
 blue
+board
+boat
 body
 boil
 bolster
@@ -237,11 +235,10 @@ brave
 bread
 breeze
 brick
-bride
 bridge
 brief
+bright
 bring
-broke
 broken
 brother
 brown
@@ -278,7 +275,6 @@ camp
 can
 canal
 cancel
-cancer
 candy
 canvas
 capable
@@ -286,6 +282,7 @@ capital
 captain
 car
 card
+care
 cargo
 carpet
 carry
@@ -326,12 +323,10 @@ chew
 chicken
 chief
 child
-chin
 choice
 chronic
 chuckle
 chunk
-church
 cigar
 circle
 citizen
@@ -351,7 +346,6 @@ clinic
 clip
 clock
 close
-closer
 cloth
 cloud
 clown
@@ -374,7 +368,6 @@ come
 comfort
 common
 company
-concern
 concert
 conduct
 confirm
@@ -391,11 +384,11 @@ copy
 coral
 core
 corn
+corner
 correct
 cotton
 couch
 count
-country
 couple
 course
 cousin
@@ -414,7 +407,6 @@ crew
 crime
 crisp
 critic
-critical
 crop
 cross
 crowd
@@ -448,6 +440,7 @@ deal
 debate
 debris
 decade
+december
 decide
 declare
 decline
@@ -473,7 +466,6 @@ derive
 descend
 describe
 desert
-deserve
 design
 desk
 despair
@@ -505,13 +497,13 @@ dismiss
 disorder
 display
 distance
-distant
 divide
 divorce
 doctor
 document
 dog
 doll
+dollar
 domain
 donate
 donor
@@ -570,7 +562,6 @@ electric
 elegant
 element
 elephant
-elevate
 elevator
 elicit
 elite
@@ -609,23 +600,19 @@ episode
 equal
 equip
 era
-erect
 erode
 erosion
 error
 erupt
 escape
-escort
 essay
 essence
 estate
 eternal
 ethics
-ethnic
 even
 ever
 evidence
-evident
 evil
 evoke
 evolve
@@ -678,9 +665,9 @@ fatal
 father
 fatigue
 fault
-favor
 favorite
 feature
+february
 federal
 fee
 feel
@@ -741,11 +728,11 @@ foster
 fox
 fragile
 frame
-fraud
 free
 french
 frequent
 fresh
+friday
 friend
 fringe
 front
@@ -780,7 +767,6 @@ genius
 genre
 gentle
 genuine
-german
 gesture
 get
 ghost
@@ -831,6 +817,7 @@ gun
 gym
 habit
 hair
+half
 hammer
 hand
 happy
@@ -850,6 +837,7 @@ hello
 helmet
 help
 hen
+here
 hero
 hidden
 hide
@@ -893,7 +881,6 @@ ice
 icon
 idea
 identify
-idiot
 ignore
 ill
 illegal
@@ -906,6 +893,7 @@ impact
 impose
 improve
 impulse
+inch
 include
 income
 increase
@@ -937,6 +925,7 @@ instead
 intact
 intend
 interest
+into
 invest
 invite
 involve
@@ -946,20 +935,18 @@ irish
 iron
 island
 isolate
-israeli
 issue
 italian
 item
 ivory
 jacket
+january
 jar
 jazz
 jealous
 jeans
-jerk
 jet
 jewel
-jewish
 job
 join
 joke
@@ -989,7 +976,7 @@ knee
 knife
 knock
 knot
-known
+know
 korean
 lab
 label
@@ -1005,7 +992,7 @@ lap
 laptop
 large
 last
-late
+later
 latin
 laugh
 law
@@ -1014,6 +1001,7 @@ lawsuit
 layer
 leader
 learn
+leave
 lecture
 left
 leg
@@ -1023,14 +1011,12 @@ leisure
 lemon
 length
 lens
-lesbian
 less
 lesson
 lethal
 letter
 level
 liar
-liberal
 liberty
 library
 license
@@ -1126,13 +1112,13 @@ merry
 mess
 message
 method
-mexican
 middle
 midst
 might
 migrant
 mild
 militia
+milk
 mill
 mimic
 mind
@@ -1153,6 +1139,7 @@ model
 modify
 mom
 moment
+monday
 money
 monitor
 monkey
@@ -1167,12 +1154,13 @@ mother
 motif
 motion
 motor
+mountain
 mourn
 mouse
+mouth
 move
 movie
 much
-murder
 murmur
 muscle
 museum
@@ -1207,6 +1195,7 @@ news
 next
 nice
 night
+nine
 noble
 noise
 nominee
@@ -1219,6 +1208,7 @@ note
 nothing
 notice
 novel
+november
 now
 nuclear
 number
@@ -1235,6 +1225,7 @@ obtain
 obvious
 occur
 ocean
+october
 odd
 odor
 off
@@ -1253,7 +1244,6 @@ online
 only
 open
 opera
-operate
 opinion
 oppose
 option
@@ -1263,7 +1253,6 @@ order
 ordinary
 organ
 orient
-origin
 original
 other
 ought
@@ -1284,6 +1273,7 @@ pact
 pad
 page
 paint
+pair
 palace
 palm
 panel
@@ -1319,7 +1309,6 @@ phone
 photo
 phrase
 physical
-physics
 piano
 pick
 picnic
@@ -1335,7 +1324,8 @@ pipe
 pistol
 pizza
 place
-plant
+plan
+planet
 plastic
 plate
 play
@@ -1353,6 +1343,7 @@ police
 pond
 pony
 pool
+poor
 popular
 porch
 port
@@ -1410,7 +1401,6 @@ pyramid
 quality
 quantum
 quarter
-quest
 question
 quick
 quit
@@ -1492,6 +1482,7 @@ rich
 ride
 ridge
 rifle
+right
 rigid
 ring
 riot
@@ -1503,6 +1494,7 @@ road
 robot
 robust
 rock
+rocket
 role
 romance
 roof
@@ -1519,6 +1511,7 @@ royal
 rubber
 rude
 rug
+rule
 rumor
 run
 runner
@@ -1537,6 +1530,7 @@ same
 sample
 sand
 satisfy
+saturday
 sauce
 sausage
 save
@@ -1552,7 +1546,6 @@ science
 scramble
 scrap
 screen
-screw
 script
 sea
 seafood
@@ -1571,6 +1564,7 @@ select
 self
 sell
 seminar
+send
 senior
 sense
 sentence
@@ -1613,7 +1607,6 @@ side
 siege
 sight
 sign
-silence
 silent
 silk
 silly
@@ -1639,7 +1632,6 @@ sky
 slam
 slap
 slash
-slave
 sleep
 slender
 slice
@@ -1656,7 +1648,6 @@ smooth
 snack
 snake
 snap
-snatch
 sniff
 snow
 soap
@@ -1670,7 +1661,9 @@ solar
 soldier
 solution
 solve
+someone
 song
+soon
 sorry
 sort
 soul
@@ -1732,28 +1725,30 @@ street
 strike
 strong
 struggle
+student
 study
 stuff
 stumble
-stupid
 style
 subject
 submit
 subway
 success
+such
 sudden
 suffer
 sugar
 suggest
-suicide
 suit
 summer
 sun
+sunday
 sunny
 sunset
 super
 supper
 supply
+suppose
 supreme
 sure
 surface
@@ -1816,6 +1811,7 @@ three
 thrive
 throw
 thumb
+thursday
 ticket
 tide
 tight
@@ -1842,11 +1838,11 @@ tool
 tooth
 top
 topic
-torture
 toss
 total
 tour
 tourist
+toward
 tower
 town
 toy
@@ -1876,6 +1872,7 @@ trust
 truth
 try
 tube
+tuesday
 tuition
 tuna
 tunnel
@@ -1906,7 +1903,6 @@ unique
 unit
 unknown
 unlike
-unlikely
 unlock
 until
 unusual
@@ -1914,6 +1910,7 @@ unveil
 update
 upgrade
 uphold
+upon
 upper
 upset
 urban
@@ -1960,7 +1957,6 @@ village
 vintage
 violin
 virtual
-virtue
 virus
 visa
 visit
@@ -1975,11 +1971,14 @@ vote
 voyage
 wage
 wagon
+wait
+walk
 wall
 want
 warfare
 warm
 warrior
+wash
 watch
 water
 wave
@@ -1991,10 +1990,10 @@ weather
 web
 website
 wedding
+wednesday
 week
 weigh
 welcome
-welfare
 west
 wet
 wetland
@@ -2012,6 +2011,7 @@ wild
 will
 win
 wind
+window
 wine
 wing
 winner
@@ -2035,10 +2035,10 @@ wrap
 wrestle
 wrist
 write
-writer
 wrong
 yard
 year
+yell
 yellow
 yield
 you

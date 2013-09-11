@@ -127,134 +127,134 @@ Decoding:
 ==Test vectors==
 
 <pre>
-input:    00000000 (32 bits)
-mnemonic: abandon abandon abandon (3 words)
+input    : 00000000 (32 bits)
+mnemonic : abandon abandon abandon (3 words)
 
-input:    7f7f7f7f (32 bits)
-mnemonic: legal wing taxi (3 words)
+input    : 7f7f7f7f (32 bits)
+mnemonic : liberty wing ten (3 words)
 
-input:    80808080 (32 bits)
-mnemonic: lethal adult bundle (3 words)
+input    : 80808080 (32 bits)
+mnemonic : line advance burial (3 words)
 
-input:    ffffffff (32 bits)
-mnemonic: zoo zoo zone (3 words)
+input    : ffffffff (32 bits)
+mnemonic : zoo zoo zone (3 words)
 
-input:    0000000000000000 (64 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon (6 words)
+input    : 0000000000000000 (64 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon (6 words)
 
-input:    7f7f7f7f7f7f7f7f (64 bits)
-mnemonic: legal wing taxi yard water salad (6 words)
+input    : 7f7f7f7f7f7f7f7f (64 bits)
+mnemonic : liberty wing ten year wave saturday (6 words)
 
-input:    8080808080808080 (64 bits)
-mnemonic: lethal adult bunker absurd also dog (6 words)
+input    : 8080808080808080 (64 bits)
+mnemonic : line advance burst abuse always double (6 words)
 
-input:    ffffffffffffffff (64 bits)
-mnemonic: zoo zoo zoo zoo zoo young (6 words)
+input    : ffffffffffffffff (64 bits)
+mnemonic : zoo zoo zoo zoo zoo young (6 words)
 
-input:    000000000000000000000000 (96 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon (9 words)
+input    : 000000000000000000000000 (96 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon (9 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f (96 bits)
-mnemonic: legal wing taxi yard water salmon worry urge lecture (9 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f (96 bits)
+mnemonic : liberty wing ten year wave sauce worry used letter (9 words)
 
-input:    808080808080808080808080 (96 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lens (9 words)
+input    : 808080808080808080808080 (96 bits)
+mnemonic : line advance burst abuse always down acid author light (9 words)
 
-input:    ffffffffffffffffffffffff (96 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo year (9 words)
+input    : ffffffffffffffffffffffff (96 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo yell (9 words)
 
-input:    00000000000000000000000000000000 (128 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (12 words)
+input    : 00000000000000000000000000000000 (128 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (12 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (128 bits)
-mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi worth (12 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (128 bits)
+mnemonic : liberty wing ten year wave sauce worry used liberty wing ten worth (12 words)
 
-input:    80808080808080808080808080808080 (128 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker abandon (12 words)
+input    : 80808080808080808080808080808080 (128 bits)
+mnemonic : line advance burst abuse always down acid author line advance burst abandon (12 words)
 
-input:    ffffffffffffffffffffffffffffffff (128 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo worth (12 words)
+input    : ffffffffffffffffffffffffffffffff (128 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo worth (12 words)
 
-input:    0000000000000000000000000000000000000000 (160 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (15 words)
+input    : 0000000000000000000000000000000000000000 (160 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (15 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (160 bits)
-mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon winner (15 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (160 bits)
+mnemonic : liberty wing ten year wave sauce worry used liberty wing ten year wave sauce winner (15 words)
 
-input:    8080808080808080808080808080808080808080 (160 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain abandon (15 words)
+input    : 8080808080808080808080808080808080808080 (160 bits)
+mnemonic : line advance burst abuse always down acid author line advance burst abuse always down abandon (15 words)
 
-input:    ffffffffffffffffffffffffffffffffffffffff (160 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo winner (15 words)
+input    : ffffffffffffffffffffffffffffffffffffffff (160 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo winner (15 words)
 
-input:    000000000000000000000000000000000000000000000000 (192 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (18 words)
+input    : 000000000000000000000000000000000000000000000000 (192 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (18 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (192 bits)
-mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wave (18 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (192 bits)
+mnemonic : liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty way (18 words)
 
-input:    808080808080808080808080808080808080808080808080 (192 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal abandon (18 words)
+input    : 808080808080808080808080808080808080808080808080 (192 bits)
+mnemonic : line advance burst abuse always down acid author line advance burst abuse always down acid author line abandon (18 words)
 
-input:    ffffffffffffffffffffffffffffffffffffffffffffffff (192 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wave (18 words)
+input    : ffffffffffffffffffffffffffffffffffffffffffffffff (192 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo way (18 words)
 
-input:    00000000000000000000000000000000000000000000000000000000 (224 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (21 words)
+input    : 00000000000000000000000000000000000000000000000000000000 (224 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (21 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (224 bits)
-mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard usage (21 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (224 bits)
+mnemonic : liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty wing ten year useful (21 words)
 
-input:    80808080808080808080808080808080808080808080808080808080 (224 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd abandon (21 words)
+input    : 80808080808080808080808080808080808080808080808080808080 (224 bits)
+mnemonic : line advance burst abuse always down acid author line advance burst abuse always down acid author line advance burst abuse abandon (21 words)
 
-input:    ffffffffffffffffffffffffffffffffffffffffffffffffffffffff (224 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo usage (21 words)
+input    : ffffffffffffffffffffffffffffffffffffffffffffffffffffffff (224 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo useful (21 words)
 
-input:    0000000000000000000000000000000000000000000000000000000000000000 (256 bits)
-mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (24 words)
+input    : 0000000000000000000000000000000000000000000000000000000000000000 (256 bits)
+mnemonic : abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon (24 words)
 
-input:    7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (256 bits)
-mnemonic: legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry urge legal wing taxi yard water salmon worry team (24 words)
+input    : 7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f (256 bits)
+mnemonic : liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry used liberty wing ten year wave sauce worry tennis (24 words)
 
-input:    8080808080808080808080808080808080808080808080808080808080808080 (256 bits)
-mnemonic: lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve aunt lethal adult bunker absurd also domain achieve abandon (24 words)
+input    : 8080808080808080808080808080808080808080808080808080808080808080 (256 bits)
+mnemonic : line advance burst abuse always down acid author line advance burst abuse always down acid author line advance burst abuse always down acid abandon (24 words)
 
-input:    ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (256 bits)
-mnemonic: zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo team (24 words)
+input    : ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff (256 bits)
+mnemonic : zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo tennis (24 words)
 
-input:    19458fe8dace41e60617c6667874f6be (128 bits)
-mnemonic: bless cloud wheel regular tiny venue birth web grief security dignity language (12 words)
+input    : 19458fe8dace41e60617c6667874f6be (128 bits)
+mnemonic : block coast when remind title version bizarre website half seminar disease learn (12 words)
 
-input:    2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145 (192 bits)
-mnemonic: sketch flavor eyebrow height youth rope various pet fish little embryo arena just chicken jump mourn advance unique fork knock general slice short caught (24 words)
+input    : 2d8fc7c27a52995bc165a0dcead7c169f301652f0b5db145 (192 bits)
+mnemonic : column leisure utter violin city puppy ahead region sword fiscal usual squad core rebel rough hospital rank continue (18 words)
 
-input:    ea88c6efbc4028994b8b4ebc0345a474 (128 bits)
-mnemonic: try educate robust joke act erosion color hedge rock blow hat tribe (12 words)
+input    : ea88c6efbc4028994b8b4ebc0345a474 (128 bits)
+mnemonic : tuna elegant rose key action ever company hip rotate body hero trip (12 words)
 
-input:    bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18 (192 bits)
-mnemonic: river ignore recycle like tobacco armor straw season despair bosnian sibling burden defy sunset typical harvest sad shadow (18 words)
+input    : bb8e02d2c0fe4c18f60e173bc38724902395b63b1b47bf18 (192 bits)
+mnemonic : rookie include relax local toilet army stuff seed diamond both silent bus deny sure unaware here same shell (18 words)
 
-input:    0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f (256 bits)
-mnemonic: approach response map protect both glass fabric remember place upset satisfy slave gravity irish romance squad involve grain excuse pioneer gauge flight open white (24 words)
+input    : 0b57161fd701c6c6548db5a71df70166965eec2f16a675acad3ed3460cb3e72f (256 bits)
+mnemonic : april rhythm math purchase bounce govern fancy report pocket usage scan slow gun jazz round stage jacket guess explain pledge girl forest organ widow (24 words)
 
-input:    666fbb72dada90d6c8f627d77450f366 (128 bits)
-mnemonic: grief last swamp reject pond history car sentence stone patrol diamond slam (12 words)
+input    : 666fbb72dada90d6c8f627d77450f366 (128 bits)
+mnemonic : half leg swing remove post horror carpet settle street pencil dilemma slight (12 words)
 
-input:    29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659 (192 bits)
-mnemonic: chunk oak another audit vendor degree iron very year surprise retreat cook blossom obey crowd riot belt slogan (18 words)
+input    : 29932c2887ff2c72dd8f9cff1b7ee498119f330d1dd81659 (192 bits)
+mnemonic : city october answer aunt verb depart jealous viable yell swallow ride corn board odd cup rocket bench snack (18 words)
 
-input:    869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e (256 bits)
-mnemonic: magnet vacuum van exotic gear tactic march ready matrix coat chin after grief huge genuine jet travel prepare race approach evil excuse burial skirt (24 words)
+input    : 869e2bc8286611bce2159b89c5a8a4029666dc186bbfe8756ac505a4e89f481e (256 bits)
+mnemonic : march valley vast fact glad talk maximum recycle member collect chunk age half icon globe junk trial prison rank april exhaust explain bush slice (24 words)
 
-input:    d0263588b1deee8186818319515c6691 (128 bits)
-mnemonic: soda country ghost glove unusual dose blouse cope bless medal block car (12 words)
+input    : d0263588b1deee8186818319515c6691 (128 bits)
+mnemonic : soon craft goal grain uphold drama boat correct block mess blouse carpet (12 words)
 
-input:    48754ef698334cf9cc5494ccca6a0294bf30224066576a7c (192 bits)
-mnemonic: embrace poverty royal cope cruise lake cotton movie slam false letter chuckle venue awesome accident sing hen tight (18 words)
+input    : 48754ef698334cf9cc5494ccca6a0294bf30224066576a7c (192 bits)
+mnemonic : end pretty runway correct curtain lawsuit cover myth slight fault link citizen version awful accord skate holiday tiny (18 words)
 
-input:    ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
-mnemonic: unlikely victory dentist round swear weapon squeeze traffic insist logo force custom create win liberty snack island skate range display thought merchant migrant nasty (24 words)
+input    : ee9e8ce85eadcdf0f5473d7490816d9b1335f7204e7776597ac99f9e29186364 (256 bits)
+mnemonic : unveil village derive rumor switch wear stand trap iraqi lunch french data cross wind little sock jeans sky reason dollar thumb mill mistake net (24 words)
 </pre>
 
 ==Reference Implementation==
