@@ -1,16 +1,13 @@
 #!/usr/bin/env python
-from distribute_setup import use_setuptools
-use_setuptools()
+from setuptools import setup
 
 #python setup.py sdist upload
 
-from setuptools import setup
-
 setup(name='mnemonic',
-      version='0.3',
-      description='Implementation of Bitcoin BIP0039',
-      author='slush',
-      author_email='info@bitcoin.cz',
+      version='0.1',
+      description='Implementation of Bitcoin BIP-0039',
+      author='Bitcoin TREZOR',
+      author_email='info@bitcointrezor.com',
       url='https://github.com/trezor/python-mnemonic',
       packages=['mnemonic',],
       package_data={'mnemonic': ['wordlist/*.txt']},
