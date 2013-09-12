@@ -110,7 +110,6 @@ art
 artefact
 artist
 artwork
-ash
 ask
 aspect
 assault
@@ -223,7 +222,6 @@ border
 boring
 born
 borrow
-bosnian
 boss
 both
 bottom
@@ -427,6 +425,7 @@ crystal
 cube
 culture
 cup
+cupboard
 curious
 current
 curtain
@@ -932,8 +931,6 @@ into
 invest
 invite
 involve
-iranian
-iraqi
 irish
 iron
 island
@@ -1126,7 +1123,7 @@ migrant
 mild
 militia
 milk
-mill
+million
 mimic
 mind
 mine
@@ -1522,7 +1519,6 @@ runner
 runway
 rural
 rush
-russian
 sad
 saddle
 sadness
@@ -1548,6 +1544,7 @@ scene
 scheme
 school
 science
+scissors
 scorpion
 scrap
 screen
@@ -1865,6 +1862,7 @@ trip
 trophy
 trouble
 truck
+true
 truly
 trunk
 trust
@@ -1978,6 +1976,7 @@ warm
 warrior
 wash
 wasp
+waste
 watch
 water
 wave
@@ -2044,5 +2043,6 @@ you
 young
 youth
 zebra
+zero
 zone
 zoo
