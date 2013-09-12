@@ -1990,8 +1990,8 @@ weather
 web
 website
 wedding
-wednesday
 week
+weekend
 weigh
 welcome
 west

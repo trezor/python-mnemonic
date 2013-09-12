@@ -152,6 +152,15 @@ class MnemonicTest(unittest.TestCase):
         words_unique = list(set(words[:]))
         self.assertEquals(len(words), len(words_unique))
 
+    def test_lengths(self):
+        # check if wordlists contain words between 3 and 8 characters
+        languages = Mnemonic.list_languages()
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+            words = [w for w in mnemo.wordlist if len(w) < 3 or len(w) > 8]
+            print "Language '%s'" % lang
+            self.assertListEqual(words, [])
+
     def test_validchars(self):
         # check if wordlists contain valid characters
         languages = Mnemonic.list_languages()
