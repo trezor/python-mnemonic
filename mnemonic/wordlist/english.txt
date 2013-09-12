@@ -193,7 +193,6 @@ bill
 biology
 bird
 birth
-bishop
 bizarre
 black
 blame
@@ -454,6 +453,7 @@ decline
 decorate
 decrease
 deep
+deer
 defense
 define
 defy
@@ -708,6 +708,7 @@ flavor
 flee
 flight
 flip
+float
 flock
 floor
 flower
@@ -853,6 +854,7 @@ hill
 hint
 hip
 history
+hobby
 hockey
 hold
 hole
@@ -936,7 +938,6 @@ iron
 island
 isolate
 issue
-italian
 item
 ivory
 jacket
@@ -1121,7 +1122,6 @@ midst
 might
 migrant
 mild
-militia
 milk
 million
 mimic
