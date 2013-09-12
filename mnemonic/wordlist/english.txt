@@ -1329,7 +1329,9 @@ powder
 power
 practice
 praise
+precept
 predict
+prefix
 prepare
 present
 pretty
@@ -1590,6 +1592,8 @@ skill
 skip
 skirt
 sky
+slang
+slab
 sleep
 slender
 slide
