@@ -148,9 +148,12 @@ class MnemonicTest(unittest.TestCase):
         for lang in languages:
             mnemo = Mnemonic(lang)
             words += mnemo.wordlist
-
-        words_unique = list(set(words[:]))
-        self.assertEquals(len(words), len(words_unique))
+		
+        last = None
+        for word in words:
+		    if last:
+			    self.assertNotEqual(last[:4], word[:4])
+		    last = word
 
     def test_validchars(self):
         # check if wordlists contain valid characters
