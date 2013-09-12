@@ -492,7 +492,6 @@ dignity
 dilemma
 dinner
 dinosaur
-dioxide
 direct
 dirt
 disagree
@@ -757,6 +756,7 @@ garage
 garbage
 garden
 garlic
+garment
 gas
 gasp
 gate
@@ -1783,7 +1783,6 @@ taxi
 teach
 team
 tell
-tempt
 ten
 tenant
 tennis
@@ -1921,6 +1920,7 @@ useful
 useless
 usual
 utility
+utter
 vacant
 vaccine
 vacuum
