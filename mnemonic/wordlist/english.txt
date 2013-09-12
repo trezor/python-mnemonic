@@ -53,7 +53,7 @@ alcohol
 alert
 alien
 alive
-all
+allege
 alley
 allow
 almost
@@ -167,6 +167,7 @@ begin
 behave
 behind
 believe
+bell
 below
 belt
 bench
@@ -314,6 +315,7 @@ chronic
 chuckle
 chunk
 cigar
+cinnamon
 circle
 citizen
 city
@@ -493,7 +495,6 @@ draw
 dream
 dress
 drill
-drink
 drive
 drop
 drought
@@ -518,7 +519,6 @@ earth
 easily
 east
 easy
-eat
 echo
 ecology
 economy
@@ -704,6 +704,7 @@ fringe
 front
 frown
 frozen
+fuctose
 fruit
 fuel
 full
@@ -728,6 +729,7 @@ gather
 gauge
 gaze
 gear
+gelatin
 general
 genius
 genre
@@ -738,6 +740,7 @@ get
 ghost
 giant
 gift
+gin
 girl
 give
 glad
@@ -749,6 +752,8 @@ globe
 glory
 glove
 glow
+glucose
+glycogen
 goal
 goat
 goddess
@@ -901,6 +906,7 @@ jar
 jazz
 jealous
 jeans
+jelly
 jet
 jewel
 job
@@ -931,6 +937,7 @@ kitchen
 kitten
 knee
 knife
+knight
 knock
 knot
 know
@@ -987,6 +994,8 @@ limit
 line
 link
 lion
+lip
+liqueur
 list
 little
 live
@@ -1031,10 +1040,12 @@ map
 maple
 marble
 march
+mare
 margin
 marine
 mark
 market
+marjoram
 marriage
 mars
 mask
@@ -1155,6 +1166,7 @@ nice
 night
 nine
 noble
+nocturne
 noise
 nominee
 noon
@@ -1207,6 +1219,7 @@ option
 orange
 orbit
 order
+oregano
 ordinary
 organ
 orient
@@ -1237,6 +1250,7 @@ panel
 panic
 panther
 paper
+paprika
 parade
 parent
 park
@@ -1469,6 +1483,7 @@ sad
 saddle
 sadness
 safe
+sage
 salad
 salmon
 salt
@@ -1756,6 +1771,7 @@ three
 thrive
 thumb
 thursday
+thyme
 ticket
 tide
 tiger
@@ -1886,8 +1902,10 @@ vendor
 venture
 venue
 verb
+vermouth
 verse
 version
+vertigo
 very
 vessel
 veteran
@@ -1909,6 +1927,7 @@ visual
 vital
 vivid
 vocal
+vodka
 voice
 void
 volcano
