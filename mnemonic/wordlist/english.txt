@@ -121,6 +121,7 @@ attend
 attitude
 auction
 audit
+augment
 august
 aunt
 author
@@ -156,6 +157,7 @@ basic
 basket
 bat
 bath
+battery
 beach
 bean
 beauty
@@ -172,6 +174,7 @@ below
 belt
 bench
 benefit
+berry
 best
 betray
 better
@@ -183,6 +186,7 @@ big
 bike
 bill
 biology
+binary
 bird
 birth
 bishop
@@ -428,6 +432,7 @@ decide
 declare
 decline
 decorate
+decreased
 deep
 defense
 define
@@ -789,6 +794,7 @@ habit
 hair
 half
 hammer
+hamster
 hand
 happy
 harbor
@@ -845,10 +851,14 @@ hurry
 hurt
 husband
 hybrid
+hydrate
+hypnosis
+hyperbole
 ice
 icon
 idea
 identify
+idol
 ignore
 image
 imitate
@@ -857,6 +867,7 @@ immune
 impact
 improve
 impulse
+inbox
 inch
 include
 income
@@ -898,13 +909,13 @@ isolate
 issue
 italian
 item
+iterate
 ivory
 jacket
 jaguar
 january
 jar
 jazz
-jealous
 jeans
 jelly
 jet
@@ -916,15 +927,20 @@ journey
 joy
 judge
 juice
+julian
+july
 jump
+june
 jungle
 junior
 junk
 jupiter
-juror
+jury
 just
+kangaroo
 keen
 keep
+kettle
 key
 kick
 kid
@@ -1024,6 +1040,7 @@ lunch
 luxury
 lyrics
 machine
+mackerel
 mad
 magic
 maid
@@ -1060,6 +1077,7 @@ may
 maybe
 meadow
 measure
+meat
 mechanic
 medal
 media
@@ -1078,7 +1096,9 @@ mess
 message
 metal
 method
+microbe
 middle
+midnight
 midst
 might
 migrant
@@ -1271,11 +1291,9 @@ pear
 peasant
 pen
 pencil
-people
 pepper
 perform
 permit
-person
 pet
 phone
 photo
@@ -1319,6 +1337,7 @@ pool
 poor
 popular
 porch
+pork
 port
 portion
 position
@@ -1403,6 +1422,7 @@ receive
 recipe
 record
 recycle
+reduce
 red
 reflect
 reform
@@ -1417,6 +1437,7 @@ remain
 remedy
 remember
 remind
+render
 remote
 renew
 rent
@@ -1486,8 +1507,10 @@ saddle
 sadness
 safe
 sage
+sail
 salad
 salmon
+salon
 salt
 same
 sample
@@ -1522,6 +1545,7 @@ sector
 security
 seed
 seek
+seem
 segment
 select
 selenium
@@ -1669,6 +1693,7 @@ stand
 start
 state
 stay
+steak
 steel
 stem
 step
@@ -1774,6 +1799,7 @@ thread
 three
 thrive
 thumb
+thunder
 thursday
 thyme
 ticket
@@ -1802,6 +1828,7 @@ tool
 tooth
 top
 topic
+tortoise
 toss
 total
 tour
@@ -1843,6 +1870,7 @@ tuna
 tunnel
 turkey
 turn
+turquoise
 turtle
 twelve
 twenty
@@ -1853,6 +1881,7 @@ two
 type
 typical
 unable
+unary
 unaware
 uncle
 uncover
@@ -1972,6 +2001,7 @@ wheat
 wheel
 when
 where
+whirl
 whisper
 white
 widow
@@ -1986,6 +2016,7 @@ wine
 wing
 winner
 winter
+wire
 wisdom
 wise
 wish
