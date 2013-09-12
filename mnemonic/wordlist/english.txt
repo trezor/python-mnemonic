@@ -255,7 +255,6 @@ bullet
 bundle
 bunker
 burden
-burial
 burst
 bus
 bush
@@ -590,7 +589,6 @@ energy
 enforce
 engage
 engine
-english
 enhance
 enjoy
 enlist
@@ -759,7 +757,6 @@ garage
 garbage
 garden
 garlic
-garment
 gas
 gasp
 gate
@@ -933,7 +930,6 @@ into
 invest
 invite
 involve
-irish
 iron
 island
 isolate
@@ -1004,6 +1000,7 @@ law
 lawn
 lawsuit
 layer
+lazy
 leader
 learn
 leave
@@ -1070,6 +1067,7 @@ magic
 magnet
 maid
 mail
+main
 major
 make
 mammal
@@ -1205,6 +1203,7 @@ nominee
 noon
 normal
 north
+nose
 notable
 note
 nothing
@@ -1307,10 +1306,11 @@ penalty
 pencil
 people
 pepper
-perform
+perfect
 permit
 person
 pet
+petrol
 phone
 photo
 phrase
@@ -1390,7 +1390,6 @@ public
 pulse
 pump
 punch
-punish
 pupil
 puppy
 purchase
@@ -1596,6 +1595,7 @@ shoe
 shoot
 shop
 short
+shoulder
 shove
 show
 shrimp
@@ -1640,6 +1640,7 @@ slight
 slogan
 slot
 slow
+slush
 small
 smart
 smile
@@ -1677,7 +1678,7 @@ spatial
 spawn
 speak
 special
-speech
+speed
 spell
 spend
 sphere
@@ -1756,7 +1757,6 @@ sustain
 swallow
 swamp
 swear
-swedish
 sweet
 swim
 swing
@@ -1823,6 +1823,7 @@ toast
 tobacco
 today
 toddler
+toe
 together
 toilet
 tomato
@@ -1920,7 +1921,6 @@ useful
 useless
 usual
 utility
-utter
 vacant
 vaccine
 vacuum
