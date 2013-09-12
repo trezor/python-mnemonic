@@ -5,8 +5,6 @@ about
 above
 absent
 absorb
-absurd
-abuse
 abyss
 accept
 access
@@ -23,6 +21,7 @@ action
 actor
 actress
 actual
+adapt
 add
 addict
 address
@@ -30,9 +29,9 @@ adhere
 adjust
 admit
 adopt
-adult
 advance
 advice
+aerobic
 affair
 affect
 afford
@@ -185,15 +184,14 @@ bid
 big
 bike
 bill
-biology
 binary
+biology
 bird
 birth
 bishop
 bizarre
 black
-blame
-blanket
+blank
 blast
 bless
 blind
@@ -255,7 +253,6 @@ buy
 buyer
 cabin
 cable
-cage
 cake
 calcium
 call
@@ -298,6 +295,7 @@ century
 cereal
 certain
 chair
+chalk
 chamber
 champion
 change
@@ -352,7 +350,6 @@ code
 coffee
 coin
 collect
-color
 column
 combine
 come
@@ -636,7 +633,6 @@ fatal
 father
 fatigue
 fault
-favorite
 feature
 february
 federal
@@ -709,7 +705,7 @@ fringe
 front
 frown
 frozen
-fuctose
+fructose
 fruit
 fuel
 full
@@ -745,6 +741,7 @@ get
 ghost
 giant
 gift
+gigabyte
 gin
 girl
 give
@@ -852,8 +849,8 @@ hurt
 husband
 hybrid
 hydrate
-hypnosis
 hyperbole
+hypnosis
 ice
 icon
 idea
@@ -1047,6 +1044,7 @@ maid
 mail
 major
 make
+mall
 mammal
 man
 manage
@@ -1060,9 +1058,9 @@ march
 mare
 margin
 marine
+marjoram
 mark
 market
-marjoram
 marriage
 mars
 mask
@@ -1082,8 +1080,9 @@ mechanic
 medal
 media
 medical
-melody
+mega
 mellon
+melody
 member
 memory
 mention
@@ -1239,8 +1238,8 @@ option
 orange
 orbit
 order
-oregano
 ordinary
+oregano
 organ
 orient
 original
@@ -1373,6 +1372,7 @@ proof
 property
 protect
 provide
+prudence
 public
 pulse
 pump
@@ -1422,8 +1422,8 @@ receive
 recipe
 record
 recycle
-reduce
 red
+reduce
 reflect
 reform
 region
@@ -1437,8 +1437,8 @@ remain
 remedy
 remember
 remind
-render
 remote
+render
 renew
 rent
 reopen
@@ -1551,12 +1551,12 @@ select
 selenium
 self
 sell
-september
 seminar
 send
 senior
 sense
 sentence
+september
 series
 sermon
 serve
@@ -1616,8 +1616,8 @@ skill
 skip
 skirt
 sky
-slang
 slab
+slang
 sleep
 slender
 slide
@@ -1653,8 +1653,8 @@ soon
 sorry
 sort
 soul
-soup
 sound
+soup
 source
 south
 space
