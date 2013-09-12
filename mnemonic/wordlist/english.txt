@@ -194,8 +194,8 @@ black
 blank
 blast
 bless
-blind
 blink
+blizzard
 block
 blossom
 blouse
@@ -218,8 +218,8 @@ boss
 both
 box
 boy
+bracket
 brain
-branch
 brand
 brave
 bread
@@ -297,12 +297,12 @@ certain
 chair
 chalk
 chamber
-champion
 change
 chaos
 chapter
 charge
 chase
+chat
 cheap
 check
 cheese
@@ -359,10 +359,10 @@ company
 concert
 conduct
 confirm
+congress
 connect
 consider
 continue
-control
 convince
 cook
 cool
@@ -370,9 +370,9 @@ cope
 copper
 copy
 coral
+cordial
 core
 corn
-corner
 correct
 cotton
 couch
@@ -401,7 +401,7 @@ cry
 crystal
 cube
 cult
-culture
+culvert
 cup
 curious
 current
@@ -427,9 +427,9 @@ decade
 december
 decide
 declare
-decline
 decorate
 decreased
+dedicated
 deep
 defense
 define
