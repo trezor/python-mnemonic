@@ -197,9 +197,9 @@ class MnemonicTest(unittest.TestCase):
             mnemo = Mnemonic(lang)
             prefixes = []
             for w in mnemo.wordlist:
-                pref = w[:5]
+                pref = w[:4]
                 if pref in prefixes:
-                    words = [ w2 for w2 in mnemo.wordlist if w2[:5] == pref ]
+                    words = [ w2 for w2 in mnemo.wordlist if w2[:4] == pref ]
                     print "Duplicate prefix", pref, "for words", words
                     problems_found += 1
 
