@@ -20,35 +20,61 @@
 #
 # The code is inspired by Electrum mnemonic code by ThomasV
 #
-# Note about US patent no 5892470:
-# In our implementation the mnemonic word depends on the previous words.
-# In the original patent, the word choice is independent from the previous words.
-#
 
 import struct
+import binascii
+import os
 
 class Mnemonic(object):
-
-	def __init__(self):
-		self.radix = 1626 # 1626^3 > 2^32
-		self.wordlist = [w.strip() for w in open('words/bip0039.txt', 'r').readlines()]
+	def __init__(self, language):
+		self.radix = 2048
+		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self._get_directory(), language), 'r').readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words.' % self.radix)
+
+	@classmethod
+	def _get_directory(cls):
+		return os.path.join(os.path.dirname(__file__), 'wordlist')
+
+	@classmethod
+	def list_languages(cls):
+		return [ f.split('.')[0] for f in os.listdir(cls._get_directory()) if f.endswith('.txt') ]
+
+	@classmethod
+	def detect_language(cls, code):
+		first = code.split(' ')[0]
+		languages = cls.list_languages()
+
+		for lang in languages:
+			mnemo = cls(lang)
+			if first in mnemo.wordlist:
+				return lang
+
+		raise Exception("Language not detected")
+
+	def checksum(self, b):
+		l = len(b) / 32
+		c = 0
+		for i in range(32):
+			c ^= int(b[i * l:(i + 1) * l], 2)
+		c = bin(c)[2:].zfill(l)
+		return c
 
 	def encode(self, data):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		if len(data) % 4 != 0:
 			raise Exception('Data length not divisable by 4!')
+		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
+		assert len(b) % 32 == 0
+		c = self.checksum(b)
+		assert len(c) == len(b) / 32
+		e = b + c
+		assert len(e) % 33 == 0
 		result = []
-		pw1, pw2, pw3 = 0, 0, 0
-		for i in range(len(data)/4):
-			num = (struct.unpack_from('>I', data, 4*i)[0]) & 0xFFFFFFFF
-			w1 = (num + pw1) % self.radix
-			w2 = ((num / self.radix) + w1 + pw2) % self.radix
-			w3 = ((num / self.radix / self.radix) + w2 + pw3) % self.radix
-			result += [ self.wordlist[w1], self.wordlist[w2], self.wordlist[w3] ]
-			pw1, pw2, pw3 = w1, w2, w3
+		for i in range(len(e) / 11):
+			idx = int(e[i * 11:(i + 1) * 11], 2)
+			result.append(self.wordlist[idx])
 		return ' '.join(result)
 
 	def decode(self, code):
@@ -57,14 +83,15 @@ class Mnemonic(object):
 		code = [w for w in code.split(' ') if w]
 		if len(code) % 3 != 0:
 			raise Exception('Mnemonic code length not divisible by 3!')
-		result = ''
-		pw1, pw2, pw3 = 0, 0, 0
-		for i in range(len(code)/3):
-			word1, word2, word3 = code[3*i : 3*(i+1)]
-			w1 = self.wordlist.index(word1)
-			w2 = self.wordlist.index(word2)
-			w3 = self.wordlist.index(word3)
-			num = ((w1 - pw1) % self.radix + self.radix * ((w2 - w1 - pw2) % self.radix) + self.radix * self.radix * ((w3 - w2 - pw3) % self.radix))
-			result += struct.pack('>I', num)
-			pw1, pw2, pw3 = w1, w2, w3
-		return result
+		e = [ bin(self.wordlist.index(w))[2:].zfill(11) for w in code ]
+		e = ''.join(e)
+		l = len(e)
+		assert l % 33 == 0
+		b = e[:l / 33 * 32]
+		c = e[l / 33 * 32:]
+		assert len(b) % 32 == 0
+		assert len(c) == len(b) / 32
+		if self.checksum(b) != c:
+			raise Exception('Mnemonic checksum error')
+		b = hex(int(b, 2))[2:].rstrip('L').zfill(len(b) / 4)
+		return binascii.unhexlify(b)
