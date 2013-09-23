@@ -26,17 +26,14 @@ adapt
 add
 addict
 address
-adhere
 adjust
 admit
 adopt
 adult
 advance
-adverse
 advice
 aerobic
 affair
-affect
 afford
 afraid
 after
@@ -193,7 +190,6 @@ bill
 biology
 bird
 birth
-bizarre
 black
 blame
 blanket
@@ -209,7 +205,6 @@ board
 boat
 body
 boil
-bolster
 bomb
 bone
 bonus
@@ -243,7 +238,6 @@ broken
 brother
 brown
 brush
-brutal
 bubble
 buddy
 budget
@@ -255,6 +249,7 @@ bullet
 bundle
 bunker
 burden
+burger
 burst
 bus
 bush
@@ -266,9 +261,9 @@ buyer
 cabbage
 cabin
 cable
+cactus
 cage
 cake
-calcium
 call
 calm
 camera
@@ -300,6 +295,7 @@ catch
 category
 cattle
 caught
+cause
 caution
 cave
 ceiling
@@ -309,6 +305,7 @@ century
 cereal
 certain
 chair
+chalk
 champion
 change
 chaos
@@ -325,6 +322,7 @@ chew
 chicken
 chief
 child
+chimney
 choice
 chronic
 chuckle
@@ -336,6 +334,7 @@ citizen
 city
 civil
 claim
+clap
 clarify
 class
 clay
@@ -373,6 +372,7 @@ common
 company
 concert
 conduct
+cone
 confirm
 congress
 connect
@@ -483,7 +483,7 @@ devote
 dial
 diamond
 diary
-dictate
+dice
 diesel
 diet
 differ
@@ -511,6 +511,7 @@ doll
 dolphin
 domain
 donate
+donkey
 donor
 door
 dose
@@ -528,8 +529,6 @@ drill
 drink
 drive
 drop
-drought
-drown
 drum
 dry
 duck
@@ -542,6 +541,7 @@ duty
 dwarf
 dynamic
 eager
+eagle
 ear
 early
 earn
@@ -567,7 +567,6 @@ elegant
 element
 elephant
 elevator
-elicit
 elite
 else
 embark
@@ -602,6 +601,7 @@ episode
 equal
 equip
 era
+erase
 erode
 erosion
 error
@@ -619,6 +619,7 @@ evil
 evoke
 evolve
 exact
+example
 exchange
 excite
 exclude
@@ -730,7 +731,6 @@ fox
 fragile
 frame
 free
-french
 frequent
 fresh
 friday
@@ -858,7 +858,6 @@ hole
 holiday
 home
 honey
-honor
 hood
 hope
 horn
@@ -870,6 +869,7 @@ hot
 hotel
 hour
 house
+hover
 hub
 huge
 human
@@ -886,6 +886,7 @@ ice
 icon
 idea
 identify
+idle
 ignore
 ill
 illegal
@@ -956,7 +957,6 @@ jump
 jungle
 junior
 junk
-juror
 just
 kangaroo
 keen
@@ -976,9 +976,7 @@ kiwi
 knee
 knife
 knock
-knot
 know
-korean
 lab
 label
 labor
@@ -996,6 +994,7 @@ last
 later
 latin
 laugh
+laundry
 law
 lawn
 lawsuit
@@ -1057,6 +1056,7 @@ low
 lower
 loyal
 lucky
+luggage
 lunar
 lunch
 luxury
@@ -1116,7 +1116,6 @@ metal
 method
 middle
 midnight
-midst
 might
 migrant
 mild
@@ -1156,13 +1155,13 @@ mother
 motion
 motor
 mountain
-mourn
 mouse
 mouth
 move
 movie
 much
-murmur
+muffin
+multiply
 muscle
 museum
 mushroom
@@ -1175,6 +1174,7 @@ myth
 nail
 naive
 name
+napkin
 narrow
 nasty
 nation
@@ -1200,6 +1200,7 @@ nine
 noble
 noise
 nominee
+noodle
 noon
 normal
 north
@@ -1213,7 +1214,6 @@ now
 nuclear
 number
 nurse
-nurture
 nut
 oak
 obey
@@ -1235,6 +1235,7 @@ often
 oil
 okay
 old
+olive
 olympic
 omit
 once
@@ -1256,7 +1257,6 @@ orient
 original
 ostrich
 other
-ought
 out
 outdoor
 outer
@@ -1321,6 +1321,7 @@ picnic
 picture
 piece
 pig
+pigeon
 pill
 pilot
 pine
@@ -1387,12 +1388,14 @@ property
 protect
 provide
 public
+pudding
 pulse
 pump
 punch
 pupil
 puppy
 purchase
+purity
 purpose
 purse
 push
@@ -1425,11 +1428,11 @@ rat
 rather
 raven
 raw
+razor
 ready
 real
 reason
 rebel
-rebound
 rebuild
 recall
 receive
@@ -1487,11 +1490,13 @@ right
 rigid
 ring
 riot
+ripple
 risk
 ritual
 rival
 river
 road
+roast
 robot
 robust
 rocket
@@ -1569,7 +1574,6 @@ senior
 sense
 sentence
 series
-sermon
 service
 sesame
 session
@@ -1631,7 +1635,6 @@ skirt
 sky
 slam
 slap
-slash
 sleep
 slender
 slice
@@ -1656,7 +1659,6 @@ soccer
 social
 sock
 soda
-sodium
 soft
 solar
 soldier
@@ -1825,6 +1827,7 @@ toddler
 toe
 together
 toilet
+token
 tomato
 tomorrow
 tongue
@@ -1834,6 +1837,7 @@ tool
 tooth
 top
 topic
+tornado
 tortoise
 toss
 total
@@ -1885,13 +1889,13 @@ two
 type
 typical
 ugly
+umbrella
 unable
 unaware
 uncle
 uncover
 under
 undo
-uneasy
 unfair
 unfold
 unhappy
@@ -1900,7 +1904,6 @@ unique
 unit
 universe
 unknown
-unlike
 unlock
 until
 unusual
@@ -1920,7 +1923,6 @@ useful
 useless
 usual
 utility
-utter
 vacant
 vaccine
 vacuum
@@ -1939,6 +1941,7 @@ vendor
 venture
 venue
 verb
+verify
 version
 very
 vessel
@@ -1990,11 +1993,9 @@ web
 website
 wedding
 weekend
-weigh
 welcome
 west
 wet
-wetland
 whale
 what
 wheel
@@ -2003,7 +2004,6 @@ where
 whip
 whisper
 white
-widow
 width
 wife
 wild
