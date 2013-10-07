@@ -24,7 +24,7 @@
 import struct
 import binascii
 import os
-from Crypto.Cipher import Blowfish
+from pyblowfish import Blowfish
 
 class Mnemonic(object):
 	def __init__(self, language):
@@ -62,13 +62,13 @@ class Mnemonic(object):
 		return c
 
 	def stretch(self, data):
-		cipher = Blowfish.new("mnemonic", Blowfish.MODE_ECB)
+		cipher = Blowfish("mnemonic")
 		for _ in range(1000):
 			data = cipher.encrypt(data)
 		return data
 
 	def unstretch(self, data):
-		cipher = Blowfish.new("mnemonic", Blowfish.MODE_ECB)
+		cipher = Blowfish("mnemonic")
 		for _ in range(1000):
 			data = cipher.decrypt(data)
 		return data
@@ -77,7 +77,7 @@ class Mnemonic(object):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		if len(data) % 8 != 0:
-			raise Exception('Data length not divisable by 8!')
+			raise Exception('Data length not divisible by 8!')
 		data = self.stretch(data)
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
 		assert len(b) % 32 == 0
