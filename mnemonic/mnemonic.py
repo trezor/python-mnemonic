@@ -24,6 +24,7 @@
 import struct
 import binascii
 import os
+import hashlib
 from pyblowfish import Blowfish
 
 class Mnemonic(object):
@@ -61,24 +62,24 @@ class Mnemonic(object):
 		c = bin(c)[2:].zfill(l)
 		return c
 
-	def stretch(self, data):
-		cipher = Blowfish("mnemonic")
+	def stretch(self, data, passphrase):
+		cipher = Blowfish(hashlib.sha256("mnemonic" + passphrase).digest())
 		for _ in range(1000):
 			data = cipher.encrypt(data)
 		return data
 
-	def unstretch(self, data):
-		cipher = Blowfish("mnemonic")
+	def unstretch(self, data, passphrase):
+		cipher = Blowfish(hashlib.sha256("mnemonic" + passphrase).digest())
 		for _ in range(1000):
 			data = cipher.decrypt(data)
 		return data
 
-	def encode(self, data):
+	def encode(self, data, passphrase=''):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		if len(data) % 8 != 0:
 			raise Exception('Data length not divisible by 8!')
-		data = self.stretch(data)
+		data = self.stretch(data, passphrase)
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
 		assert len(b) % 32 == 0
 		c = self.checksum(b)
@@ -91,7 +92,7 @@ class Mnemonic(object):
 			result.append(self.wordlist[idx])
 		return ' '.join(result)
 
-	def decode(self, code):
+	def decode(self, code, passphrase=''):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		code = [w for w in code.split(' ') if w]
@@ -109,5 +110,5 @@ class Mnemonic(object):
 			raise Exception('Mnemonic checksum error')
 		b = hex(int(b, 2))[2:].rstrip('L').zfill(len(b) / 4)
 		data = binascii.unhexlify(b)
-		data = self.unstretch(data)
+		data = self.unstretch(data, passphrase)
 		return data

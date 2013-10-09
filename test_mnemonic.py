@@ -52,6 +52,14 @@ class MnemonicTest(unittest.TestCase):
         with self.assertRaises(Exception):
             mnemo.decode(code)
 
+    def test_passphrase(self):
+        vector = json.load(open('vectors.json', 'r'))['english'][0]
+        mnemo = Mnemonic('english')
+        code = mnemo.encode(unhexlify(vector[0]), 'passphrase')
+        data = hexlify(mnemo.decode(code, 'passphrase'))
+
+        self.assertEqual(vector[0], data)
+        
     def test_detection(self):
         self.assertEqual('english', Mnemonic.detect_language('eat'))
 
