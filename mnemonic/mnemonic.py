@@ -25,7 +25,7 @@ import struct
 import binascii
 import os
 import hashlib
-from pyblowfish import Blowfish
+import rijndael
 
 class Mnemonic(object):
 	def __init__(self, language):
@@ -63,22 +63,24 @@ class Mnemonic(object):
 		return c
 
 	def stretch(self, data, passphrase):
-		cipher = Blowfish(hashlib.sha256("mnemonic" + passphrase).digest())
-		for _ in range(1000):
+		key = hashlib.sha256("mnemonic" + passphrase).digest()
+		cipher = rijndael.Rijndael(key, block_size=len(data))
+		for _ in range(10000):
 			data = cipher.encrypt(data)
 		return data
 
 	def unstretch(self, data, passphrase):
-		cipher = Blowfish(hashlib.sha256("mnemonic" + passphrase).digest())
-		for _ in range(1000):
+		key = hashlib.sha256("mnemonic" + passphrase).digest()
+		cipher = rijndael.Rijndael(key, block_size=len(data))
+		for _ in range(10000):
 			data = cipher.decrypt(data)
 		return data
 
 	def encode(self, data, passphrase=''):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
-		if len(data) % 8 != 0:
-			raise Exception('Data length not divisible by 8!')
+		if len(data) * 8 not in (128, 192, 256):
+			raise Exception('Data is not 128, 192 or 256 bits long!')
 		data = self.stretch(data, passphrase)
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
 		assert len(b) % 32 == 0
@@ -96,8 +98,8 @@ class Mnemonic(object):
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist does not contain %d items!' % self.radix)
 		code = [w for w in code.split(' ') if w]
-		if len(code) % 6 != 0:
-			raise Exception('Mnemonic code length not divisible by 6!')
+		if len(code) not in (12, 18, 24):
+			raise Exception('Mnemonic code is not 12, 18 or 24 words long!')
 		e = [ bin(self.wordlist.index(w))[2:].zfill(11) for w in code ]
 		e = ''.join(e)
 		l = len(e)
