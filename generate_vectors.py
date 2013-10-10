@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
         # Generate corner cases
         data = []
-        for l in range(8, 32 + 1, 8):
+        for l in range(16, 32 + 1, 8):
             for b in ['00', '7f', '80', 'ff']:
                 data = (b * l)
                 code = mnemo.encode(unhexlify(data))
