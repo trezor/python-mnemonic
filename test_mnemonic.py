@@ -22,6 +22,10 @@
 
 import unittest
 import json
+import hashlib
+
+from Crypto.Cipher.AES import AESCipher
+from mnemonic.rijndael import Rijndael, AES as RijnAES
 
 from binascii import hexlify, unhexlify
 from mnemonic import Mnemonic
@@ -133,6 +137,73 @@ class MnemonicTest(unittest.TestCase):
                 prefixes.append(pref)
 
         self.assertEqual(problems_found, 0)
+
+    def test_rijndael(self):
+        block_sizes = ((16, {
+                     '\x00': 'a3af8b7d326a2d47bd7576012e07d103',
+                     '\xff': 'e720f4474b7dabe382eec0529e2b1128',
+                     'hojda': '9c3bb85af2122cc2df449033338beb56',
+                     }),
+                    (24, {
+                     '\x00': '7b8704678f263c316ddd1746d8377a4046a99dd9e5687d59',
+                     '\xff': '14dfe4c7a93e14616dce6c793110baee0b8bb404f3bec6c5',
+                     'hojda': '0d7009c589869eaa1d7398bffc7660cce32207a520d6cafe',
+                     }),
+                    (32, {
+                     '\x00': '7c0575db9badc9960441c6b8dcbd5ebdfec522ede5309904b7088d0e77c2bcef',
+                     '\xff': 'ccf498fd9a57f872a4d274549fab474cbacdbd9d935ca31b06e3025526a704fb',
+                     'hojda': 'b1a4d05e3827611c5986ea4c207679a6934f20767434218029c4b3b7a53806a3',
+                     })
+            )
+
+        key = hashlib.sha256('mnemonic').digest()
+
+
+        for block_size, patterns in block_sizes:
+            for pattern in patterns.keys():
+                rijn = Rijndael(key, block_size=block_size)
+                data = pattern * block_size
+
+                cipher = hexlify(rijn.encrypt(data[:block_size]))
+                self.assertEqual(patterns[pattern], cipher)
+
+    def test_stretching(self):
+        '''
+            Test is stretching algorithm is symmetric
+            and produces desired string length
+        '''
+        mnemo = Mnemonic('english')
+
+        for x in (16, 24, 32):
+            data = '0' * x
+            stretched = mnemo.stretch(data, 'passphrase')
+            unstretched = mnemo.unstretch(stretched, 'passphrase')
+
+            self.assertEqual(x, len(stretched))
+            self.assertEqual(data, unstretched)
+
+    def test_aes_compatibility(self):
+        '''
+            This tests if our Rijndael implementation is compatible
+            with AES, because:
+
+                Rijndael(block_size=16) <==> AES()
+        '''
+        data = '0' * 16
+        key = hashlib.sha256('mnemonic').digest()
+        rijn = RijnAES(key)
+        aes = AESCipher(key)
+
+        cipher1 = aes.encrypt(data)
+        cipher2 = rijn.encrypt(data)
+
+        # Both libraries now decrypt cipher from another lib
+        cross_decrypt1 = rijn.decrypt(cipher1)
+        cross_decrypt2 = aes.decrypt(cipher1)
+
+        self.assertEqual(cipher1, cipher2)
+        self.assertEqual(data, cross_decrypt1)
+        self.assertEqual(data, cross_decrypt2)
 
 def __main__():
     unittest.main()
