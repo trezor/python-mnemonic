@@ -138,6 +138,58 @@ class MnemonicTest(unittest.TestCase):
 
         self.assertEqual(problems_found, 0)
 
+    def test_similarity(self):
+        similar = (
+            ('a', 'c'), ('a', 'e'), ('a', 'o'), ('b', 'd'),
+            ('c', 'e'), ('c', 'o'), ('c', 'u'), ('d', 'g'),
+            ('d', 'h'), ('d', 'o'), ('d', 'p'), ('d', 'q'),
+            ('e', 'o'), ('f', 'i'), ('f', 'j'), ('f', 'l'),
+            ('f', 't'), ('g', 'j'), ('g', 'p'), ('g', 'q'),
+            ('h', 'k'), ('h', 'l'), ('h', 'm'), ('h', 'n'),
+            ('i', 'j'), ('i', 'l'), ('i', 't'), ('i', 'y'),
+            ('j', 'l'), ('j', 'p'), ('j', 'q'), ('j', 'y'),
+            ('l', 't'), ('m', 'n'), ('m', 'w'), ('n', 'u'),
+            ('o', 'q'), ('o', 'u'), ('o', 'v'), ('p', 'q'),
+            ('q', 'y'), ('s', 'z'), ('u', 'v'), ('u', 'w'),
+            ('v', 'w'), ('v', 'y'),
+        )
+
+        languages = Mnemonic.list_languages()
+
+        fail = False
+        for lang in languages:
+            mnemo = Mnemonic(lang)
+
+            for w1 in mnemo.wordlist:
+                for w2 in mnemo.wordlist:
+                    if len(w1) != len(w2):
+                        continue
+
+                    if w1 == w2:
+                        continue
+
+                    if w1 > w2:
+                        # No need to print warning twice
+                        continue
+
+                    diff = []
+                    for i in range(len(w1)):
+                        if w1[i] != w2[i]:
+                            if w1[i] < w2[i]:
+                                pair = (w1[i], w2[i])
+                            else:
+                                pair = (w2[i], w1[i])
+
+                            diff.append(pair)
+                            # pairs.update((pair,))
+
+                    if len(diff) == 1:
+                        if list(diff)[0] in similar:
+                            fail = True
+                            print "Similar words (%s): %s, %s" % (lang, w1, w2)
+
+            self.assert_(False, "Similar words found")
+
     def test_rijndael(self):
         block_sizes = ((16, {
                      '\x00': 'a3af8b7d326a2d47bd7576012e07d103',
@@ -168,10 +220,9 @@ class MnemonicTest(unittest.TestCase):
                 self.assertEqual(patterns[pattern], cipher)
 
     def test_stretching(self):
-        '''
-            Test is stretching algorithm is symmetric
-            and produces desired string length
-        '''
+        # Test is stretching algorithm is symmetric
+        # and produces desired string length
+
         mnemo = Mnemonic('english')
 
         for x in (16, 24, 32):
@@ -183,12 +234,10 @@ class MnemonicTest(unittest.TestCase):
             self.assertEqual(data, unstretched)
 
     def test_aes_compatibility(self):
-        '''
-            This tests if our Rijndael implementation is compatible
-            with AES, because:
+        # This tests if our Rijndael implementation is compatible
+        # with AES, because:
+        #     Rijndael(block_size=16) <==> AES()
 
-                Rijndael(block_size=16) <==> AES()
-        '''
         data = '0' * 16
         key = hashlib.sha256('mnemonic').digest()
         rijn = RijnAES(key)
