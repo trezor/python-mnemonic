@@ -32,7 +32,7 @@ class Mnemonic(object):
 		self.radix = 2048
 		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self._get_directory(), language), 'r').readlines()]
 		if len(self.wordlist) != self.radix:
-			raise Exception('Wordlist should contain %d words.' % self.radix)
+		    raise Exception('Wordlist should contain %d words. Contains %d words.' % (self.radix, len(self.wordlist)))
 
 	@classmethod
 	def _get_directory(cls):
