@@ -18,21 +18,18 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-# The code is inspired by Electrum mnemonic code by ThomasV
-#
 
-import struct
-import binascii
 import os
 import hashlib
-import rijndael
+import hmac
+import binascii
 
 class Mnemonic(object):
 	def __init__(self, language):
 		self.radix = 2048
 		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self._get_directory(), language), 'r').readlines()]
 		if len(self.wordlist) != self.radix:
-		    raise Exception('Wordlist should contain %d words. Contains %d words.' % (self.radix, len(self.wordlist)))
+			raise Exception('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
 	@classmethod
 	def _get_directory(cls):
@@ -54,63 +51,43 @@ class Mnemonic(object):
 
 		raise Exception("Language not detected")
 
-	def checksum(self, b):
-		l = len(b) / 32
-		c = 0
-		for i in range(32):
-			c ^= int(b[i * l:(i + 1) * l], 2)
-		c = bin(c)[2:].zfill(l)
-		return c
+	def generate(self, strength = 128):
+		if strength % 32 > 0:
+			raise Exception('Strength should be divisible by 32, but it is not (%d).' % strength)
+		return self.to_mnemonic(os.urandom(strength / 8))
 
-	def stretch(self, data, passphrase):
-		key = hashlib.sha256("mnemonic" + passphrase).digest()
-		cipher = rijndael.Rijndael(key, block_size=len(data))
-		for _ in range(10000):
-			data = cipher.encrypt(data)
-		return data
-
-	def unstretch(self, data, passphrase):
-		key = hashlib.sha256("mnemonic" + passphrase).digest()
-		cipher = rijndael.Rijndael(key, block_size=len(data))
-		for _ in range(10000):
-			data = cipher.decrypt(data)
-		return data
-
-	def encode(self, data, passphrase=''):
-		if len(self.wordlist) != self.radix:
-			raise Exception('Wordlist does not contain %d items!' % self.radix)
-		if len(data) * 8 not in (128, 192, 256):
-			raise Exception('Data is not 128, 192 or 256 bits long!')
-		data = self.stretch(data, passphrase)
-		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
-		assert len(b) % 32 == 0
-		c = self.checksum(b)
-		assert len(c) == len(b) / 32
-		e = b + c
-		assert len(e) % 33 == 0
+	def to_mnemonic(self, data):
+		if len(data) % 4 > 0:
+			raise Exception('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
+		h = hashlib.sha256(data).digest()
+		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
+		    bin(int(binascii.hexlify(h), 16))[2:][:len(data) * 8 / 32]
 		result = []
-		for i in range(len(e) / 11):
-			idx = int(e[i * 11:(i + 1) * 11], 2)
+		for i in range(len(b) / 11):
+			idx = int(b[i * 11:(i + 1) * 11], 2)
 			result.append(self.wordlist[idx])
 		return ' '.join(result)
 
-	def decode(self, code, passphrase=''):
-		if len(self.wordlist) != self.radix:
-			raise Exception('Wordlist does not contain %d items!' % self.radix)
-		code = [w for w in code.split(' ') if w]
-		if len(code) not in (12, 18, 24):
-			raise Exception('Mnemonic code is not 12, 18 or 24 words long!')
-		e = [ bin(self.wordlist.index(w))[2:].zfill(11) for w in code ]
-		e = ''.join(e)
-		l = len(e)
-		assert l % 33 == 0
-		b = e[:l / 33 * 32]
-		c = e[l / 33 * 32:]
-		assert len(b) % 32 == 0
-		assert len(c) == len(b) / 32
-		if self.checksum(b) != c:
-			raise Exception('Mnemonic checksum error')
-		b = hex(int(b, 2))[2:].rstrip('L').zfill(len(b) / 4)
-		data = binascii.unhexlify(b)
-		data = self.unstretch(data, passphrase)
-		return data
+	def check(self, mnemonic):
+		mnemonic = mnemonic.split(' ')
+		if len(mnemonic) % 3 > 0:
+			return False
+		try:
+			idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
+		except:
+			return False
+		b = ''.join(idx)
+		l = len(b)
+		d = b[:l / 33 * 32]
+		h = b[-l / 33:]
+		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l / 33 * 8))
+		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:2 + l / 33]
+		return h == nh
+
+	@classmethod
+	def to_seed(cls, mnemonic, passphrase = ''):
+		k = 'mnemonic' + passphrase
+		m = mnemonic
+		for i in range(10000):
+			m = hmac.new(k, m, hashlib.sha512).digest()
+		return m
