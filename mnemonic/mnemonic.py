@@ -24,6 +24,8 @@ import hashlib
 import hmac
 import binascii
 
+HMAC_ROUNDS = 10000
+
 class Mnemonic(object):
 	def __init__(self, language):
 		self.radix = 2048
@@ -59,9 +61,9 @@ class Mnemonic(object):
 	def to_mnemonic(self, data):
 		if len(data) % 4 > 0:
 			raise Exception('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
-		h = hashlib.sha256(data).digest()
+		h = hashlib.sha256(data).hexdigest()
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
-		    bin(int(binascii.hexlify(h), 16))[2:][:len(data) * 8 / 32]
+		    bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 / 32]
 		result = []
 		for i in range(len(b) / 11):
 			idx = int(b[i * 11:(i + 1) * 11], 2)
@@ -88,6 +90,6 @@ class Mnemonic(object):
 	def to_seed(cls, mnemonic, passphrase = ''):
 		k = 'mnemonic' + passphrase
 		m = mnemonic
-		for i in range(10000):
+		for i in range(HMAC_ROUNDS):
 			m = hmac.new(k, m, hashlib.sha512).digest()
 		return m
