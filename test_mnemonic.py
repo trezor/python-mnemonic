@@ -33,7 +33,7 @@ class MnemonicTest(unittest.TestCase):
         mnemo = Mnemonic(language)
         for v in vectors:
             code = mnemo.to_mnemonic(unhexlify(v[0]))
-            seed = hexlify(Mnemonic.to_seed(code))
+            seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
             self.assertEqual(v[1], code)
             self.assertEqual(v[2], seed)
 

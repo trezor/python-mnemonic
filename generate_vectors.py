@@ -6,7 +6,7 @@ from mnemonic import Mnemonic
 
 def process(data, lst):
     code = mnemo.to_mnemonic(unhexlify(data))
-    seed = hexlify(Mnemonic.to_seed(code))
+    seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
     print 'input    : %s (%d bits)' % (data, len(data) * 4)
     print 'mnemonic : %s (%d words)' % (code, len(code.split(' ')))
     print 'seed     : %s (%d bits)' % (seed, len(data) * 4)
