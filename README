@@ -82,19 +82,10 @@ Wordlist can contain native characters, but they have to be encoded using UTF-8.
 User can decide to protect his mnemonic by passphrase. If passphrase is not present
 an empty string "" is used instead.
 
-To create binary seed from mnemonic, we use HMAC-SHA512 function with string
-"mnemonic" + passphrase (in UTF-8) as key and mnemonic sentence (again in UTF-8)
-as the message. We perform 10000 HMAC rounds and use the final result as the binary
-seed.
-
-Pseudocode:
-
-    K = "mnemonic" + passphrase
-    M = mnemonic_sentence
-    for i in 1 ... 10000 do
-        M = hmac_sha512(K, M)
-    done
-    seed = M
+To create binary seed from mnemonic, we use PBKDF2 function with mnemonic sentence
+(in UTF-8) used as a password and string "mnemonic" + passphrase (again in UTF-8)
+used as a salt. Iteration count is set to 10000 and HMAC-SHA512 is used as a pseudo-
+random function. Desired length of the derived key is 512 bits (= 64 bytes).
 
 This seed can be later used to generate deterministic wallets using BIP-0032 or
 similar methods.

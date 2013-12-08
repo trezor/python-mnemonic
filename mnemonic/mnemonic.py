@@ -23,8 +23,9 @@ import os
 import hashlib
 import hmac
 import binascii
+from pbkdf2 import PBKDF2
 
-HMAC_ROUNDS = 10000
+PBKDF2_ROUNDS = 10000
 
 class Mnemonic(object):
 	def __init__(self, language):
@@ -88,8 +89,4 @@ class Mnemonic(object):
 
 	@classmethod
 	def to_seed(cls, mnemonic, passphrase = ''):
-		k = 'mnemonic' + passphrase
-		m = mnemonic
-		for i in range(HMAC_ROUNDS):
-			m = hmac.new(k, m, hashlib.sha512).digest()
-		return m
+		return PBKDF2(mnemonic, 'mnemonic' + passphrase, iterations = PBKDF2_ROUNDS, macmodule = hmac, digestmodule = hashlib.sha512).read(64)

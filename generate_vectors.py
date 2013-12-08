@@ -9,7 +9,7 @@ def process(data, lst):
     seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
     print 'input    : %s (%d bits)' % (data, len(data) * 4)
     print 'mnemonic : %s (%d words)' % (code, len(code.split(' ')))
-    print 'seed     : %s (%d bits)' % (seed, len(data) * 4)
+    print 'seed     : %s (%d bits)' % (seed, len(seed) * 4)
     print
     lst.append((data, code, seed))
 
@@ -31,4 +31,4 @@ if __name__ == '__main__':
             data = hexlify(''.join(chr(choice(range(0, 256))) for _ in range(8 * (i % 3 + 2))))
             process(data, out[lang])
 
-    json.dump(out, open('vectors.json', 'w'), sort_keys=True, indent=4,)
+    json.dump(out, open('vectors.json', 'w'), sort_keys=True, indent=4, separators=(',', ': '))
