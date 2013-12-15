@@ -1,9 +1,7 @@
-{{bip}}
-
 <pre>
   BIP:     BIP-0039
   Title:   Mnemonic code for generating deterministic keys
-  Authors: Marek Palatinus <marek@satoshilabs.com>
+  Authors: Marek Palatinus <slush@satoshilabs.com>
            Pavol Rusnak <stick@satoshilabs.com>
            ThomasV <thomasv@bitcointalk.org>
            Aaron Voisine <voisine@gmail.com>
@@ -12,7 +10,7 @@
   Created: 10-09-2013
 </pre>
 
-== Abstract ==
+==Abstract==
 
 This BIP describes an usage of mnemonic code or mnemonic sentence - a group of
 easy to remember words - to generate deterministic wallets.
@@ -21,7 +19,7 @@ It consists of two parts: generating the mnemonic and converting it into
 a binary seed. This seed can be later used to generate deterministic wallets
 using BIP-0032 or similar methods.
 
-== Motivation ==
+==Motivation==
 
 Such mnemonic code or mnemonic sentence is much easier to work with than working
 with the binary data directly (or its hexadecimal interpretation). The sentence
@@ -29,7 +27,7 @@ could be writen down on paper (e.g. for storing in a secure location such as
 safe), told over telephone or other voice communication method, or memorized
 in ones memory (this method is called brainwallet).
 
-== Generating the mnemonic ==
+==Generating the mnemonic==
 
 First, we decide how much entropy we want mnemonic to encode. Recommended size
 is 128-256 bits, but basically any multiple of 32 bits will do. More bits
@@ -44,6 +42,7 @@ We convert numbers into words and use joined words as mnemonic sentence.
 The following table describes the relation between initial entropy length (ENT),
 checksum length (CS) and length of the generated mnemonic sentence (MS) in words.
 
+<pre>
 CS = ENT / 32
 MS = (ENT + CS) / 11
 
@@ -54,8 +53,9 @@ MS = (ENT + CS) / 11
 |  192  |  6 |   198  |  18  |
 |  224  |  7 |   231  |  21  |
 |  256  |  8 |   264  |  24  |
+</pre>
 
-== Wordlist ==
+==Wordlist==
 
 In previous section we described how to pick words from a wordlist. Now we
 describe how does a good wordlist look like.
@@ -77,7 +77,7 @@ c) sorted wordlists
 
 Wordlist can contain native characters, but they have to be encoded using UTF-8.
 
-== From mnemonic to seed ==
+==From mnemonic to seed==
 
 User can decide to protect his mnemonic by passphrase. If passphrase is not present
 an empty string "" is used instead.
@@ -100,11 +100,11 @@ Described method also provides plausable deniability, because every passphrase
 generates a valid seed (and thus deterministic wallet) but only the correct one
 will make the desired wallet available.
 
-== Test vectors ==
+==Test vectors==
 
 See https://github.com/trezor/python-mnemonic/blob/master/vectors.json
 
-== Reference Implementation ==
+==Reference Implementation==
 
 Reference implementation including wordlists is available from
 
