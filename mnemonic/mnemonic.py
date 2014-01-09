@@ -84,7 +84,7 @@ class Mnemonic(object):
 		d = b[:l / 33 * 32]
 		h = b[-l / 33:]
 		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l / 33 * 8))
-		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:2 + l / 33]
+		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:l / 33]
 		return h == nh
 
 	@classmethod
