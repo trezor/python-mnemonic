@@ -25,7 +25,7 @@ import hmac
 import binascii
 from pbkdf2 import PBKDF2
 
-PBKDF2_ROUNDS = 4096
+PBKDF2_ROUNDS = 2048
 
 class Mnemonic(object):
 	def __init__(self, language):
