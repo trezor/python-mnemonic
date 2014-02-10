@@ -4,7 +4,7 @@ from setuptools import setup
 #python setup.py sdist upload
 
 setup(name='mnemonic',
-      version='0.6',
+      version='0.7',
       description='Implementation of Bitcoin BIP-0039',
       author='Bitcoin TREZOR',
       author_email='info@bitcointrezor.com',
