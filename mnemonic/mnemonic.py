@@ -23,6 +23,7 @@ import os
 import hashlib
 import hmac
 import binascii
+import unicodedata
 from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
@@ -89,4 +90,6 @@ class Mnemonic(object):
 
 	@classmethod
 	def to_seed(cls, mnemonic, passphrase = ''):
-		return PBKDF2(mnemonic, 'mnemonic' + passphrase, iterations = PBKDF2_ROUNDS, macmodule = hmac, digestmodule = hashlib.sha512).read(64)
+		mnemonic = unicodedata.normalize('NFKD', unicode(mnemonic))
+		passphrase = unicodedata.normalize('NFKD', unicode(passphrase))
+		return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
