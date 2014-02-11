@@ -203,6 +203,7 @@ class MnemonicTest(unittest.TestCase):
 
         self.assertEqual(seed_nfkd, seed_nfc)
         self.assertEqual(seed_nfkd, seed_nfkc)
+        self.assertEqual(seed_nfkd, seed_nfd)
 
 def __main__():
     unittest.main()
