@@ -90,6 +90,11 @@ class Mnemonic(object):
 
 	@classmethod
 	def to_seed(cls, mnemonic, passphrase = ''):
+		if isinstance(mnemonic, (str, unicode)):
+			raise Exception("String value expected")
+		if isinstance(passphrase, (str, unicode)):
+			raise Exception("String value expected")
+
 		mnemonic = unicodedata.normalize('NFKD', unicode(mnemonic))
 		passphrase = unicodedata.normalize('NFKD', unicode(passphrase))
 		return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
