@@ -44,6 +44,12 @@ class Mnemonic(object):
 		return [ f.split('.')[0] for f in os.listdir(cls._get_directory()) if f.endswith('.txt') ]
 
 	@classmethod
+	def normalize_string(cls, txt):
+		if not isinstance(txt, (str, unicode)):
+			raise Exception("String value expected")
+		return unicodedata.normalize('NFKD', unicode(txt))
+
+	@classmethod
 	def detect_language(cls, code):
 		first = code.split(' ')[0]
 		languages = cls.list_languages()
@@ -90,11 +96,6 @@ class Mnemonic(object):
 
 	@classmethod
 	def to_seed(cls, mnemonic, passphrase = ''):
-		if not isinstance(mnemonic, (str, unicode)):
-			raise Exception("String value expected")
-		if not isinstance(passphrase, (str, unicode)):
-			raise Exception("String value expected")
-
-		mnemonic = unicodedata.normalize('NFKD', unicode(mnemonic))
-		passphrase = unicodedata.normalize('NFKD', unicode(passphrase))
+		mnemonic = cls.normalize_string(mnemonic)
+		passphrase = cls.normalize_string(passphrase)
 		return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
