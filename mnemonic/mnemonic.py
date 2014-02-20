@@ -90,9 +90,9 @@ class Mnemonic(object):
 
 	@classmethod
 	def to_seed(cls, mnemonic, passphrase = ''):
-		if isinstance(mnemonic, (str, unicode)):
+		if not isinstance(mnemonic, (str, unicode)):
 			raise Exception("String value expected")
-		if isinstance(passphrase, (str, unicode)):
+		if not isinstance(passphrase, (str, unicode)):
 			raise Exception("String value expected")
 
 		mnemonic = unicodedata.normalize('NFKD', unicode(mnemonic))
