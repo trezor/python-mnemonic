@@ -45,9 +45,14 @@ class Mnemonic(object):
 
 	@classmethod
 	def normalize_string(cls, txt):
-		if not isinstance(txt, (str, unicode)):
+		if isinstance(txt, str):
+			utxt = txt.decode('utf8')
+		elif isinstance(txt, unicode):
+			utxt = txt
+		else:
 			raise Exception("String value expected")
-		return unicodedata.normalize('NFKD', unicode(txt))
+
+		return unicodedata.normalize('NFKD', utxt)
 
 	@classmethod
 	def detect_language(cls, code):
