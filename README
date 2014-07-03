@@ -22,7 +22,7 @@ BIP-0032 or similar methods.
 
 ==BIP paper==
 
-See https://github.com/trezor/bips/blob/master/bip-0039.mediawiki for full
+See https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki for full
 specification
 
 ==Reference Implementation==
