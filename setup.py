@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 from setuptools import setup
 
-#python setup.py sdist upload
-
-setup(name='mnemonic',
-      version='0.8',
-      description='Implementation of Bitcoin BIP-0039',
-      author='Bitcoin TREZOR',
-      author_email='info@bitcointrezor.com',
-      url='https://github.com/trezor/python-mnemonic',
-      packages=['mnemonic',],
-      package_data={'mnemonic': ['wordlist/*.txt']},
-      zip_safe=False,
-      install_requires=['pbkdf2'],
-     )
+setup(
+    name='mnemonic',
+    version='0.8',
+    author='Bitcoin TREZOR',
+    author_email='info@bitcointrezor.com',
+    description='Implementation of Bitcoin BIP-0039',
+    url='https://github.com/trezor/python-mnemonic',
+    packages=['mnemonic',],
+    package_data={'mnemonic': ['wordlist/*.txt']},
+    zip_safe=False,
+    install_requires=['pbkdf2'],
+    classifiers=[
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: MacOS :: MacOS X',
+    ],
+)
