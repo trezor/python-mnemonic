@@ -19,11 +19,13 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import os
+import binascii
 import hashlib
 import hmac
-import binascii
+import os
+import sys
 import unicodedata
+
 from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
@@ -31,7 +33,8 @@ PBKDF2_ROUNDS = 2048
 class Mnemonic(object):
 	def __init__(self, language):
 		self.radix = 2048
-		self.wordlist = [w.strip() for w in open('%s/%s.txt' % (self._get_directory(), language), 'r').readlines()]
+		with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
+			self.wordlist = [w.strip() for w in f.readlines()]
 		if len(self.wordlist) != self.radix:
 			raise Exception('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
@@ -45,9 +48,9 @@ class Mnemonic(object):
 
 	@classmethod
 	def normalize_string(cls, txt):
-		if isinstance(txt, str):
+		if isinstance(txt, str if sys.version < '3' else bytes):
 			utxt = txt.decode('utf8')
-		elif isinstance(txt, unicode):
+		elif isinstance(txt, unicode if sys.version < '3' else str):
 			utxt = txt
 		else:
 			raise Exception("String value expected")
@@ -69,16 +72,16 @@ class Mnemonic(object):
 	def generate(self, strength = 128):
 		if strength % 32 > 0:
 			raise Exception('Strength should be divisible by 32, but it is not (%d).' % strength)
-		return self.to_mnemonic(os.urandom(strength / 8))
+		return self.to_mnemonic(os.urandom(strength // 8))
 
 	def to_mnemonic(self, data):
 		if len(data) % 4 > 0:
 			raise Exception('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
 		h = hashlib.sha256(data).hexdigest()
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
-		    bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 / 32]
+		    bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 // 32]
 		result = []
-		for i in range(len(b) / 11):
+		for i in range(len(b) // 11):
 			idx = int(b[i * 11:(i + 1) * 11], 2)
 			result.append(self.wordlist[idx])
 		return ' '.join(result)
@@ -89,14 +92,14 @@ class Mnemonic(object):
 			return False
 		try:
 			idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
+			b = ''.join(idx)
 		except:
 			return False
-		b = ''.join(idx)
 		l = len(b)
-		d = b[:l / 33 * 32]
-		h = b[-l / 33:]
-		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l / 33 * 8))
-		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:l / 33]
+		d = b[:l // 33 * 32]
+		h = b[-l // 33:]
+		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l // 33 * 8))
+		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:l // 33]
 		return h == nh
 
 	@classmethod
