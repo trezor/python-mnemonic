@@ -28,6 +28,11 @@ from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
 
+try:
+	string_type = basestring
+except NameError:
+	string_type = str
+
 class Mnemonic(object):
 	def __init__(self, language):
 		self.radix = 2048
@@ -45,11 +50,13 @@ class Mnemonic(object):
 
 	@classmethod
 	def normalize_string(cls, txt):
-		if isinstance(txt, str):
+
+		try:
 			utxt = txt.decode('utf8')
-		elif isinstance(txt, unicode):
+		except (UnicodeEncodeError, AttributeError):
 			utxt = txt
-		else:
+
+		if not isinstance(utxt, string_type):
 			raise Exception("String value expected")
 
 		return unicodedata.normalize('NFKD', utxt)
@@ -76,9 +83,9 @@ class Mnemonic(object):
 			raise Exception('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
 		h = hashlib.sha256(data).hexdigest()
 		b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
-		    bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 / 32]
+		    bin(int(h, 16))[2:].zfill(256)[:int(len(data) * 8 / 32)]
 		result = []
-		for i in range(len(b) / 11):
+		for i in range(len(b) // 11):
 			idx = int(b[i * 11:(i + 1) * 11], 2)
 			result.append(self.wordlist[idx])
 		return ' '.join(result)
@@ -93,10 +100,10 @@ class Mnemonic(object):
 			return False
 		b = ''.join(idx)
 		l = len(b)
-		d = b[:l / 33 * 32]
-		h = b[-l / 33:]
-		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l / 33 * 8))
-		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:l / 33]
+		d = b[:int(l / 33 * 32)]
+		h = b[int(-l / 33):]
+		nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(int(l / 33 * 8)))
+		nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:int(l / 33)]
 		return h == nh
 
 	@classmethod

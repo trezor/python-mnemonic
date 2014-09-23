@@ -37,7 +37,7 @@ class MnemonicTest(unittest.TestCase):
             seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
-            self.assertEqual(v[2], seed)
+            self.assertEqual(v[2], seed.decode('utf8'))
 
     def test_vectors(self):
         vectors = json.load(open('vectors.json', 'r'))
@@ -74,7 +74,7 @@ class MnemonicTest(unittest.TestCase):
         for lang in languages:
             mnemo = Mnemonic(lang)
             words = [w for w in mnemo.wordlist if len(w) < 3 or len(w) > 8]
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             self.assertListEqual(words, [])
 
     def test_validchars(self):
@@ -83,15 +83,15 @@ class MnemonicTest(unittest.TestCase):
         for lang in languages:
             mnemo = Mnemonic(lang)
             letters = set(sum([list(w) for w in mnemo.wordlist] ,[]))
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             for l in letters:
                 self.assertIn(l, 'abcdefghijklmnopqrstuvwxyz')
 
     def test_sorted_unique(self):
         # Check for duplicated words in wordlist
 
-        print "------------------------------------"
-        print "Test of sorted and unique wordlists:"
+        print("------------------------------------")
+        print("Test of sorted and unique wordlists:")
 
         languages = Mnemonic.list_languages()
         for lang in languages:
@@ -99,12 +99,12 @@ class MnemonicTest(unittest.TestCase):
             unique = list(set(mnemo.wordlist))
             unique.sort()
 
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             self.assertListEqual(unique, mnemo.wordlist)
 
     def test_root_len(self):
-        print "------------------------------------"
-        print "Test of word prefixes:"
+        print("------------------------------------")
+        print("Test of word prefixes:")
 
         languages = Mnemonic.list_languages()
         problems_found = 0
@@ -116,7 +116,8 @@ class MnemonicTest(unittest.TestCase):
                 pref = w[:4]
                 if pref in prefixes:
                     words = [ w2 for w2 in mnemo.wordlist if w2[:4] == pref ]
-                    print "Duplicate prefix", pref, "for words", words
+                    print("Duplicate prefix {} for words {}".format(pref,
+                                                                    words))
                     problems_found += 1
 
                 prefixes.append(pref)
@@ -179,7 +180,9 @@ class MnemonicTest(unittest.TestCase):
                     if len(diff) == 1:
                         if list(diff)[0] in similar:
                             fail = True
-                            print "Similar words (%s): %s, %s" % (lang, w1, w2)
+                            print("Similar words ({}): {}, {}".format(
+                                  lang, w1, w2)
+                            )
 
         if fail:
             self.assert_(False, "Similar words found")
