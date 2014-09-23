@@ -1,1 +1,1 @@
-from mnemonic import Mnemonic
+from .mnemonic import Mnemonic
