@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (c) 2013 Pavol Rusnak
 #
@@ -20,12 +20,15 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import unittest
-import json
-import hashlib
-import unicodedata
+from __future__ import print_function
 
+import hashlib
+import json
+import sys
+import unicodedata
+import unittest
 from binascii import hexlify, unhexlify
+
 from mnemonic import Mnemonic
 
 class MnemonicTest(unittest.TestCase):
@@ -35,12 +38,15 @@ class MnemonicTest(unittest.TestCase):
         for v in vectors:
             code = mnemo.to_mnemonic(unhexlify(v[0]))
             seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
+            if sys.version >= '3':
+                seed = seed.decode('utf8')
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
             self.assertEqual(v[2], seed)
 
     def test_vectors(self):
-        vectors = json.load(open('vectors.json', 'r'))
+        with open('vectors.json', 'r') as f:
+            vectors = json.load(f)
         for lang in vectors.keys():
             self._check_list(lang, vectors[lang])
 
@@ -66,7 +72,7 @@ class MnemonicTest(unittest.TestCase):
             words += mnemo.wordlist
 
         words_unique = list(set(words[:]))
-        self.assertEquals(len(words), len(words_unique))
+        self.assertEqual(len(words), len(words_unique))
 
     def test_lengths(self):
         # check if wordlists contain words between 3 and 8 characters
@@ -74,7 +80,7 @@ class MnemonicTest(unittest.TestCase):
         for lang in languages:
             mnemo = Mnemonic(lang)
             words = [w for w in mnemo.wordlist if len(w) < 3 or len(w) > 8]
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             self.assertListEqual(words, [])
 
     def test_validchars(self):
@@ -83,15 +89,15 @@ class MnemonicTest(unittest.TestCase):
         for lang in languages:
             mnemo = Mnemonic(lang)
             letters = set(sum([list(w) for w in mnemo.wordlist] ,[]))
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             for l in letters:
                 self.assertIn(l, 'abcdefghijklmnopqrstuvwxyz')
 
     def test_sorted_unique(self):
         # Check for duplicated words in wordlist
 
-        print "------------------------------------"
-        print "Test of sorted and unique wordlists:"
+        print("------------------------------------")
+        print("Test of sorted and unique wordlists:")
 
         languages = Mnemonic.list_languages()
         for lang in languages:
@@ -99,12 +105,12 @@ class MnemonicTest(unittest.TestCase):
             unique = list(set(mnemo.wordlist))
             unique.sort()
 
-            print "Language '%s'" % lang
+            print("Language '{}'".format(lang))
             self.assertListEqual(unique, mnemo.wordlist)
 
     def test_root_len(self):
-        print "------------------------------------"
-        print "Test of word prefixes:"
+        print("------------------------------------")
+        print("Test of word prefixes:")
 
         languages = Mnemonic.list_languages()
         problems_found = 0
@@ -116,7 +122,7 @@ class MnemonicTest(unittest.TestCase):
                 pref = w[:4]
                 if pref in prefixes:
                     words = [ w2 for w2 in mnemo.wordlist if w2[:4] == pref ]
-                    print "Duplicate prefix", pref, "for words", words
+                    print("Duplicate prefix", pref, "for words", words)
                     problems_found += 1
 
                 prefixes.append(pref)
@@ -179,7 +185,7 @@ class MnemonicTest(unittest.TestCase):
                     if len(diff) == 1:
                         if list(diff)[0] in similar:
                             fail = True
-                            print "Similar words (%s): %s, %s" % (lang, w1, w2)
+                            print("Similar words (%s): %s, %s" % (lang, w1, w2))
 
         if fail:
             self.assert_(False, "Similar words found")
