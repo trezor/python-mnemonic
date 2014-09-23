@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='mnemonic',
-    version='0.8',
+    version='0.9',
     author='Bitcoin TREZOR',
     author_email='info@bitcointrezor.com',
     description='Implementation of Bitcoin BIP-0039',
