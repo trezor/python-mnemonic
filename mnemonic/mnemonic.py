@@ -53,7 +53,7 @@ class Mnemonic(object):
 			utxt = txt.decode('utf8')
 		elif isinstance(txt, unicode if sys.version < '3' else str):
 			utxt = txt
-    		else:	
+		else:
 			raise Exception("String value expected")
 
 		return unicodedata.normalize('NFKD', utxt)
