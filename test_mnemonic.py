@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright (c) 2013 Pavol Rusnak
 #
@@ -20,12 +20,15 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import unittest
-import json
-import hashlib
-import unicodedata
+from __future__ import print_function
 
+import hashlib
+import json
+import sys
+import unicodedata
+import unittest
 from binascii import hexlify, unhexlify
+
 from mnemonic import Mnemonic
 
 class MnemonicTest(unittest.TestCase):
@@ -35,12 +38,15 @@ class MnemonicTest(unittest.TestCase):
         for v in vectors:
             code = mnemo.to_mnemonic(unhexlify(v[0]))
             seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
+            if sys.version >= '3':
+                seed = seed.decode('utf8')
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
-            self.assertEqual(v[2], seed.decode('utf8'))
+            self.assertEqual(v[2], seed)
 
     def test_vectors(self):
-        vectors = json.load(open('vectors.json', 'r'))
+        with open('vectors.json', 'r') as f:
+            vectors = json.load(f)
         for lang in vectors.keys():
             self._check_list(lang, vectors[lang])
 
@@ -66,7 +72,7 @@ class MnemonicTest(unittest.TestCase):
             words += mnemo.wordlist
 
         words_unique = list(set(words[:]))
-        self.assertEquals(len(words), len(words_unique))
+        self.assertEqual(len(words), len(words_unique))
 
     def test_lengths(self):
         # check if wordlists contain words between 3 and 8 characters
@@ -116,8 +122,7 @@ class MnemonicTest(unittest.TestCase):
                 pref = w[:4]
                 if pref in prefixes:
                     words = [ w2 for w2 in mnemo.wordlist if w2[:4] == pref ]
-                    print("Duplicate prefix {} for words {}".format(pref,
-                                                                    words))
+                    print("Duplicate prefix", pref, "for words", words)
                     problems_found += 1
 
                 prefixes.append(pref)
@@ -180,9 +185,7 @@ class MnemonicTest(unittest.TestCase):
                     if len(diff) == 1:
                         if list(diff)[0] in similar:
                             fail = True
-                            print("Similar words ({}): {}, {}".format(
-                                  lang, w1, w2)
-                            )
+                            print("Similar words (%s): %s, %s" % (lang, w1, w2))
 
         if fail:
             self.assert_(False, "Similar words found")
