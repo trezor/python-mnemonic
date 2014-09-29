@@ -10,6 +10,7 @@ setup(
     url='https://github.com/trezor/python-mnemonic',
     packages=['mnemonic',],
     package_data={'mnemonic': ['wordlist/*.txt']},
+    data_files=[('wordlist', ['mnemonic/wordlist/english.txt'])],
     zip_safe=False,
     install_requires=['pbkdf2'],
     classifiers=[
