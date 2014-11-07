@@ -73,7 +73,7 @@ class Mnemonic(object):
 	def generate(self, strength = 128):
 		if strength % 32 > 0:
 			raise Exception('Strength should be divisible by 32, but it is not (%d).' % strength)
-		return self.to_mnemonic(os.urandom(strength // 8))
+		return self.to_mnemonic(os.urandom(strength / 8))
 
 	def to_mnemonic(self, data):
 		if len(data) % 4 > 0:
