@@ -43,4 +43,4 @@ if __name__ == '__main__':
             process(b2h(data), out[lang])
 
     with open('vectors.json', 'w') as f:
-        json.dump(out, f, sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump(out, f, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
