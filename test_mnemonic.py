@@ -22,10 +22,9 @@
 
 from __future__ import print_function
 
-import hashlib
 import json
+import random
 import sys
-import unicodedata
 import unittest
 from binascii import hexlify, unhexlify
 
@@ -62,7 +61,7 @@ class MnemonicTest(unittest.TestCase):
             Mnemonic.detect_language('xxxxxxx')
 
     def test_collision(self):
-        # Check for the same words accross wordlists.
+        # Check for the same words across wordlists.
         # This is prohibited because of auto-detection feature of language.
 
         words = []
@@ -188,7 +187,7 @@ class MnemonicTest(unittest.TestCase):
                             print("Similar words (%s): %s, %s" % (lang, w1, w2))
 
         if fail:
-            self.assert_(False, "Similar words found")
+            self.fail("Similar words found")
 
     def test_utf8_nfkd(self):
         # The same sentence in various UTF-8 forms
@@ -210,6 +209,13 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfc)
         self.assertEqual(seed_nfkd, seed_nfkc)
         self.assertEqual(seed_nfkd, seed_nfd)
+
+    def test_to_entropy(self):
+        data = [ bytearray(( random.getrandbits(8) for _ in range(32) )) for _ in range(1024) ]
+        data.append(" I'm a little teapot, short and stout. Here is my handle. Here is my spout. When I get all steamed up, hear me shout. Tip me over and pour me out!! ")
+        m = Mnemonic('english')
+        for d in data:
+            self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)
 
 def __main__():
     unittest.main()
