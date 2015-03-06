@@ -23,6 +23,7 @@
 from __future__ import print_function
 
 import json
+import random
 import sys
 import unittest
 from binascii import hexlify, unhexlify
@@ -208,6 +209,13 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfc)
         self.assertEqual(seed_nfkd, seed_nfkc)
         self.assertEqual(seed_nfkd, seed_nfd)
+
+    def test_to_entropy(self):
+        data = [ bytearray(( random.getrandbits(8) for _ in range(32) )) for _ in range(1024) ]
+        data.append(" I'm a little teapot, short and stout. Here is my handle. Here is my spout. When I get all steamed up, hear me shout. Tip me over and pour me out!! ")
+        m = Mnemonic('english')
+        for d in data:
+            self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)
 
 def __main__():
     unittest.main()

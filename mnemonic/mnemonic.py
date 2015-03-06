@@ -20,8 +20,10 @@
 #
 
 import binascii
+import bisect
 import hashlib
 import hmac
+import itertools
 import os
 import sys
 import unicodedata
@@ -32,6 +34,12 @@ PBKDF2_ROUNDS = 2048
 
 class ConfigurationError(Exception):
     pass
+
+# From <http://tinyurl.com/p54ocsk>
+def binary_search(a, x, lo=0, hi=None):   # can't use a to specify default for hi
+    hi = hi if hi is not None else len(a) # hi defaults to len(a)
+    pos = bisect.bisect_left(a,x,lo,hi)   # find insertion position
+    return (pos if pos != hi and a[pos] == x else -1) # don't walk off the end
 
 class Mnemonic(object):
     def __init__(self, language):
@@ -76,6 +84,41 @@ class Mnemonic(object):
         if strength % 32 > 0:
             raise ValueError('Strength should be divisible by 32, but it is not (%d).' % strength)
         return self.to_mnemonic(os.urandom(strength // 8))
+
+    # Adapted from <http://tinyurl.com/oxmn476>
+    def to_entropy(self, words):
+        if len(words) % 3 > 0:
+            raise ValueError('Word list size must be multiple of three words.')
+        # Look up all the words in the list and construct the
+        # concatenation of the original entropy and the checksum.
+        concatLenBits = len(words) * 11
+        concatBits = [ False ] * concatLenBits
+        wordindex = 0
+        for word in words:
+            # Find the words index in the wordlist
+            ndx = binary_search(self.wordlist, word)
+            if ndx < 0:
+                raise LookupError('Unable to find "%s" in word list.' % word)
+            # Set the next 11 bits to the value of the index.
+            for ii in range(11):
+                concatBits[(wordindex * 11) + ii] = (ndx & (1 << (10 - ii))) != 0
+            wordindex += 1
+        checksumLengthBits = concatLenBits // 33
+        entropyLengthBits = concatLenBits - checksumLengthBits
+        # Extract original entropy as bytes.
+        entropy = bytearray(entropyLengthBits // 8)
+        for ii in range(len(entropy)):
+            for jj in range(8):
+                if concatBits[(ii * 8) + jj]:
+                    entropy[ii] |= 1 << (7 - jj)
+        # Take the digest of the entropy.
+        hashBytes = hashlib.sha256(entropy).digest()
+        hashBits = list(itertools.chain.from_iterable(( [ ord(c) & (1 << (7 - i)) != 0 for i in range(8) ] for c in hashBytes )))
+        # Check all the checksum bits.
+        for i in range(checksumLengthBits):
+            if concatBits[entropyLengthBits + i] != hashBits[i]:
+                raise ValueError('Failed checksum.')
+        return entropy
 
     def to_mnemonic(self, data):
         if len(data) % 4 > 0:
