@@ -30,6 +30,8 @@ from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
 
+class ConfigurationError(Exception):
+    pass
 
 class Mnemonic(object):
     def __init__(self, language):
@@ -37,7 +39,7 @@ class Mnemonic(object):
         with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
             self.wordlist = [w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
-            raise Exception('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
+            raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
     @classmethod
     def _get_directory(cls):
@@ -54,7 +56,7 @@ class Mnemonic(object):
         elif isinstance(txt, unicode if sys.version < '3' else str):
             utxt = txt
         else:
-            raise Exception("String value expected")
+            raise TypeError("String value expected")
 
         return unicodedata.normalize('NFKD', utxt)
 
@@ -68,16 +70,16 @@ class Mnemonic(object):
             if first in mnemo.wordlist:
                 return lang
 
-        raise Exception("Language not detected")
+        raise ConfigurationError("Language not detected")
 
     def generate(self, strength = 128):
         if strength % 32 > 0:
-            raise Exception('Strength should be divisible by 32, but it is not (%d).' % strength)
+            raise ValueError('Strength should be divisible by 32, but it is not (%d).' % strength)
         return self.to_mnemonic(os.urandom(strength // 8))
 
     def to_mnemonic(self, data):
         if len(data) % 4 > 0:
-            raise Exception('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
+            raise ValueError('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
         h = hashlib.sha256(data).hexdigest()
         b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
             bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 // 32]
