@@ -87,6 +87,8 @@ class Mnemonic(object):
 
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words):
+        if not isinstance(words, list):
+            words = words.split(' ')
         if len(words) % 3 > 0:
             raise ValueError('Word list size must be multiple of three words.')
         # Look up all the words in the list and construct the
