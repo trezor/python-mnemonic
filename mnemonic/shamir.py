@@ -64,7 +64,7 @@ class Shamir(object):
 	def combine(self, shares):
 		shares = [ binascii.hexlify(self.mnemo.to_entropy(x)) for x in shares ]
 		if set([ int(x[0], 16) for x in shares ]) != set([len(shares)]):
-			raise Exception('Shares do not match needed threshold')
+			raise Exception('Number of shares does not match the threshold')
 		points = [ ( int(x[1], 16), int(x[2:], 16) ) for x in shares ]
 		r = points_to_secret_int(points, PRIME)
 		r = hex(r)[2:-1].zfill(DATALEN * 2)
