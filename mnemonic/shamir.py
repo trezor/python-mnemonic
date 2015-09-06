@@ -20,7 +20,7 @@
 #
 
 from mnemonic import Mnemonic
-from secretsharing import secret_int_to_points, points_to_secret_int
+from .secretsharing import secret_int_to_points, points_to_secret_int
 import binascii
 
 class Shamir(object):
