@@ -5,7 +5,8 @@ from __future__ import print_function
 import json
 import sys
 from binascii import hexlify, unhexlify
-from random import choice
+from random import choice, seed
+from bip32utils import BIP32Key
 
 from mnemonic import Mnemonic
 
@@ -15,17 +16,21 @@ def b2h(b):
 
 def process(data, lst):
     code = mnemo.to_mnemonic(unhexlify(data))
-    seed = b2h(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
+    seed = Mnemonic.to_seed(code, passphrase = 'TREZOR')
+    xprv = BIP32Key.fromEntropy(seed).ExtendedKey()
+    seed = b2h(seed)
     print('input    : %s (%d bits)' % (data, len(data) * 4))
     print('mnemonic : %s (%d words)' % (code, len(code.split(' '))))
     print('seed     : %s (%d bits)' % (seed, len(seed) * 4))
+    print('xprv     : %s' % xprv)
     print()
-    lst.append((data, code, seed))
+    lst.append((data, code, seed, xprv))
 
 if __name__ == '__main__':
     out = {}
+    seed(1337)
 
-    for lang in Mnemonic.list_languages():
+    for lang in ['english']: # Mnemonic.list_languages():
         mnemo = Mnemonic(lang)
         out[lang] = []
 
