@@ -36,7 +36,7 @@ class MnemonicTest(unittest.TestCase):
         mnemo = Mnemonic(language)
         for v in vectors:
             code = mnemo.to_mnemonic(unhexlify(v[0]))
-            seed = hexlify(Mnemonic.to_seed(code, passphrase = 'TREZOR'))
+            seed = hexlify(Mnemonic.to_seed(code, passphrase='TREZOR'))
             if sys.version >= '3':
                 seed = seed.decode('utf8')
             self.assertIs(mnemo.check(v[1]), True)
@@ -52,7 +52,7 @@ class MnemonicTest(unittest.TestCase):
     def test_failed_checksum(self):
         code = 'bless cloud wheel regular tiny venue bird web grief security dignity zoo'
         mnemo = Mnemonic('english')
-        self.assertFalse( mnemo.check(code) )
+        self.assertFalse(mnemo.check(code))
 
     def test_detection(self):
         self.assertEqual('english', Mnemonic.detect_language('security'))
@@ -89,7 +89,7 @@ class MnemonicTest(unittest.TestCase):
         languages.remove('japanese') # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
-            letters = set(sum([list(w) for w in mnemo.wordlist] ,[]))
+            letters = set(sum([list(w) for w in mnemo.wordlist], []))
             print("Language '{}'".format(lang))
             for l in letters:
                 self.assertIn(l, 'abcdefghijklmnopqrstuvwxyz')
@@ -124,7 +124,7 @@ class MnemonicTest(unittest.TestCase):
             for w in mnemo.wordlist:
                 pref = w[:4]
                 if pref in prefixes:
-                    words = [ w2 for w2 in mnemo.wordlist if w2[:4] == pref ]
+                    words = [w2 for w2 in mnemo.wordlist if w2[:4] == pref]
                     print("Duplicate prefix", pref, "for words", words)
                     problems_found += 1
 
@@ -215,7 +215,7 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfd)
 
     def test_to_entropy(self):
-        data = [ bytearray(( random.getrandbits(8) for _ in range(32) )) for _ in range(1024) ]
+        data = [bytearray((random.getrandbits(8) for _ in range(32))) for _ in range(1024)]
         data.append(b" I'm a little teapot, short and stout. Here is my handle. Here is my spout. When I get all steamed up, hear me shout. Tip me over and pour me out!! ")
         m = Mnemonic('english')
         for d in data:

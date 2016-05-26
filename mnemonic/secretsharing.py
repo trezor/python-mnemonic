@@ -62,7 +62,8 @@ def modular_lagrange_interpolation(x, points, prime):
         numerator, denominator = 1, 1
         for j in range(len(points)):
             # don't compute a polynomial fraction if i equals j
-            if i == j: continue
+            if i == j:
+                continue
             # compute a fraction and update the existing numerator + denominator
             numerator = (numerator * (x - x_values[j])) % prime
             denominator = (denominator * (x_values[i] - x_values[j])) % prime

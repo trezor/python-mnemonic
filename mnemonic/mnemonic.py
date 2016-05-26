@@ -27,7 +27,6 @@ import itertools
 import os
 import sys
 import unicodedata
-
 from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
@@ -38,7 +37,7 @@ class ConfigurationError(Exception):
 # From <http://tinyurl.com/p54ocsk>
 def binary_search(a, x, lo=0, hi=None):   # can't use a to specify default for hi
     hi = hi if hi is not None else len(a) # hi defaults to len(a)
-    pos = bisect.bisect_left(a,x,lo,hi)   # find insertion position
+    pos = bisect.bisect_left(a, x, lo, hi)   # find insertion position
     return (pos if pos != hi and a[pos] == x else -1) # don't walk off the end
 
 class Mnemonic(object):
@@ -55,7 +54,7 @@ class Mnemonic(object):
 
     @classmethod
     def list_languages(cls):
-        return [ f.split('.')[0] for f in os.listdir(cls._get_directory()) if f.endswith('.txt') ]
+        return [f.split('.')[0] for f in os.listdir(cls._get_directory()) if f.endswith('.txt')]
 
     @classmethod
     def normalize_string(cls, txt):
@@ -80,7 +79,7 @@ class Mnemonic(object):
 
         raise ConfigurationError("Language not detected")
 
-    def generate(self, strength = 128):
+    def generate(self, strength=128):
         if strength % 32 > 0:
             raise ValueError('Strength should be divisible by 32, but it is not (%d).' % strength)
         return self.to_mnemonic(os.urandom(strength // 8))
@@ -94,7 +93,7 @@ class Mnemonic(object):
         # Look up all the words in the list and construct the
         # concatenation of the original entropy and the checksum.
         concatLenBits = len(words) * 11
-        concatBits = [ False ] * concatLenBits
+        concatBits = [False] * concatLenBits
         wordindex = 0
         for word in words:
             # Find the words index in the wordlist
@@ -116,9 +115,9 @@ class Mnemonic(object):
         # Take the digest of the entropy.
         hashBytes = hashlib.sha256(entropy).digest()
         if sys.version < '3':
-            hashBits = list(itertools.chain.from_iterable(( [ ord(c) & (1 << (7 - i)) != 0 for i in range(8) ] for c in hashBytes )))
+            hashBits = list(itertools.chain.from_iterable(([ord(c) & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes)))
         else:
-            hashBits = list(itertools.chain.from_iterable(( [ c & (1 << (7 - i)) != 0 for i in range(8) ] for c in hashBytes )))
+            hashBits = list(itertools.chain.from_iterable(([c & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes)))
         # Check all the checksum bits.
         for i in range(checksumLengthBits):
             if concatBits[entropyLengthBits + i] != hashBits[i]:
@@ -160,7 +159,7 @@ class Mnemonic(object):
         return h == nh
 
     @classmethod
-    def to_seed(cls, mnemonic, passphrase = ''):
+    def to_seed(cls, mnemonic, passphrase=''):
         mnemonic = cls.normalize_string(mnemonic)
         passphrase = cls.normalize_string(passphrase)
         return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
