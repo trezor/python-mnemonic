@@ -5,7 +5,7 @@ from mnemonic.shamir import Shamir
 
 def shamir_test(l, m, n):
     s = Shamir('english')
-    seed = "Shamir's Secret Sharing Scheme!"[:l] # take first l characters
+    seed = b"Shamir's Secret Sharing Scheme!"[:l] # take first l characters
     shares = s.split(seed, m, n)
     print('original:', seed)
     print('shares:')

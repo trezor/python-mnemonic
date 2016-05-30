@@ -19,6 +19,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+import sys
 import binascii
 from .secretsharing import secret_int_to_points, points_to_secret_int
 from .mnemonic import Mnemonic
@@ -52,11 +53,16 @@ class Shamir(object):
         words = set([len(x.split(' ')) for x in shares])
         if len(words) != 1:
             raise Exception('Inconsistent number of words')
-        datalen = list(words)[0] * 4 / 3 - 1
+        datalen = list(words)[0] * 4 // 3 - 1
         shares = [binascii.hexlify(self.mnemo.to_entropy(x)) for x in shares]
-        if set([int(x[0], 16) for x in shares]) != set([len(shares)]):
-            raise Exception('Number of shares does not match the threshold')
-        points = [(int(x[1], 16), int(x[2:], 16)) for x in shares]
+        if sys.version > '3':
+            if set([int(chr(x[0]), 16) for x in shares]) != set([len(shares)]):
+                raise Exception('Number of shares does not match the threshold')
+            points = [(int(chr(x[1]), 16), int(x[2:], 16)) for x in shares]
+        else:
+            if set([int(x[0], 16) for x in shares]) != set([len(shares)]):
+                raise Exception('Number of shares does not match the threshold')
+            points = [(int(x[1], 16), int(x[2:], 16)) for x in shares]
         prime = self.primes[datalen]
         r = points_to_secret_int(points, prime)
         r = hex(r)[2:-1].zfill(datalen * 2)
