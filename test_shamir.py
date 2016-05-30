@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import sys
-from .shamir import Shamir
+from mnemonic.shamir import Shamir
 
 def shamir_test(l, m, n):
     s = Shamir('english')
@@ -9,8 +9,8 @@ def shamir_test(l, m, n):
     shares = s.split(seed, m, n)
     print('original:', seed)
     print('shares:')
-    for i, s in enumerate(shares):
-        print('%2d :' % (i + 1), shares[i])
+    for i, sh in enumerate(shares):
+        print('%2d :' % (i + 1), sh)
     shares = shares[:m] # take first m shares
     cmb = s.combine(shares)
     print('combined:', cmb)
