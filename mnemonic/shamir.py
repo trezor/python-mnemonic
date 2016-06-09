@@ -65,5 +65,8 @@ class Shamir(object):
             points = [(int(x[1], 16), int(x[2:], 16)) for x in shares]
         prime = self.primes[datalen]
         r = points_to_secret_int(points, prime)
-        r = hex(r)[2:-1].zfill(datalen * 2)
+        r = hex(r)[2:]
+        if r.endswith('L'):
+            r = r[:-1]
+        r = r.zfill(datalen * 2)
         return binascii.unhexlify(r)
