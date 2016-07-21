@@ -67,17 +67,6 @@ class Mnemonic(object):
 
         return unicodedata.normalize('NFKD', utxt)
 
-    @classmethod
-    def detect_language(cls, code):
-        first = code.split(' ')[0]
-        languages = cls.list_languages()
-
-        for lang in languages:
-            mnemo = cls(lang)
-            if first in mnemo.wordlist:
-                return lang
-
-        raise ConfigurationError("Language not detected")
 
     def generate(self, strength=128):
         if strength % 32 > 0:
@@ -134,15 +123,10 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if self.detect_language(' '.join(result)) == 'japanese': # Japanese must be joined by ideographic space.
-            result_phrase = u'\xe3\x80\x80'.join(result)
-        else:
-            result_phrase = ' '.join(result)
+        result_phrase = ' '.join(result)
         return result_phrase
 
     def check(self, mnemonic):
-        if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
-            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ') # Japanese will likely input with ideographic space.
         mnemonic = mnemonic.split(' ')
         if len(mnemonic) % 3 > 0:
             return False
