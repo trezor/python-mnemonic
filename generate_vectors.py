@@ -10,42 +10,49 @@ from bip32utils import BIP32Key
 
 from mnemonic import Mnemonic
 
+
 def b2h(b):
     h = hexlify(b)
     return h if sys.version < '3' else h.decode('utf8')
 
-def process(data, lst):
+
+def process(data, lst, mnemo):
     code = mnemo.to_mnemonic(unhexlify(data))
-    seed = Mnemonic.to_seed(code, passphrase='TREZOR')
-    xprv = BIP32Key.fromEntropy(seed).ExtendedKey()
-    seed = b2h(seed)
+    _seed = Mnemonic.to_seed(code, passphrase='TREZOR')
+    xprv = BIP32Key.fromEntropy(_seed).ExtendedKey()
+    _seed = b2h(_seed)
     print('input    : %s (%d bits)' % (data, len(data) * 4))
     print('mnemonic : %s (%d words)' % (code, len(code.split(' '))))
-    print('seed     : %s (%d bits)' % (seed, len(seed) * 4))
-    print('xprv     : %s' % xprv)
-    print()
-    lst.append((data, code, seed, xprv))
+    print('seed     : %s (%d bits)' % (_seed, len(_seed) * 4))
+    print('xprv     : %s\n' % xprv)
+    lst.append((data, code, _seed, xprv))
 
-if __name__ == '__main__':
+
+def main():
     out = {}
     seed(1337)
 
-    for lang in ['english']: # Mnemonic.list_languages():
+    for lang in ['english']:  # Mnemonic.list_languages():
         mnemo = Mnemonic(lang)
         out[lang] = []
 
         # Generate corner cases
-        data = []
         for l in range(16, 32 + 1, 8):
             for b in ['00', '7f', '80', 'ff']:
-                process(b * l, out[lang])
+                process(b * l, out[lang], mnemo)
 
         # Generate random seeds
         for i in range(12):
-            data = ''.join(chr(choice(range(0, 256))) for _ in range(8 * (i % 3 + 2)))
+            data = ''.join(
+                chr(choice(range(0, 256))) for _ in range(8 * (i % 3 + 2)))
             if sys.version >= '3':
                 data = data.encode('latin1')
-            process(b2h(data), out[lang])
+            process(b2h(data), out[lang], mnemo)
 
     with open('vectors.json', 'w') as f:
-        json.dump(out, f, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
+        json.dump(
+            out, f, sort_keys=True, indent=4, separators=(',', ': '),
+            ensure_ascii=False)
+
+if __name__ == '__main__':
+    main()

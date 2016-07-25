@@ -8,7 +8,7 @@ setup(
     author_email='info@bitcointrezor.com',
     description='Implementation of Bitcoin BIP-0039',
     url='https://github.com/trezor/python-mnemonic',
-    packages=['mnemonic',],
+    packages=['mnemonic', ],
     package_data={'mnemonic': ['wordlist/*.txt']},
     zip_safe=False,
     install_requires=['pbkdf2'],

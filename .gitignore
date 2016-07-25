@@ -2,3 +2,4 @@
 build/
 dist/
 mnemonic.egg-info/
+.tox/
