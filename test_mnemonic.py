@@ -2,12 +2,12 @@
 #
 # Copyright (c) 2013 Pavol Rusnak
 #
-# Permission is hereby granted, free of charge, to any person obtaining a copy of
-# this software and associated documentation files (the "Software"), to deal in
-# the Software without restriction, including without limitation the rights to
-# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-# of the Software, and to permit persons to whom the Software is furnished to do
-# so, subject to the following conditions:
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
 #
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
@@ -15,9 +15,10 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
 #
 
 from __future__ import print_function
@@ -30,8 +31,8 @@ from binascii import hexlify, unhexlify
 
 from mnemonic import Mnemonic
 
-class MnemonicTest(unittest.TestCase):
 
+class MnemonicTest(unittest.TestCase):
     def _check_list(self, language, vectors):
         mnemo = Mnemonic(language)
         for v in vectors:
@@ -50,7 +51,8 @@ class MnemonicTest(unittest.TestCase):
             self._check_list(lang, vectors[lang])
 
     def test_failed_checksum(self):
-        code = 'bless cloud wheel regular tiny venue bird web grief security dignity zoo'
+        code = ('bless cloud wheel regular tiny venue bird web grief security '
+                'dignity zoo')
         mnemo = Mnemonic('english')
         self.assertFalse(mnemo.check(code))
 
@@ -76,7 +78,7 @@ class MnemonicTest(unittest.TestCase):
     def test_lengths(self):
         # check if wordlists contain words between 3 and 8 characters
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             words = [w for w in mnemo.wordlist if len(w) < 3 or len(w) > 8]
@@ -86,7 +88,7 @@ class MnemonicTest(unittest.TestCase):
     def test_validchars(self):
         # check if wordlists contain valid characters
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             letters = set(sum([list(w) for w in mnemo.wordlist], []))
@@ -101,7 +103,7 @@ class MnemonicTest(unittest.TestCase):
         print("Test of sorted and unique wordlists:")
 
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             unique = list(set(mnemo.wordlist))
@@ -115,7 +117,7 @@ class MnemonicTest(unittest.TestCase):
         print("Test of word prefixes:")
 
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         problems_found = 0
 
         for lang in languages:
@@ -136,7 +138,8 @@ class MnemonicTest(unittest.TestCase):
         similar = (
             ('a', 'c'), ('a', 'e'), ('a', 'o'),
             ('b', 'd'), ('b', 'h'), ('b', 'p'), ('b', 'q'), ('b', 'r'),
-            ('c', 'e'), ('c', 'g'), ('c', 'n'), ('c', 'o'), ('c', 'q'), ('c', 'u'),
+            ('c', 'e'), ('c', 'g'), ('c', 'n'), ('c', 'o'), ('c', 'q'),
+            ('c', 'u'),
             ('d', 'g'), ('d', 'h'), ('d', 'o'), ('d', 'p'), ('d', 'q'),
             ('e', 'f'), ('e', 'o'),
             ('f', 'i'), ('f', 'j'), ('f', 'l'), ('f', 'p'), ('f', 't'),
@@ -195,15 +198,39 @@ class MnemonicTest(unittest.TestCase):
 
     def test_utf8_nfkd(self):
         # The same sentence in various UTF-8 forms
-        words_nfkd = u'Pr\u030ci\u0301s\u030cerne\u030c z\u030clut\u030couc\u030cky\u0301 ku\u030an\u030c u\u0301pe\u030cl d\u030ca\u0301belske\u0301 o\u0301dy za\u0301ker\u030cny\u0301 uc\u030cen\u030c be\u030cz\u030ci\u0301 pode\u0301l zo\u0301ny u\u0301lu\u030a'
-        words_nfc = u'P\u0159\xed\u0161ern\u011b \u017elu\u0165ou\u010dk\xfd k\u016f\u0148 \xfap\u011bl \u010f\xe1belsk\xe9 \xf3dy z\xe1ke\u0159n\xfd u\u010de\u0148 b\u011b\u017e\xed pod\xe9l z\xf3ny \xfal\u016f'
-        words_nfkc = u'P\u0159\xed\u0161ern\u011b \u017elu\u0165ou\u010dk\xfd k\u016f\u0148 \xfap\u011bl \u010f\xe1belsk\xe9 \xf3dy z\xe1ke\u0159n\xfd u\u010de\u0148 b\u011b\u017e\xed pod\xe9l z\xf3ny \xfal\u016f'
-        words_nfd = u'Pr\u030ci\u0301s\u030cerne\u030c z\u030clut\u030couc\u030cky\u0301 ku\u030an\u030c u\u0301pe\u030cl d\u030ca\u0301belske\u0301 o\u0301dy za\u0301ker\u030cny\u0301 uc\u030cen\u030c be\u030cz\u030ci\u0301 pode\u0301l zo\u0301ny u\u0301lu\u030a'
+        words_nfkd = (
+            u'Pr\u030ci\u0301s\u030cerne\u030c '
+            u'z\u030clut\u030couc\u030cky\u0301 '
+            u'ku\u030an\u030c u\u0301pe\u030cl d\u030ca\u0301belske\u0301 '
+            u'o\u0301dy za\u0301ker\u030cny\u0301 uc\u030cen\u030c '
+            u'be\u030cz\u030ci\u0301 pode\u0301l zo\u0301ny u\u0301lu\u030a')
+        words_nfc = (
+            u'P\u0159\xed\u0161ern\u011b \u017elu\u0165ou\u010dk\xfd '
+            u'k\u016f\u0148 \xfap\u011bl \u010f\xe1belsk\xe9 \xf3dy '
+            u'z\xe1ke\u0159n\xfd u\u010de\u0148 b\u011b\u017e\xed pod\xe9l '
+            u'z\xf3ny \xfal\u016f')
+        words_nfkc = (
+            u'P\u0159\xed\u0161ern\u011b \u017elu\u0165ou\u010dk\xfd '
+            u'k\u016f\u0148 \xfap\u011bl \u010f\xe1belsk\xe9 \xf3dy '
+            u'z\xe1ke\u0159n\xfd u\u010de\u0148 b\u011b\u017e\xed pod\xe9l '
+            u'z\xf3ny \xfal\u016f')
+        words_nfd = (
+            u'Pr\u030ci\u0301s\u030cerne\u030c '
+            u'z\u030clut\u030couc\u030cky\u0301 ku\u030an\u030c '
+            u'u\u0301pe\u030cl d\u030ca\u0301belske\u0301 o\u0301dy '
+            u'za\u0301ker\u030cny\u0301 uc\u030cen\u030c '
+            u'be\u030cz\u030ci\u0301 pode\u0301l zo\u0301ny u\u0301lu\u030a')
 
-        passphrase_nfkd = u'Neuve\u030cr\u030citelne\u030c bezpec\u030cne\u0301 hesli\u0301c\u030cko'
-        passphrase_nfc = u'Neuv\u011b\u0159iteln\u011b bezpe\u010dn\xe9 hesl\xed\u010dko'
-        passphrase_nfkc = u'Neuv\u011b\u0159iteln\u011b bezpe\u010dn\xe9 hesl\xed\u010dko'
-        passphrase_nfd = u'Neuve\u030cr\u030citelne\u030c bezpec\u030cne\u0301 hesli\u0301c\u030cko'
+        passphrase_nfkd = (
+            u'Neuve\u030cr\u030citelne\u030c bezpec\u030cne\u0301 '
+            u'hesli\u0301c\u030cko')
+        passphrase_nfc = (
+            u'Neuv\u011b\u0159iteln\u011b bezpe\u010dn\xe9 hesl\xed\u010dko')
+        passphrase_nfkc = (
+            u'Neuv\u011b\u0159iteln\u011b bezpe\u010dn\xe9 hesl\xed\u010dko')
+        passphrase_nfd = (
+            u'Neuve\u030cr\u030citelne\u030c bezpec\u030cne\u0301 '
+            u'hesli\u0301c\u030cko')
 
         seed_nfkd = Mnemonic.to_seed(words_nfkd, passphrase_nfkd)
         seed_nfc = Mnemonic.to_seed(words_nfc, passphrase_nfc)
@@ -215,13 +242,20 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfd)
 
     def test_to_entropy(self):
-        data = [bytearray((random.getrandbits(8) for _ in range(32))) for _ in range(1024)]
-        data.append(b" I'm a little teapot, short and stout. Here is my handle. Here is my spout. When I get all steamed up, hear me shout. Tip me over and pour me out!! ")
+        data = [bytearray((random.getrandbits(8) for _ in range(32))) for _ in
+                range(1024)]
+        data.append(
+            b" I'm a little teapot, short and stout. Here is my handle. "
+            b"Here is my spout. When I get all steamed up, hear me shout. "
+            b"Tip me over and pour me out!! ")
         m = Mnemonic('english')
         for d in data:
             self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)
 
+
 def __main__():
     unittest.main()
+
+
 if __name__ == "__main__":
     __main__()
