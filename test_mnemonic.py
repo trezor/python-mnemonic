@@ -216,7 +216,7 @@ class MnemonicTest(unittest.TestCase):
 
     def test_to_entropy(self):
         data = [bytearray((random.getrandbits(8) for _ in range(32))) for _ in range(1024)]
-        data.append(b" I'm a little teapot, short and stout. Here is my handle. Here is my spout. When I get all steamed up, hear me shout. Tip me over and pour me out!! ")
+        data.append(b'Lorem ipsum dolor sit amet amet.')
         m = Mnemonic('english')
         for d in data:
             self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)

@@ -80,16 +80,16 @@ class Mnemonic(object):
         raise ConfigurationError("Language not detected")
 
     def generate(self, strength=128):
-        if strength % 32 > 0:
-            raise ValueError('Strength should be divisible by 32, but it is not (%d).' % strength)
+        if strength not in [128, 160, 192, 224, 256]:
+            raise ValueError('Strength should be one of the following [128, 160, 192, 224, 256], but it is not (%d).' % strength)
         return self.to_mnemonic(os.urandom(strength // 8))
 
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words):
         if not isinstance(words, list):
             words = words.split(' ')
-        if len(words) % 3 > 0:
-            raise ValueError('Word list size must be multiple of three words.')
+        if len(words) not in [12, 15, 18, 21, 24]:
+            raise ValueError('Number of words must be one of the following: [12, 15, 18, 21, 13], but it is not (%d).' % len(words))
         # Look up all the words in the list and construct the
         # concatenation of the original entropy and the checksum.
         concatLenBits = len(words) * 11
@@ -125,8 +125,8 @@ class Mnemonic(object):
         return entropy
 
     def to_mnemonic(self, data):
-        if len(data) % 4 > 0:
-            raise ValueError('Data length in bits should be divisible by 32, but it is not (%d bytes = %d bits).' % (len(data), len(data) * 8))
+        if len(data) not in [16, 20, 24, 28, 32]:
+            raise ValueError('Data length should be one of the following: [16, 20, 24, 28, 32], but it is not (%d).' % len(data))
         h = hashlib.sha256(data).hexdigest()
         b = bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8) + \
             bin(int(h, 16))[2:].zfill(256)[:len(data) * 8 // 32]
