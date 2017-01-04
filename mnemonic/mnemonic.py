@@ -89,7 +89,7 @@ class Mnemonic(object):
         if not isinstance(words, list):
             words = words.split(' ')
         if len(words) not in [12, 15, 18, 21, 24]:
-            raise ValueError('Number of words must be one of the following: [12, 15, 18, 21, 13], but it is not (%d).' % len(words))
+            raise ValueError('Number of words must be one of the following: [12, 15, 18, 21, 24], but it is not (%d).' % len(words))
         # Look up all the words in the list and construct the
         # concatenation of the original entropy and the checksum.
         concatLenBits = len(words) * 11
