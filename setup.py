@@ -5,7 +5,7 @@ setup(
     name='mnemonic',
     version='0.15',
     author='Bitcoin TREZOR',
-    author_email='info@bitcointrezor.com',
+    author_email='info@trezor.io',
     description='Implementation of Bitcoin BIP-0039',
     url='https://github.com/trezor/python-mnemonic',
     packages=['mnemonic',],
