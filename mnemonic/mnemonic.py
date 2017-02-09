@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2013 Pavol Rusnak
+# Copyright (c) 2017 mruddy
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -157,6 +158,23 @@ class Mnemonic(object):
         nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l // 33 * 8))
         nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[:l // 33]
         return h == nh
+
+    def expand_word(self, prefix):
+        if prefix in self.wordlist:
+            return prefix
+        else:
+            matches = [word for word in self.wordlist if word.startswith(prefix)]
+            if len(matches) == 1: # matched exactly one word in the wordlist
+                return matches[0]
+            else:
+                # exact match not found.
+                # this is not a validation routine, just return the input
+                return prefix
+
+    def expand(self, mnemonic):
+        if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
+            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ') # Japanese will likely input with ideographic space.
+        return ' '.join(map(self.expand_word, mnemonic.split(' ')))
 
     @classmethod
     def to_seed(cls, mnemonic, passphrase=''):
