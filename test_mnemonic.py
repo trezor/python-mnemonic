@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #
 # Copyright (c) 2013 Pavol Rusnak
+# Copyright (c) 2017 mruddy
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -220,6 +221,22 @@ class MnemonicTest(unittest.TestCase):
         m = Mnemonic('english')
         for d in data:
             self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)
+
+    def test_expand_word(self):
+        m = Mnemonic('english')
+        self.assertEqual('', m.expand_word(''))
+        self.assertEqual(' ', m.expand_word(' '))
+        self.assertEqual('access', m.expand_word('access')) # word in list
+        self.assertEqual('access', m.expand_word('acce')) # unique prefix expanded to word in list
+        self.assertEqual('acb', m.expand_word('acb')) # not found at all
+        self.assertEqual('acc', m.expand_word('acc')) # multi-prefix match
+        self.assertEqual('act', m.expand_word('act')) # exact three letter match
+        self.assertEqual('action', m.expand_word('acti')) # unique prefix expanded to word in list
+
+    def test_expand(self):
+        m = Mnemonic('english')
+        self.assertEqual('access', m.expand('access'))
+        self.assertEqual('access access acb acc act action', m.expand('access acce acb acc act acti'))
 
 def __main__():
     unittest.main()
