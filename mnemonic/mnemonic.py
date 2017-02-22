@@ -172,8 +172,6 @@ class Mnemonic(object):
                 return prefix
 
     def expand(self, mnemonic):
-        if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
-            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ') # Japanese will likely input with ideographic space.
         return ' '.join(map(self.expand_word, mnemonic.split(' ')))
 
     @classmethod
