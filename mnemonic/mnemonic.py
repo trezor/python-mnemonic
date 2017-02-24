@@ -21,9 +21,9 @@
 #
 
 import binascii
-import bisect
 import hashlib
 import hmac
+import io
 import itertools
 import os
 import sys
@@ -35,17 +35,15 @@ PBKDF2_ROUNDS = 2048
 class ConfigurationError(Exception):
     pass
 
-# From <http://tinyurl.com/p54ocsk>
-def binary_search(a, x, lo=0, hi=None):   # can't use a to specify default for hi
-    hi = hi if hi is not None else len(a) # hi defaults to len(a)
-    pos = bisect.bisect_left(a, x, lo, hi)   # find insertion position
-    return (pos if pos != hi and a[pos] == x else -1) # don't walk off the end
-
 class Mnemonic(object):
+    IDEOGRAPHIC_SPACE = u'\u3000'
+
     def __init__(self, language):
         self.radix = 2048
-        with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
-            self.wordlist = [w.strip() for w in f.readlines()]
+        self.language = language.lower()
+        self.joiner = Mnemonic.IDEOGRAPHIC_SPACE if self.language == 'japanese' else u' '
+        with io.open('{}/{}.txt'.format(self._get_directory(), self.language), mode='rt', encoding='utf-8', newline=u'\n') as lines:
+            self.wordlist = [unicodedata.normalize('NFKD', line).strip() for line in lines] # python2: unicode, python3: str
         if len(self.wordlist) != self.radix:
             raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
@@ -70,15 +68,20 @@ class Mnemonic(object):
 
     @classmethod
     def detect_language(cls, code):
-        first = code.split(' ')[0]
+        first = Mnemonic.normalize_string(code).split(u' ')[0]
         languages = cls.list_languages()
+
+        found = []
 
         for lang in languages:
             mnemo = cls(lang)
             if first in mnemo.wordlist:
-                return lang
+                found.append(lang)
 
-        raise ConfigurationError("Language not detected")
+        if len(found) == 1:
+            return found[0]
+        else:
+            raise ConfigurationError("Language not detected %s" % found)
 
     def generate(self, strength=128):
         if strength not in [128, 160, 192, 224, 256]:
@@ -88,7 +91,7 @@ class Mnemonic(object):
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words):
         if not isinstance(words, list):
-            words = words.split(' ')
+            words = Mnemonic.normalize_string(words).split(u' ')
         if len(words) not in [12, 15, 18, 21, 24]:
             raise ValueError('Number of words must be one of the following: [12, 15, 18, 21, 24], but it is not (%d).' % len(words))
         # Look up all the words in the list and construct the
@@ -97,10 +100,8 @@ class Mnemonic(object):
         concatBits = [False] * concatLenBits
         wordindex = 0
         for word in words:
-            # Find the words index in the wordlist
-            ndx = binary_search(self.wordlist, word)
-            if ndx < 0:
-                raise LookupError('Unable to find "%s" in word list.' % word)
+            # Find the word's index in the wordlist. ValueError if not found.
+            ndx = self.wordlist.index(word)
             # Set the next 11 bits to the value of the index.
             for ii in range(11):
                 concatBits[(wordindex * 11) + ii] = (ndx & (1 << (10 - ii))) != 0
@@ -135,16 +136,10 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if self.detect_language(' '.join(result)) == 'japanese': # Japanese must be joined by ideographic space.
-            result_phrase = u'\xe3\x80\x80'.join(result)
-        else:
-            result_phrase = ' '.join(result)
-        return result_phrase
+        return self.joiner.join(result)
 
     def check(self, mnemonic):
-        if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
-            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ') # Japanese will likely input with ideographic space.
-        mnemonic = mnemonic.split(' ')
+        mnemonic = Mnemonic.normalize_string(mnemonic).split(u' ')
         if len(mnemonic) % 3 > 0:
             return False
         try:
@@ -172,7 +167,7 @@ class Mnemonic(object):
                 return prefix
 
     def expand(self, mnemonic):
-        return ' '.join(map(self.expand_word, mnemonic.split(' ')))
+        return self.joiner.join([self.expand_word(word) for word in Mnemonic.normalize_string(mnemonic).split(u' ')])
 
     @classmethod
     def to_seed(cls, mnemonic, passphrase=''):
