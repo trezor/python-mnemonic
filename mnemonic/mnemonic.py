@@ -179,3 +179,19 @@ class Mnemonic(object):
         mnemonic = cls.normalize_string(mnemonic)
         passphrase = cls.normalize_string(passphrase)
         return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
+
+
+def main():
+    import binascii
+    import sys
+    if len(sys.argv) > 1:
+        data = sys.argv[1]
+    else:
+        data = sys.stdin.readline().strip()
+    data = binascii.unhexlify(data)
+    m = Mnemonic('english')
+    print(m.to_mnemonic(data))
+
+
+if __name__ == '__main__':
+    main()
