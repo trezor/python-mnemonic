@@ -45,7 +45,7 @@ class Mnemonic(object):
     def __init__(self, language):
         self.radix = 2048
         with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
-            self.wordlist = [w.strip() for w in f.readlines()]
+            self.wordlist = [Mnemonic.normalize_string(w.strip()) for w in f.readlines()]
         if len(self.wordlist) != self.radix:
             raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
