@@ -17,10 +17,11 @@ python:
 install:
     # Optimisation: build requirements as wheels, which get cached by Travis
     - pip install "pip>=7.0" wheel
+    - pip install tox-travis
 
 script:
     - python setup.py install
-    - python test_mnemonic.py
+    - tox
 
 notifications:
   webhooks:
@@ -29,4 +30,3 @@ notifications:
     on_success: always
     on_failure: always
     on_start: always
-
