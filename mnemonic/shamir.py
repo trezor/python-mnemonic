@@ -24,6 +24,7 @@ import binascii
 from .secretsharing import secret_int_to_points, points_to_secret_int
 from .mnemonic import Mnemonic
 
+
 class Shamir(object):
 
     def __init__(self, language):

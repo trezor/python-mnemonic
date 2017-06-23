@@ -10,9 +10,11 @@ from bip32utils import BIP32Key
 
 from mnemonic import Mnemonic
 
+
 def b2h(b):
     h = hexlify(b)
     return h if sys.version < '3' else h.decode('utf8')
+
 
 def process(data, lst):
     code = mnemo.to_mnemonic(unhexlify(data))
@@ -26,11 +28,12 @@ def process(data, lst):
     print()
     lst.append((data, code, seed, xprv))
 
+
 if __name__ == '__main__':
     out = {}
     seed(1337)
 
-    for lang in ['english']: # Mnemonic.list_languages():
+    for lang in ['english']:  # Mnemonic.list_languages():
         mnemo = Mnemonic(lang)
         out[lang] = []
 

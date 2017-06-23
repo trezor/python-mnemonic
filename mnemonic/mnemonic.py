@@ -32,14 +32,17 @@ from pbkdf2 import PBKDF2
 
 PBKDF2_ROUNDS = 2048
 
+
 class ConfigurationError(Exception):
     pass
 
+
 # From <http://tinyurl.com/p54ocsk>
-def binary_search(a, x, lo=0, hi=None):   # can't use a to specify default for hi
-    hi = hi if hi is not None else len(a) # hi defaults to len(a)
-    pos = bisect.bisect_left(a, x, lo, hi)   # find insertion position
-    return (pos if pos != hi and a[pos] == x else -1) # don't walk off the end
+def binary_search(a, x, lo=0, hi=None):                # can't use a to specify default for hi
+    hi = hi if hi is not None else len(a)              # hi defaults to len(a)
+    pos = bisect.bisect_left(a, x, lo, hi)             # find insertion position
+    return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
+
 
 class Mnemonic(object):
     def __init__(self, language):
@@ -135,7 +138,7 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if self.detect_language(' '.join(result)) == 'japanese': # Japanese must be joined by ideographic space.
+        if self.detect_language(' '.join(result)) == 'japanese':  # Japanese must be joined by ideographic space.
             result_phrase = u'\xe3\x80\x80'.join(result)
         else:
             result_phrase = ' '.join(result)
@@ -143,7 +146,7 @@ class Mnemonic(object):
 
     def check(self, mnemonic):
         if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
-            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ') # Japanese will likely input with ideographic space.
+            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ')  # Japanese will likely input with ideographic space.
         mnemonic = mnemonic.split(' ')
         if len(mnemonic) % 3 > 0:
             return False
@@ -164,7 +167,7 @@ class Mnemonic(object):
             return prefix
         else:
             matches = [word for word in self.wordlist if word.startswith(prefix)]
-            if len(matches) == 1: # matched exactly one word in the wordlist
+            if len(matches) == 1:  # matched exactly one word in the wordlist
                 return matches[0]
             else:
                 # exact match not found.

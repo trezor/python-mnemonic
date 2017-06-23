@@ -9,12 +9,14 @@
 
 from random import randint
 
+
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
     else:
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
+
 
 def mod_inverse(k, prime):
     k = k % prime
@@ -24,6 +26,7 @@ def mod_inverse(k, prime):
         r = egcd(prime, k)[2]
     return (prime + r) % prime
 
+
 def random_polynomial(degree, intercept, upper_bound):
     """ Generates a random polynomial with positive coefficients.
     """
@@ -31,16 +34,17 @@ def random_polynomial(degree, intercept, upper_bound):
         raise ValueError('Degree must be a non-negative number.')
     coefficients = [intercept]
     for i in range(degree):
-        random_coeff = randint(0, upper_bound-1)
+        random_coeff = randint(0, upper_bound - 1)
         coefficients.append(random_coeff)
     return coefficients
+
 
 def get_polynomial_points(coefficients, num_points, prime):
     """ Calculates the first n polynomial points.
         [ (1, f(1)), (2, f(2)), ... (n, f(n)) ]
     """
     points = []
-    for x in range(1, num_points+1):
+    for x in range(1, num_points + 1):
         # start with x=1 and calculate the value of y
         y = coefficients[0]
         # calculate each term and add it to y, using modular math
@@ -51,6 +55,7 @@ def get_polynomial_points(coefficients, num_points, prime):
         # add the point to the list of points
         points.append((x, y))
     return points
+
 
 def modular_lagrange_interpolation(x, points, prime):
     # break the points up into lists of x and y values
@@ -73,6 +78,7 @@ def modular_lagrange_interpolation(x, points, prime):
         f_x = (prime + f_x + (y_values[i] * lagrange_polynomial)) % prime
     return f_x
 
+
 def secret_int_to_points(secret_int, point_threshold, num_points, prime):
     """ Split a secret (integer) into shares (pair of integers / x,y coords).
 
@@ -85,9 +91,10 @@ def secret_int_to_points(secret_int, point_threshold, num_points, prime):
         raise ValueError("Threshold must be < the total number of points.")
     if secret_int > prime:
         raise ValueError("Error! Secret is too long for share calculation!")
-    coefficients = random_polynomial(point_threshold-1, secret_int, prime)
+    coefficients = random_polynomial(point_threshold - 1, secret_int, prime)
     points = get_polynomial_points(coefficients, num_points, prime)
     return points
+
 
 def points_to_secret_int(points, prime):
     """ Join int points into a secret int.
@@ -99,10 +106,9 @@ def points_to_secret_int(points, prime):
     for point in points:
         if not isinstance(point, tuple) and len(point) == 2:
             raise ValueError("Each point must be a tuple of two values.")
-        if not isinstance(point[0], int) and \
-            isinstance(point[1], int):
+        if not isinstance(point[0], int) and isinstance(point[1], int):
             raise ValueError("Each value in the point must be an int.")
     x_values, y_values = zip(*points)
     free_coefficient = modular_lagrange_interpolation(0, points, prime)
-    secret_int = free_coefficient # the secret int is the free coefficient
+    secret_int = free_coefficient  # the secret int is the free coefficient
     return secret_int

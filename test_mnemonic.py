@@ -31,6 +31,7 @@ from binascii import hexlify, unhexlify
 
 from mnemonic import Mnemonic
 
+
 class MnemonicTest(unittest.TestCase):
 
     def _check_list(self, language, vectors):
@@ -77,7 +78,7 @@ class MnemonicTest(unittest.TestCase):
     def test_lengths(self):
         # check if wordlists contain words between 3 and 8 characters
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             words = [w for w in mnemo.wordlist if len(w) < 3 or len(w) > 8]
@@ -87,7 +88,7 @@ class MnemonicTest(unittest.TestCase):
     def test_validchars(self):
         # check if wordlists contain valid characters
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             letters = set(sum([list(w) for w in mnemo.wordlist], []))
@@ -102,7 +103,7 @@ class MnemonicTest(unittest.TestCase):
         print("Test of sorted and unique wordlists:")
 
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         for lang in languages:
             mnemo = Mnemonic(lang)
             unique = list(set(mnemo.wordlist))
@@ -116,7 +117,7 @@ class MnemonicTest(unittest.TestCase):
         print("Test of word prefixes:")
 
         languages = Mnemonic.list_languages()
-        languages.remove('japanese') # remove japanese for now
+        languages.remove('japanese')  # remove japanese for now
         problems_found = 0
 
         for lang in languages:
@@ -226,19 +227,22 @@ class MnemonicTest(unittest.TestCase):
         m = Mnemonic('english')
         self.assertEqual('', m.expand_word(''))
         self.assertEqual(' ', m.expand_word(' '))
-        self.assertEqual('access', m.expand_word('access')) # word in list
-        self.assertEqual('access', m.expand_word('acce')) # unique prefix expanded to word in list
-        self.assertEqual('acb', m.expand_word('acb')) # not found at all
-        self.assertEqual('acc', m.expand_word('acc')) # multi-prefix match
-        self.assertEqual('act', m.expand_word('act')) # exact three letter match
-        self.assertEqual('action', m.expand_word('acti')) # unique prefix expanded to word in list
+        self.assertEqual('access', m.expand_word('access'))  # word in list
+        self.assertEqual('access', m.expand_word('acce'))    # unique prefix expanded to word in list
+        self.assertEqual('acb', m.expand_word('acb'))        # not found at all
+        self.assertEqual('acc', m.expand_word('acc'))        # multi-prefix match
+        self.assertEqual('act', m.expand_word('act'))        # exact three letter match
+        self.assertEqual('action', m.expand_word('acti'))    # unique prefix expanded to word in list
 
     def test_expand(self):
         m = Mnemonic('english')
         self.assertEqual('access', m.expand('access'))
         self.assertEqual('access access acb acc act action', m.expand('access acce acb acc act acti'))
 
+
 def __main__():
     unittest.main()
+
+
 if __name__ == "__main__":
     __main__()
