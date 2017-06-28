@@ -100,9 +100,13 @@ class Mnemonic(object):
         concatLenBits = len(words) * 11
         concatBits = [False] * concatLenBits
         wordindex = 0
+        if self.detect_language(' '.join(words)) == 'english':
+            use_binary_search = True
+        else:
+            use_binary_search = False
         for word in words:
             # Find the words index in the wordlist
-            ndx = binary_search(self.wordlist, word)
+            ndx = binary_search(self.wordlist, word) if use_binary_search else self.wordlist.index(word)
             if ndx < 0:
                 raise LookupError('Unable to find "%s" in word list.' % word)
             # Set the next 11 bits to the value of the index.
