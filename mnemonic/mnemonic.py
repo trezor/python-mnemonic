@@ -140,15 +140,13 @@ class Mnemonic(object):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
         if self.detect_language(' '.join(result)) == 'japanese':  # Japanese must be joined by ideographic space.
-            result_phrase = u'\xe3\x80\x80'.join(result)
+            result_phrase = u'　'.join(result)
         else:
             result_phrase = ' '.join(result)
         return result_phrase
 
     def check(self, mnemonic):
-        if self.detect_language(mnemonic.replace(u'\xe3\x80\x80', ' ')) == 'japanese':
-            mnemonic = mnemonic.replace(u'\xe3\x80\x80', ' ')  # Japanese will likely input with ideographic space.
-        mnemonic = mnemonic.split(' ')
+        mnemonic = self.normalize_string(mnemonic).split(' ')
         if len(mnemonic) % 3 > 0:
             return False
         try:
