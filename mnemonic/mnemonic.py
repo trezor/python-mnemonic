@@ -151,7 +151,8 @@ class Mnemonic(object):
 
     def check(self, mnemonic):
         mnemonic = self.normalize_string(mnemonic).split(' ')
-        if len(mnemonic) % 3 > 0:
+        # list of valid mnemonic lengths
+        if len(mnemonic) not in [12, 15, 18, 21, 24]:
             return False
         try:
             idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
