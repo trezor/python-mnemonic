@@ -1,8 +1,4 @@
 [flake8]
 ignore =
-    # F401: module imported but unused
-    F401,
-    # F821 undefined name 'unicode',
-    F821,
     # E501: line too long
     E501

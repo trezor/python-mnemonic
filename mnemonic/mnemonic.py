@@ -64,7 +64,7 @@ class Mnemonic(object):
     def normalize_string(cls, txt):
         if isinstance(txt, str if sys.version < '3' else bytes):
             utxt = txt.decode('utf8')
-        elif isinstance(txt, unicode if sys.version < '3' else str):
+        elif isinstance(txt, unicode if sys.version < '3' else str):  # noqa: F821
             utxt = txt
         else:
             raise TypeError("String value expected")
@@ -157,9 +157,9 @@ class Mnemonic(object):
         try:
             idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
             b = ''.join(idx)
-        except:
+        except ValueError:
             return False
-        l = len(b)
+        l = len(b)  # noqa: E741
         d = b[:l // 33 * 32]
         h = b[-l // 33:]
         nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip('L').zfill(l // 33 * 8))

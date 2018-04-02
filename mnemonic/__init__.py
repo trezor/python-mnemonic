@@ -1,2 +1,1 @@
-from .mnemonic import Mnemonic
-from .shamir import Shamir
+from .mnemonic import Mnemonic  # noqa: F401
