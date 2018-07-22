@@ -37,7 +37,7 @@ class ConfigurationError(Exception):
     pass
 
 
-# From <http://tinyurl.com/p54ocsk>
+# From <https://stackoverflow.com/questions/212358/binary-search-bisection-in-python/2233940#2233940>
 def binary_search(a, x, lo=0, hi=None):                # can't use a to specify default for hi
     hi = hi if hi is not None else len(a)              # hi defaults to len(a)
     pos = bisect.bisect_left(a, x, lo, hi)             # find insertion position
