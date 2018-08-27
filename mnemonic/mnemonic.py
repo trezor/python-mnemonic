@@ -106,7 +106,7 @@ class Mnemonic(object):
         concatLenBits = len(words) * 11
         concatBits = [False] * concatLenBits
         wordindex = 0
-        if self.detect_language(' '.join(words)) == 'english':
+        if self.detect_language(b' '.join(words)) == 'english':
             use_binary_search = True
         else:
             use_binary_search = False
@@ -150,7 +150,7 @@ class Mnemonic(object):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
         if self.detect_language((b' '.join(result))) == 'japanese':  # Japanese must be joined by ideographic space. FIX:in py35 data read as byte
-            result_phrase = u'\u3000'.join(result)
+            result_phrase = bytes((u'\u3000').encode()).join(result)
         else:
             result_phrase = b' '.join(result)
         return result_phrase
@@ -162,7 +162,7 @@ class Mnemonic(object):
             return False
         try:
             idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
-            b = ''.join(idx)
+            b = b''.join(idx)
         except ValueError:
             return False
         l = len(b)  # noqa: E741
@@ -185,7 +185,7 @@ class Mnemonic(object):
                 return prefix
 
     def expand(self, mnemonic):
-        return ' '.join(map(self.expand_word, mnemonic.split(' ')))
+        return b' '.join(map(self.expand_word, mnemonic.split(' ')))
 
     @classmethod
     def to_seed(cls, mnemonic, passphrase=''):
@@ -202,8 +202,8 @@ def main():
         data = sys.argv[1]
     else:
         data = sys.stdin.readline().strip()
-
     data = binascii.unhexlify(data)
+    
     m = Mnemonic('english')
 
     print(m.to_mnemonic(data))
