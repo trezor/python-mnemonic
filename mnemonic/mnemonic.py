@@ -47,7 +47,7 @@ def binary_search(a, x, lo=0, hi=None):                # can't use a to specify 
 class Mnemonic(object):
     def __init__(self, language):
         self.radix = 2048
-        with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
+        with open('%s/%s.txt' % (self._get_directory(), language), 'rb') as f:
             self.wordlist = [w.strip().decode('utf8') if sys.version < '3' else w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
             raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
@@ -73,8 +73,10 @@ class Mnemonic(object):
 
     @classmethod
     def detect_language(cls, code):
+
         code = cls.normalize_string(code)
-        first = code.split(' ')[0]
+        first = bytes(code.split(' ')[0],"utf8") 
+
         languages = cls.list_languages()
 
         for lang in languages:
@@ -87,7 +89,11 @@ class Mnemonic(object):
     def generate(self, strength=128):
         if strength not in [128, 160, 192, 224, 256]:
             raise ValueError('Strength should be one of the following [128, 160, 192, 224, 256], but it is not (%d).' % strength)
-        return self.to_mnemonic(os.urandom(strength // 8))
+        try:
+            #d = os.urandom(strength // 8)
+            return self.to_mnemonic(os.urandom(strength // 8))
+        except Exception as e:
+            raise e
 
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words):
@@ -143,10 +149,10 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11:(i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if self.detect_language(' '.join(result)) == 'japanese':  # Japanese must be joined by ideographic space.
+        if self.detect_language((b' '.join(result))) == 'japanese':  # Japanese must be joined by ideographic space. FIX:in py35 data read as byte
             result_phrase = u'\u3000'.join(result)
         else:
-            result_phrase = ' '.join(result)
+            result_phrase = b' '.join(result)
         return result_phrase
 
     def check(self, mnemonic):
@@ -191,12 +197,15 @@ class Mnemonic(object):
 def main():
     import binascii
     import sys
+    
     if len(sys.argv) > 1:
         data = sys.argv[1]
     else:
         data = sys.stdin.readline().strip()
+
     data = binascii.unhexlify(data)
     m = Mnemonic('english')
+
     print(m.to_mnemonic(data))
 
 
