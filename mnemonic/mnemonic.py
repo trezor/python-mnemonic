@@ -44,11 +44,33 @@ def binary_search(a, x, lo=0, hi=None):                # can't use a to specify 
     return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
 
 
+# Refactored code segments from <https://github.com/keis/base58>
+def b58encode(v):
+    alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+    p, acc = 1, 0
+    for c in reversed(v):
+        if sys.version < '3':
+            c = ord(c)
+        acc += p * c
+        p = p << 8
+
+    string = ''
+    while acc:
+        acc, idx = divmod(acc, 58)
+        string = alphabet[idx:idx + 1] + string
+    return string
+
+
 class Mnemonic(object):
     def __init__(self, language):
         self.radix = 2048
-        with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
-            self.wordlist = [w.strip().decode('utf8') if sys.version < '3' else w.strip() for w in f.readlines()]
+        if sys.version < '3':
+            with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
+                self.wordlist = [w.strip().decode('utf8') for w in f.readlines()]
+        else:
+            with open('%s/%s.txt' % (self._get_directory(), language), 'r', encoding='utf-8') as f:
+                self.wordlist = [w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
             raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
@@ -186,6 +208,30 @@ class Mnemonic(object):
         mnemonic = cls.normalize_string(mnemonic)
         passphrase = cls.normalize_string(passphrase)
         return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
+
+    @classmethod
+    def to_hd_master_key(cls, seed):
+        if len(seed) != 64:
+            raise ValueError('Provided seed should have length of 64')
+
+        # Computer HMAC-SHA512 of seed
+        seed = hmac.new(b'Bitcoin seed', seed, digestmod=hashlib.sha512).digest()
+
+        # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
+        xprv = b'\x04\x88\xad\xe4'   # Version for private mainnet
+        xprv += b'\x00' * 9          # Depth, parent fingerprint, and child number
+        xprv += seed[32:]            # Chain code
+        xprv += b'\x00' + seed[:32]  # Master key
+
+        # Double hash using SHA256
+        hashed_xprv = hashlib.sha256(xprv).digest()
+        hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+
+        # Append 4 bytes of checksum
+        xprv += hashed_xprv[:4]
+
+        # Return base58
+        return b58encode(xprv)
 
 
 def main():
