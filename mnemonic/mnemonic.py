@@ -205,7 +205,7 @@ def main():
         data = sys.stdin.readline().strip()
     data = binascii.unhexlify(data)
     m = Mnemonic('english')
-    print(m.generate())
+    print(m.to_mnemonic(data))
 
 if __name__ == '__main__':
     main()
