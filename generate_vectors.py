@@ -17,7 +17,7 @@ def b2h(b):
 
 
 def process(data, lst):
-    code = mnemo.to_mnemonic(unhexlify(data))
+    code = mnemo.to_mnemonic(unhexlify(data)).decode()
     seed = Mnemonic.to_seed(code, passphrase='TREZOR')
     xprv = BIP32Key.fromEntropy(seed).ExtendedKey()
     seed = b2h(seed)
