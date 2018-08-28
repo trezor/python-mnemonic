@@ -75,7 +75,11 @@ class Mnemonic(object):
     def detect_language(cls, code):
 
         code = cls.normalize_string(code)
-        first = bytes(code.split(' ')[0],"utf8") 
+        try:
+            first = bytes(code.split(' ')[0],"utf8") #python35
+        except Exception as e:
+            first = bytes(code.split(' ')[0]) #python27
+        
 
         languages = cls.list_languages()
 
@@ -89,10 +93,8 @@ class Mnemonic(object):
     def generate(self, strength=128):
         if strength not in [128, 160, 192, 224, 256]:
             raise ValueError('Strength should be one of the following [128, 160, 192, 224, 256], but it is not (%d).' % strength)
-        try:
-            return self.to_mnemonic(os.urandom(strength // 8))
-        except Exception as e:
-            raise e
+
+        return self.to_mnemonic(os.urandom(strength // 8))
 
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words):
@@ -196,17 +198,14 @@ class Mnemonic(object):
 def main():
     import binascii
     import sys
-    
+
     if len(sys.argv) > 1:
         data = sys.argv[1]
     else:
         data = sys.stdin.readline().strip()
     data = binascii.unhexlify(data)
-    
     m = Mnemonic('english')
-
-    print(m.to_mnemonic(data))
-
+    print(m.generate())
 
 if __name__ == '__main__':
     main()
