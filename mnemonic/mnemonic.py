@@ -210,7 +210,7 @@ class Mnemonic(object):
         xprv += hashed_xprv[:4]
 
         # Return base58
-        return unicode(base58.b58encode(xprv), 'utf-8')
+        return base58.b58encode(xprv)
 
 
 def main():
