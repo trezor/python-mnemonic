@@ -20,7 +20,6 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import base58
 import binascii
 import bisect
 import hashlib
@@ -44,6 +43,25 @@ def binary_search(a, x, lo=0, hi=None):                # can't use a to specify 
     pos = bisect.bisect_left(a, x, lo, hi)             # find insertion position
     return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
 
+def b58encode(v):
+    alphabet = b'123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+    nPad = len(v)
+    v = v.lstrip(b'\0')
+    nPad -= len(v)
+
+    p, acc = 1, 0
+    for c in map(ord, (reversed(v))):
+        acc += p * c
+        p = p << 8
+    
+    string = b""
+    while acc:
+        acc, idx = divmod(acc, 58)
+        string = alphabet[idx:idx+1] + string
+    return string
+
+    return (alphabet[0:1] * nPad + string)
 
 class Mnemonic(object):
     def __init__(self, language):
@@ -210,7 +228,7 @@ class Mnemonic(object):
         xprv += hashed_xprv[:4]
 
         # Return base58
-        return base58.b58encode(xprv)
+        return b58encode(xprv)
 
 
 def main():
