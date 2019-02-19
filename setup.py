@@ -11,7 +11,7 @@ setup(
     packages=['mnemonic', ],
     package_data={'mnemonic': ['wordlist/*.txt']},
     zip_safe=False,
-    install_requires=['pbkdf2'],
+    install_requires=['base58', 'pbkdf2'],
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX :: Linux',

@@ -20,6 +20,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+import base58
 import binascii
 import bisect
 import hashlib
@@ -186,6 +187,30 @@ class Mnemonic(object):
         mnemonic = cls.normalize_string(mnemonic)
         passphrase = cls.normalize_string(passphrase)
         return PBKDF2(mnemonic, u'mnemonic' + passphrase, iterations=PBKDF2_ROUNDS, macmodule=hmac, digestmodule=hashlib.sha512).read(64)
+
+    @classmethod
+    def to_hd_master_key(cls, seed):
+        if len(seed) != 64:
+            raise ValueError('Provided seed should have length of 64')
+
+        # Computer HMAC-SHA512 of seed
+        seed = hmac.new('Bitcoin seed', seed, digestmod=hashlib.sha512).digest()
+
+        # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
+        xprv = '\x04\x88\xad\xe4'   # Version for private mainnet
+        xprv += '\x00' * 9          # Depth, parent fingerprint, and child number
+        xprv += seed[32:]           # Chain code
+        xprv += '\x00' + seed[:32]  # Master key
+
+        # Double hash using SHA256
+        hashed_xprv = hashlib.sha256(xprv).digest()
+        hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+
+        # Append 4 bytes of checksum
+        xprv += hashed_xprv[:4]
+
+        # Return base58
+        return unicode(base58.b58encode(xprv), 'utf-8')
 
 
 def main():
