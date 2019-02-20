@@ -43,6 +43,8 @@ def binary_search(a, x, lo=0, hi=None):                # can't use a to specify 
     pos = bisect.bisect_left(a, x, lo, hi)             # find insertion position
     return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
 
+
+# Refactored code segments from <https://github.com/keis/base58>
 def b58encode(v):
     alphabet = b'123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
@@ -51,23 +53,28 @@ def b58encode(v):
     nPad -= len(v)
 
     p, acc = 1, 0
-    for c in map(ord, (reversed(v))):
+    for c in reversed(v):
+        if sys.version < '3':
+            c = ord(c)
         acc += p * c
         p = p << 8
-    
-    string = b""
+
+    string = u''
     while acc:
         acc, idx = divmod(acc, 58)
-        string = alphabet[idx:idx+1] + string
-    return string
+        string = alphabet[idx:idx + 1].decode('utf8') + string
+    return (alphabet[0:1] * nPad).decode('utf8') + string
 
-    return (alphabet[0:1] * nPad + string)
 
 class Mnemonic(object):
     def __init__(self, language):
         self.radix = 2048
-        with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
-            self.wordlist = [w.strip().decode('utf8') if sys.version < '3' else w.strip() for w in f.readlines()]
+        if sys.version < '3':
+            with open('%s/%s.txt' % (self._get_directory(), language), 'r') as f:
+                self.wordlist = [w.strip().decode('utf8') for w in f.readlines()]
+        else:
+            with open('%s/%s.txt' % (self._get_directory(), language), 'r', encoding='utf-8') as f:
+                self.wordlist = [w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
             raise ConfigurationError('Wordlist should contain %d words, but it contains %d words.' % (self.radix, len(self.wordlist)))
 
@@ -215,10 +222,10 @@ class Mnemonic(object):
         seed = hmac.new(b'Bitcoin seed', seed, digestmod=hashlib.sha512).digest()
 
         # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
-        xprv = '\x04\x88\xad\xe4'   # Version for private mainnet
-        xprv += '\x00' * 9          # Depth, parent fingerprint, and child number
+        xprv = b'\x04\x88\xad\xe4'   # Version for private mainnet
+        xprv += b'\x00' * 9          # Depth, parent fingerprint, and child number
         xprv += seed[32:]           # Chain code
-        xprv += '\x00' + seed[:32]  # Master key
+        xprv += b'\x00' + seed[:32]  # Master key
 
         # Double hash using SHA256
         hashed_xprv = hashlib.sha256(xprv).digest()
