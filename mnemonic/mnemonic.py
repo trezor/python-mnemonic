@@ -43,6 +43,7 @@ def binary_search(a, x, lo=0, hi=None):                # can't use a to specify 
     pos = bisect.bisect_left(a, x, lo, hi)             # find insertion position
     return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
 
+# Refactored code segments from <https://github.com/keis/base58>
 def b58encode(v):
     alphabet = b'123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
