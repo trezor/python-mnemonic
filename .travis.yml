@@ -18,11 +18,11 @@ install:
     # Optimisation: build requirements as wheels, which get cached by Travis
     - pip install "pip>=7.0" wheel
     - pip install tox-travis
-    - pip install flake8
+    - pip install black
 
 script:
     - python setup.py install
-    - flake8
+    - black --check .
     - tox
 
 notifications:
