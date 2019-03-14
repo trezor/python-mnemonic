@@ -125,6 +125,19 @@ class MnemonicTest(unittest.TestCase):
             "access access acb acc act action", m.expand("access acce acb acc act acti")
         )
 
+    def test_unambiguous_word_values(self):
+        languages = Mnemonic.list_languages()
+        values = dict()
+        for language in languages:
+            mnemonic = Mnemonic(language)
+            for i in range(len(mnemonic.wordlist)):
+                word=mnemonic.wordlist[i]
+                if word in values:
+                    # all uses of the word map to the same value
+                    assert i == values[word], u"word %s remapped from %d to %d" % (word,values[word],i)
+                else:
+                    values[word] = i
+        pass
 
 def __main__():
     unittest.main()
