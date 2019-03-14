@@ -29,8 +29,6 @@ import os
 import sys
 import unicodedata
 
-from pbkdf2 import PBKDF2
-
 PBKDF2_ROUNDS = 2048
 
 
@@ -243,15 +241,11 @@ class Mnemonic(object):
 
     @classmethod
     def to_seed(cls, mnemonic, passphrase=""):
-        mnemonic = cls.normalize_string(mnemonic)
+        mnemonic = cls.normalize_string(mnemonic).encode("utf-8")
         passphrase = cls.normalize_string(passphrase)
-        return PBKDF2(
-            mnemonic,
-            u"mnemonic" + passphrase,
-            iterations=PBKDF2_ROUNDS,
-            macmodule=hmac,
-            digestmodule=hashlib.sha512,
-        ).read(64)
+        passphrase=(u"mnemonic" + passphrase).encode("utf-8")
+        stretched = hashlib.pbkdf2_hmac('sha512', mnemonic, passphrase, PBKDF2_ROUNDS)
+        return stretched[0:64]
 
     @classmethod
     def to_hd_master_key(cls, seed):
