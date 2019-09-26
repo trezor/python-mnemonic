@@ -254,7 +254,7 @@ class Mnemonic(object):
         if len(seed) != 64:
             raise ValueError("Provided seed should have length of 64")
 
-        # Computer HMAC-SHA512 of seed
+        # Compute HMAC-SHA512 of seed
         seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
 
         # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
