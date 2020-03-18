@@ -250,7 +250,7 @@ class Mnemonic(object):
         return stretched[:64]
 
     @classmethod
-    def to_hd_master_key(cls, seed):
+    def to_hd_master_key(cls, seed, testnet=False):
         if len(seed) != 64:
             raise ValueError("Provided seed should have length of 64")
 
@@ -259,6 +259,8 @@ class Mnemonic(object):
 
         # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
         xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet
+        if testnet:
+            xprv = b"\x04\x35\x83\x94"  # Version for private testnet
         xprv += b"\x00" * 9  # Depth, parent fingerprint, and child number
         xprv += seed[32:]  # Chain code
         xprv += b"\x00" + seed[:32]  # Master key
