@@ -1,1 +1,3 @@
-from .mnemonic import Mnemonic  # noqa: F401
+from .mnemonic import Mnemonic
+
+__all__ = ["Mnemonic"]
