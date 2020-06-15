@@ -1,8 +1,5 @@
 language: python
 
-# Runs jobs on container based infrastructure
-sudo: false
-
 # Saves pip downloads/wheels between builds
 cache:
   directories:
