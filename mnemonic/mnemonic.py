@@ -78,8 +78,8 @@ class Mnemonic(object):
                 % (self.radix, len(self.wordlist))
             )
 
-    @classmethod
-    def _get_directory(cls):
+    @staticmethod
+    def _get_directory():
         return os.path.join(os.path.dirname(__file__), "wordlist")
 
     @classmethod
@@ -90,8 +90,8 @@ class Mnemonic(object):
             if f.endswith(".txt")
         ]
 
-    @classmethod
-    def normalize_string(cls, txt):
+    @staticmethod
+    def normalize_string(txt):
         if isinstance(txt, str if sys.version < "3" else bytes):
             utxt = txt.decode("utf8")
         elif isinstance(txt, unicode if sys.version < "3" else str):  # noqa: F821
@@ -249,8 +249,8 @@ class Mnemonic(object):
         stretched = hashlib.pbkdf2_hmac("sha512", mnemonic, passphrase, PBKDF2_ROUNDS)
         return stretched[:64]
 
-    @classmethod
-    def to_hd_master_key(cls, seed, testnet=False):
+    @staticmethod
+    def to_hd_master_key(seed, testnet=False):
         if len(seed) != 64:
             raise ValueError("Provided seed should have length of 64")
 
