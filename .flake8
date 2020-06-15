@@ -1,4 +1,6 @@
 [flake8]
-ignore =
+extend-ignore =
+    # E203: Whitespace before ':'
+    E203,
     # E501: line too long
     E501
