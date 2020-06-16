@@ -26,7 +26,6 @@ import hashlib
 import hmac
 import itertools
 import os
-import sys
 import unicodedata
 
 PBKDF2_ROUNDS = 2048
@@ -49,8 +48,6 @@ def b58encode(v):
 
     p, acc = 1, 0
     for c in reversed(v):
-        if sys.version < "3":
-            c = ord(c)
         acc += p * c
         p = p << 8
 
@@ -64,14 +61,10 @@ def b58encode(v):
 class Mnemonic(object):
     def __init__(self, language):
         self.radix = 2048
-        if sys.version < "3":
-            with open("%s/%s.txt" % (self._get_directory(), language), "r") as f:
-                self.wordlist = [w.strip().decode("utf8") for w in f.readlines()]
-        else:
-            with open(
-                "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8"
-            ) as f:
-                self.wordlist = [w.strip() for w in f.readlines()]
+        with open(
+            "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8"
+        ) as f:
+            self.wordlist = [w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
             raise ConfigurationError(
                 "Wordlist should contain %d words, but it contains %d words."
@@ -92,9 +85,9 @@ class Mnemonic(object):
 
     @staticmethod
     def normalize_string(txt):
-        if isinstance(txt, str if sys.version < "3" else bytes):
+        if isinstance(txt, bytes):
             utxt = txt.decode("utf8")
-        elif isinstance(txt, unicode if sys.version < "3" else str):  # noqa: F821
+        elif isinstance(txt, str):
             utxt = txt
         else:
             raise TypeError("String value expected")
@@ -163,21 +156,11 @@ class Mnemonic(object):
                     entropy[ii] |= 1 << (7 - jj)
         # Take the digest of the entropy.
         hashBytes = hashlib.sha256(entropy).digest()
-        if sys.version < "3":
-            hashBits = list(
-                itertools.chain.from_iterable(
-                    (
-                        [ord(c) & (1 << (7 - i)) != 0 for i in range(8)]
-                        for c in hashBytes
-                    )
-                )
+        hashBits = list(
+            itertools.chain.from_iterable(
+                ([c & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes)
             )
-        else:
-            hashBits = list(
-                itertools.chain.from_iterable(
-                    ([c & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes)
-                )
-            )
+        )
         # Check all the checksum bits.
         for i in range(checksumLengthBits):
             if concatBits[entropyLengthBits + i] != hashBits[i]:

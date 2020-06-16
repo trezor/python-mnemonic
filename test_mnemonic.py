@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (c) 2013 Pavol Rusnak
 # Copyright (c) 2017 mruddy
@@ -21,11 +21,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-from __future__ import print_function
-
 import json
 import random
-import sys
 import unittest
 from binascii import hexlify, unhexlify
 
@@ -39,8 +36,7 @@ class MnemonicTest(unittest.TestCase):
             code = mnemo.to_mnemonic(unhexlify(v[0]))
             seed = hexlify(Mnemonic.to_seed(code, passphrase="TREZOR"))
             xprv = Mnemonic.to_hd_master_key(unhexlify(seed))
-            if sys.version >= "3":
-                seed = seed.decode("utf8")
+            seed = seed.decode("utf8")
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
             self.assertEqual(v[2], seed)

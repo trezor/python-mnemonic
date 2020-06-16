@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
-from __future__ import print_function
+#!/usr/bin/env python3
 
 import json
-import sys
 from binascii import hexlify, unhexlify
 from random import choice, seed
 
@@ -13,7 +10,7 @@ from mnemonic import Mnemonic
 
 def b2h(b):
     h = hexlify(b)
-    return h if sys.version < "3" else h.decode("utf8")
+    return h.decode("utf8")
 
 
 def process(data, lst):
@@ -46,8 +43,7 @@ if __name__ == "__main__":
         # Generate random seeds
         for i in range(12):
             data = "".join(chr(choice(range(0, 256))) for _ in range(8 * (i % 3 + 2)))
-            if sys.version >= "3":
-                data = data.encode("latin1")
+            data = data.encode("latin1")
             process(b2h(data), out[lang])
 
     with open("vectors.json", "w") as f:
