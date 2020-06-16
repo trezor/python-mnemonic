@@ -26,8 +26,10 @@ import hashlib
 import hmac
 import itertools
 import os
+from typing import List, Sequence, TypeVar, Union
 import unicodedata
 
+_T = TypeVar("_T")
 PBKDF2_ROUNDS = 2048
 
 
@@ -36,14 +38,19 @@ class ConfigurationError(Exception):
 
 
 # From <https://stackoverflow.com/questions/212358/binary-search-bisection-in-python/2233940#2233940>
-def binary_search(a, x, lo=0, hi=None):  # can't use a to specify default for hi
+def binary_search(
+    a: Sequence[_T],
+    x: _T,
+    lo: int = 0,
+    hi: int = None,  # can't use a to specify default for hi
+) -> int:
     hi = hi if hi is not None else len(a)  # hi defaults to len(a)
     pos = bisect.bisect_left(a, x, lo, hi)  # find insertion position
     return pos if pos != hi and a[pos] == x else -1  # don't walk off the end
 
 
 # Refactored code segments from <https://github.com/keis/base58>
-def b58encode(v):
+def b58encode(v: bytes) -> str:
     alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
     p, acc = 1, 0
@@ -59,7 +66,7 @@ def b58encode(v):
 
 
 class Mnemonic(object):
-    def __init__(self, language):
+    def __init__(self, language: str):
         self.radix = 2048
         with open(
             "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8"
@@ -72,11 +79,11 @@ class Mnemonic(object):
             )
 
     @staticmethod
-    def _get_directory():
+    def _get_directory() -> str:
         return os.path.join(os.path.dirname(__file__), "wordlist")
 
     @classmethod
-    def list_languages(cls):
+    def list_languages(cls) -> List[str]:
         return [
             f.split(".")[0]
             for f in os.listdir(cls._get_directory())
@@ -84,7 +91,7 @@ class Mnemonic(object):
         ]
 
     @staticmethod
-    def normalize_string(txt):
+    def normalize_string(txt: Union[bytes, str]) -> str:
         if isinstance(txt, bytes):
             utxt = txt.decode("utf8")
         elif isinstance(txt, str):
@@ -95,7 +102,7 @@ class Mnemonic(object):
         return unicodedata.normalize("NFKD", utxt)
 
     @classmethod
-    def detect_language(cls, code):
+    def detect_language(cls, code: str) -> str:
         code = cls.normalize_string(code)
         first = code.split(" ")[0]
         languages = cls.list_languages()
@@ -107,7 +114,7 @@ class Mnemonic(object):
 
         raise ConfigurationError("Language not detected")
 
-    def generate(self, strength=128):
+    def generate(self, strength: int = 128) -> str:
         if strength not in [128, 160, 192, 224, 256]:
             raise ValueError(
                 "Strength should be one of the following [128, 160, 192, 224, 256], but it is not (%d)."
@@ -116,7 +123,7 @@ class Mnemonic(object):
         return self.to_mnemonic(os.urandom(strength // 8))
 
     # Adapted from <http://tinyurl.com/oxmn476>
-    def to_entropy(self, words):
+    def to_entropy(self, words: Union[List[str], str]) -> bytearray:
         if not isinstance(words, list):
             words = words.split(" ")
         if len(words) not in [12, 15, 18, 21, 24]:
@@ -167,7 +174,7 @@ class Mnemonic(object):
                 raise ValueError("Failed checksum.")
         return entropy
 
-    def to_mnemonic(self, data):
+    def to_mnemonic(self, data: bytes) -> str:
         if len(data) not in [16, 20, 24, 28, 32]:
             raise ValueError(
                 "Data length should be one of the following: [16, 20, 24, 28, 32], but it is not (%d)."
@@ -190,13 +197,15 @@ class Mnemonic(object):
             result_phrase = " ".join(result)
         return result_phrase
 
-    def check(self, mnemonic):
-        mnemonic = self.normalize_string(mnemonic).split(" ")
+    def check(self, mnemonic: str) -> bool:
+        mnemonic_list = self.normalize_string(mnemonic).split(" ")
         # list of valid mnemonic lengths
-        if len(mnemonic) not in [12, 15, 18, 21, 24]:
+        if len(mnemonic_list) not in [12, 15, 18, 21, 24]:
             return False
         try:
-            idx = map(lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic)
+            idx = map(
+                lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic_list
+            )
             b = "".join(idx)
         except ValueError:
             return False
@@ -207,7 +216,7 @@ class Mnemonic(object):
         nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[: l // 33]
         return h == nh
 
-    def expand_word(self, prefix):
+    def expand_word(self, prefix: str) -> str:
         if prefix in self.wordlist:
             return prefix
         else:
@@ -219,21 +228,23 @@ class Mnemonic(object):
                 # this is not a validation routine, just return the input
                 return prefix
 
-    def expand(self, mnemonic):
+    def expand(self, mnemonic: str) -> str:
         return " ".join(map(self.expand_word, mnemonic.split(" ")))
 
     @classmethod
-    def to_seed(cls, mnemonic, passphrase=""):
+    def to_seed(cls, mnemonic: str, passphrase: str = "") -> bytes:
         mnemonic = cls.normalize_string(mnemonic)
         passphrase = cls.normalize_string(passphrase)
         passphrase = "mnemonic" + passphrase
-        mnemonic = mnemonic.encode("utf-8")
-        passphrase = passphrase.encode("utf-8")
-        stretched = hashlib.pbkdf2_hmac("sha512", mnemonic, passphrase, PBKDF2_ROUNDS)
+        mnemonic_bytes = mnemonic.encode("utf-8")
+        passphrase_bytes = passphrase.encode("utf-8")
+        stretched = hashlib.pbkdf2_hmac(
+            "sha512", mnemonic_bytes, passphrase_bytes, PBKDF2_ROUNDS
+        )
         return stretched[:64]
 
     @staticmethod
-    def to_hd_master_key(seed, testnet=False):
+    def to_hd_master_key(seed: bytes, testnet: bool = False) -> str:
         if len(seed) != 64:
             raise ValueError("Provided seed should have length of 64")
 
@@ -259,15 +270,15 @@ class Mnemonic(object):
         return b58encode(xprv)
 
 
-def main():
+def main() -> None:
     import binascii
     import sys
 
     if len(sys.argv) > 1:
-        data = sys.argv[1]
+        hex_data = sys.argv[1]
     else:
-        data = sys.stdin.readline().strip()
-    data = binascii.unhexlify(data)
+        hex_data = sys.stdin.readline().strip()
+    data = binascii.unhexlify(hex_data)
     m = Mnemonic("english")
     print(m.to_mnemonic(data))
 

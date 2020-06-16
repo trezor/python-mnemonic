@@ -34,12 +34,12 @@ class MnemonicTest(unittest.TestCase):
         mnemo = Mnemonic(language)
         for v in vectors:
             code = mnemo.to_mnemonic(unhexlify(v[0]))
-            seed = hexlify(Mnemonic.to_seed(code, passphrase="TREZOR"))
-            xprv = Mnemonic.to_hd_master_key(unhexlify(seed))
-            seed = seed.decode("utf8")
+            seed = Mnemonic.to_seed(code, passphrase="TREZOR")
+            xprv = Mnemonic.to_hd_master_key(seed)
+            hex_str_seed = hexlify(seed).decode("utf8")
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
-            self.assertEqual(v[2], seed)
+            self.assertEqual(v[2], hex_str_seed)
             self.assertEqual(v[3], xprv)
 
     def test_vectors(self):
@@ -91,9 +91,7 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfd)
 
     def test_to_entropy(self):
-        data = [
-            bytearray((random.getrandbits(8) for _ in range(32))) for _ in range(1024)
-        ]
+        data = [bytes(random.getrandbits(8) for _ in range(32)) for _ in range(1024)]
         data.append(b"Lorem ipsum dolor sit amet amet.")
         m = Mnemonic("english")
         for d in data:
