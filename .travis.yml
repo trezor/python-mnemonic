@@ -15,12 +15,15 @@ install:
     # Optimisation: build requirements as wheels, which get cached by Travis
     - pip install "pip>=7.0" wheel
     - pip install tox-travis
+    - |
+      if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then
+        pip install black mypy
+      fi
 
 script:
     - python setup.py install
     - |
       if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then
-        pip install black mypy &&
         black --check . &&
         mypy .
       fi

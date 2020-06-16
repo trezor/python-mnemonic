@@ -26,7 +26,7 @@ import hashlib
 import hmac
 import itertools
 import os
-from typing import List, Sequence, TypeVar, Union
+from typing import AnyStr, List, Sequence, TypeVar, Union
 import unicodedata
 
 _T = TypeVar("_T")
@@ -91,7 +91,7 @@ class Mnemonic(object):
         ]
 
     @staticmethod
-    def normalize_string(txt: Union[bytes, str]) -> str:
+    def normalize_string(txt: AnyStr) -> str:
         if isinstance(txt, bytes):
             utxt = txt.decode("utf8")
         elif isinstance(txt, str):
