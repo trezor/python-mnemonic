@@ -17,7 +17,7 @@ install:
     - pip install tox-travis
     - |
       if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then
-        pip install black mypy
+        pip install black flake8 mypy
       fi
 
 script:
@@ -25,6 +25,7 @@ script:
     - |
       if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then
         black --check . &&
+        flake8 . &&
         mypy .
       fi
     - tox

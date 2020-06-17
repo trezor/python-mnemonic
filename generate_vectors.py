@@ -30,9 +30,9 @@ if __name__ == "__main__":
 
         # Generate corner cases
         data = []
-        for l in range(16, 32 + 1, 8):
+        for length in range(16, 32 + 1, 8):
             for b in ["00", "7f", "80", "ff"]:
-                process(b * l, out[lang])
+                process(b * length, out[lang])
 
         # Generate random seeds
         for i in range(12):
