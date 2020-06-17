@@ -20,7 +20,6 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import binascii
 import bisect
 import hashlib
 import hmac
@@ -182,7 +181,7 @@ class Mnemonic(object):
             )
         h = hashlib.sha256(data).hexdigest()
         b = (
-            bin(int(binascii.hexlify(data), 16))[2:].zfill(len(data) * 8)
+            bin(int.from_bytes(data, byteorder="big"))[2:].zfill(len(data) * 8)
             + bin(int(h, 16))[2:].zfill(256)[: len(data) * 8 // 32]
         )
         result = []
@@ -212,7 +211,7 @@ class Mnemonic(object):
         l = len(b)  # noqa: E741
         d = b[: l // 33 * 32]
         h = b[-l // 33 :]
-        nd = binascii.unhexlify(hex(int(d, 2))[2:].rstrip("L").zfill(l // 33 * 8))
+        nd = bytes.fromhex(hex(int(d, 2))[2:].zfill(l // 33 * 8))
         nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[: l // 33]
         return h == nh
 
@@ -271,14 +270,13 @@ class Mnemonic(object):
 
 
 def main() -> None:
-    import binascii
     import sys
 
     if len(sys.argv) > 1:
         hex_data = sys.argv[1]
     else:
         hex_data = sys.stdin.readline().strip()
-    data = binascii.unhexlify(hex_data)
+    data = bytes.fromhex(hex_data)
     m = Mnemonic("english")
     print(m.to_mnemonic(data))
 

@@ -24,7 +24,6 @@
 import json
 import random
 import unittest
-from binascii import hexlify, unhexlify
 
 from mnemonic import Mnemonic
 
@@ -33,13 +32,12 @@ class MnemonicTest(unittest.TestCase):
     def _check_list(self, language, vectors):
         mnemo = Mnemonic(language)
         for v in vectors:
-            code = mnemo.to_mnemonic(unhexlify(v[0]))
+            code = mnemo.to_mnemonic(bytes.fromhex(v[0]))
             seed = Mnemonic.to_seed(code, passphrase="TREZOR")
             xprv = Mnemonic.to_hd_master_key(seed)
-            hex_str_seed = hexlify(seed).decode("utf8")
             self.assertIs(mnemo.check(v[1]), True)
             self.assertEqual(v[1], code)
-            self.assertEqual(v[2], hex_str_seed)
+            self.assertEqual(v[2], seed.hex())
             self.assertEqual(v[3], xprv)
 
     def test_vectors(self):

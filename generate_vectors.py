@@ -1,23 +1,17 @@
 #!/usr/bin/env python3
 
 import json
-from binascii import hexlify, unhexlify
 from random import choice, seed
 
 from bip32utils import BIP32Key
 from mnemonic import Mnemonic
 
 
-def b2h(b):
-    h = hexlify(b)
-    return h.decode("utf8")
-
-
 def process(data, lst):
-    code = mnemo.to_mnemonic(unhexlify(data))
+    code = mnemo.to_mnemonic(bytes.fromhex(data))
     seed = Mnemonic.to_seed(code, passphrase="TREZOR")
     xprv = BIP32Key.fromEntropy(seed).ExtendedKey()
-    seed = b2h(seed)
+    seed = seed.hex()
     print("input    : %s (%d bits)" % (data, len(data) * 4))
     print("mnemonic : %s (%d words)" % (code, len(code.split(" "))))
     print("seed     : %s (%d bits)" % (seed, len(seed) * 4))
@@ -44,7 +38,7 @@ if __name__ == "__main__":
         for i in range(12):
             data = "".join(chr(choice(range(0, 256))) for _ in range(8 * (i % 3 + 2)))
             data = data.encode("latin1")
-            process(b2h(data), out[lang])
+            process(data.hex(), out[lang])
 
     with open("vectors.json", "w") as f:
         json.dump(
