@@ -71,4 +71,4 @@ Given the word list, calculate original entropy:
 
 .. code-block:: python
 
-   entropy = mnem.to_entropy(words)
+   entropy = mnemo.to_entropy(words)
