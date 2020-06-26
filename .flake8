@@ -4,4 +4,3 @@ extend-ignore =
     E203,
     # E501: line too long
     E501
-exclude = */site-packages/*
