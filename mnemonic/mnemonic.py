@@ -164,7 +164,7 @@ class Mnemonic(object):
         hashBytes = hashlib.sha256(entropy).digest()
         hashBits = list(
             itertools.chain.from_iterable(
-                ([c & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes)
+                [c & (1 << (7 - i)) != 0 for i in range(8)] for c in hashBytes
             )
         )
         # Check all the checksum bits.
