@@ -25,7 +25,7 @@ import hashlib
 import hmac
 import itertools
 import os
-from typing import AnyStr, List, Sequence, TypeVar, Union
+from typing import AnyStr, List, Optional, Sequence, TypeVar, Union
 import unicodedata
 
 _T = TypeVar("_T")
@@ -41,7 +41,7 @@ def binary_search(
     a: Sequence[_T],
     x: _T,
     lo: int = 0,
-    hi: int = None,  # can't use a to specify default for hi
+    hi: Optional[int] = None,  # can't use a to specify default for hi
 ) -> int:
     hi = hi if hi is not None else len(a)  # hi defaults to len(a)
     pos = bisect.bisect_left(a, x, lo, hi)  # find insertion position
