@@ -82,6 +82,14 @@ class Mnemonic(object):
     def _get_directory() -> str:
         return os.path.join(os.path.dirname(__file__), "wordlist")
 
+    @classmethod
+    def list_languages(cls) -> List[str]:
+        return [
+            f.split(".")[0]
+            for f in os.listdir(cls._get_directory())
+            if f.endswith(".txt")
+        ]
+
     @staticmethod
     def normalize_string(txt: AnyStr) -> str:
         if isinstance(txt, bytes):
@@ -92,6 +100,19 @@ class Mnemonic(object):
             raise TypeError("String value expected")
 
         return unicodedata.normalize("NFKD", utxt)
+
+    @classmethod
+    def detect_language(cls, code: str) -> str:
+        code = cls.normalize_string(code)
+        first = code.split(" ")[0]
+        languages = cls.list_languages()
+
+        for lang in languages:
+            mnemo = cls(lang)
+            if first in mnemo.wordlist:
+                return lang
+
+        raise ConfigurationError("Language not detected")
 
     def generate(self, strength: int = 128) -> str:
         if strength not in [128, 160, 192, 224, 256]:
