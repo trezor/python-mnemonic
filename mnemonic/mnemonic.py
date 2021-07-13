@@ -68,7 +68,7 @@ class Mnemonic(object):
     def __init__(self, language: str):
         self.radix = 2048
         with open(
-            "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8"
+            "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8-sig"
         ) as f:
             self.wordlist = [w.strip() for w in f.readlines()]
         if len(self.wordlist) != self.radix:
