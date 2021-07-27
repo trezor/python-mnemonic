@@ -1,8 +1,8 @@
 python-mnemonic
 ===============
 
-.. image:: https://travis-ci.org/trezor/python-mnemonic.svg?branch=master
-    :target: https://travis-ci.org/trezor/python-mnemonic
+.. image:: https://badge.fury.io/py/mnemonic.svg
+    :target: https://badge.fury.io/py/mnemonic
 
 Reference implementation of BIP-0039: Mnemonic code for generating
 deterministic keys
