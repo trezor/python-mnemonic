@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
+from pathlib import Path
 import os
 from setuptools import setup
 
-CWD = os.path.dirname(os.path.realpath(__file__))
-
-
-def read(*path: str) -> str:
-    filename = os.path.join(CWD, *path)
-    with open(filename, "r") as f:
-        return f.read()
+CWD = Path(__file__).resolve().parent
 
 
 setup(
@@ -17,7 +12,10 @@ setup(
     author="Trezor",
     author_email="info@trezor.io",
     description="Implementation of Bitcoin BIP-0039",
-    long_description=read("README.rst"),
+    long_description="\n".join(
+        (CWD / "README.rst").read_text(),
+        (CWD / "CHANGELOG.rst").read_text(),
+    ),
     url="https://github.com/trezor/python-mnemonic",
     packages=["mnemonic"],
     package_data={"mnemonic": ["wordlist/*.txt", "py.typed"]},
