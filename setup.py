@@ -8,7 +8,7 @@ CWD = Path(__file__).resolve().parent
 
 setup(
     name="mnemonic",
-    version="0.19",
+    version="0.20",
     author="Trezor",
     author_email="info@trezor.io",
     description="Implementation of Bitcoin BIP-0039",
