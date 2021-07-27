@@ -18,7 +18,8 @@ setup(
     ),
     url="https://github.com/trezor/python-mnemonic",
     packages=["mnemonic"],
-    package_data={"mnemonic": ["wordlist/*.txt", "py.typed"]},
+    package_dir={"": "src"},
+    include_package_data=True,
     zip_safe=False,
     python_requires=">=3.5",
     classifiers=[
