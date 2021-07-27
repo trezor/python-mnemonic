@@ -3,6 +3,8 @@ SETUP=$(PYTHON) setup.py
 
 EXCLUDES=.vscode
 
+STYLE_TARGETS=src tests tools *.py
+
 all: build
 
 build:
@@ -39,12 +41,13 @@ clean-test: ## remove test and coverage artifacts
 git-clean:
 	git clean -dfx -e $(EXCLUDES)
 
-style: style_check
-	black .
+style:
+	black $(STYLE_TARGETS)
+	make style_check
 
 style_check:
-	black --check .
-	flake8 src tests tools *.py
-	mypy .
+	black --check $(STYLE_TARGETS)
+	flake8 $(STYLE_TARGETS)
+	mypy $(STYLE_TARGETS)
 
 .PHONY: all build install clean style style_check git-clean clean-build clean-pyc clean-test

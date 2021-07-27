@@ -189,9 +189,7 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11 : (i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if (
-            self.language == "japanese"
-        ):  # Japanese must be joined by ideographic space.
+        if self.language == "japanese":  # Japanese must be joined by ideographic space.
             result_phrase = u"\u3000".join(result)
         else:
             result_phrase = " ".join(result)

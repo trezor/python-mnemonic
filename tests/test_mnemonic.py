@@ -29,7 +29,6 @@ from typing import List
 from mnemonic import Mnemonic
 
 
-
 class MnemonicTest(unittest.TestCase):
     def _check_list(self, language: str, vectors: List[str]) -> None:
         mnemo = Mnemonic(language)
