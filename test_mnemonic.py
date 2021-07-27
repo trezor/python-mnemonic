@@ -24,12 +24,14 @@
 import json
 import random
 import unittest
+from typing import List
 
 from mnemonic import Mnemonic
 
 
+
 class MnemonicTest(unittest.TestCase):
-    def _check_list(self, language, vectors):
+    def _check_list(self, language: str, vectors: List[str]) -> None:
         mnemo = Mnemonic(language)
         for v in vectors:
             code = mnemo.to_mnemonic(bytes.fromhex(v[0]))
@@ -40,26 +42,26 @@ class MnemonicTest(unittest.TestCase):
             self.assertEqual(v[2], seed.hex())
             self.assertEqual(v[3], xprv)
 
-    def test_vectors(self):
+    def test_vectors(self) -> None:
         with open("vectors.json", "r") as f:
             vectors = json.load(f)
         for lang in vectors.keys():
             self._check_list(lang, vectors[lang])
 
-    def test_failed_checksum(self):
+    def test_failed_checksum(self) -> None:
         code = (
             "bless cloud wheel regular tiny venue bird web grief security dignity zoo"
         )
         mnemo = Mnemonic("english")
         self.assertFalse(mnemo.check(code))
 
-    def test_detection(self):
+    def test_detection(self) -> None:
         self.assertEqual("english", Mnemonic.detect_language("security"))
 
         with self.assertRaises(Exception):
             Mnemonic.detect_language("xxxxxxx")
 
-    def test_utf8_nfkd(self):
+    def test_utf8_nfkd(self) -> None:
         # The same sentence in various UTF-8 forms
         words_nfkd = u"Pr\u030ci\u0301s\u030cerne\u030c z\u030clut\u030couc\u030cky\u0301 ku\u030an\u030c u\u0301pe\u030cl d\u030ca\u0301belske\u0301 o\u0301dy za\u0301ker\u030cny\u0301 uc\u030cen\u030c be\u030cz\u030ci\u0301 pode\u0301l zo\u0301ny u\u0301lu\u030a"
         words_nfc = u"P\u0159\xed\u0161ern\u011b \u017elu\u0165ou\u010dk\xfd k\u016f\u0148 \xfap\u011bl \u010f\xe1belsk\xe9 \xf3dy z\xe1ke\u0159n\xfd u\u010de\u0148 b\u011b\u017e\xed pod\xe9l z\xf3ny \xfal\u016f"
@@ -88,14 +90,14 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(seed_nfkd, seed_nfkc)
         self.assertEqual(seed_nfkd, seed_nfd)
 
-    def test_to_entropy(self):
+    def test_to_entropy(self) -> None:
         data = [bytes(random.getrandbits(8) for _ in range(32)) for _ in range(1024)]
         data.append(b"Lorem ipsum dolor sit amet amet.")
         m = Mnemonic("english")
         for d in data:
             self.assertEqual(m.to_entropy(m.to_mnemonic(d).split()), d)
 
-    def test_expand_word(self):
+    def test_expand_word(self) -> None:
         m = Mnemonic("english")
         self.assertEqual("", m.expand_word(""))
         self.assertEqual(" ", m.expand_word(" "))
@@ -110,7 +112,7 @@ class MnemonicTest(unittest.TestCase):
             "action", m.expand_word("acti")
         )  # unique prefix expanded to word in list
 
-    def test_expand(self):
+    def test_expand(self) -> None:
         m = Mnemonic("english")
         self.assertEqual("access", m.expand("access"))
         self.assertEqual(
@@ -118,7 +120,7 @@ class MnemonicTest(unittest.TestCase):
         )
 
 
-def __main__():
+def __main__() -> None:
     unittest.main()
 
 
