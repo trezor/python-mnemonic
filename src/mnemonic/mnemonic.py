@@ -25,8 +25,9 @@ import hashlib
 import hmac
 import itertools
 import os
-from typing import AnyStr, List, Optional, Sequence, TypeVar, Union
+import secrets
 import unicodedata
+from typing import AnyStr, List, Optional, Sequence, TypeVar, Union
 
 _T = TypeVar("_T")
 PBKDF2_ROUNDS = 2048
@@ -115,12 +116,26 @@ class Mnemonic(object):
         raise ConfigurationError("Language not detected")
 
     def generate(self, strength: int = 128) -> str:
+        """
+        Create a new mnemonic using a random generated number as entropy.
+
+        As defined in BIP39, the entropy must be a multiple of 32 bits, and its size must be between 128 and 256 bits.
+        Therefore the possible values for `strength` are 128, 160, 192, 224 and 256.
+
+        If not provided, the default entropy length will be set to 128 bits.
+
+        The return is a list of words that encodes the entropy generated.
+
+        :param strength: Number of bytes used as entropy
+        :type strength: int
+        :return: A randomly generated mnemonic
+        :rtype: str
+        """
         if strength not in [128, 160, 192, 224, 256]:
             raise ValueError(
-                "Strength should be one of the following [128, 160, 192, 224, 256], but it is not (%d)."
-                % strength
+                "Invalid strength value. Allowed values are [128, 160, 192, 224, 256]."
             )
-        return self.to_mnemonic(os.urandom(strength // 8))
+        return self.to_mnemonic(secrets.token_bytes(strength // 8))
 
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words: Union[List[str], str]) -> bytearray:
