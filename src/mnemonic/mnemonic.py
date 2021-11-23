@@ -66,28 +66,25 @@ def b58encode(v: bytes) -> str:
 
 
 class Mnemonic(object):
-    def __init__(self, language: str):
+    def __init__(self, language: str = "english"):
         self.language = language
         self.radix = 2048
-        with open(
-            "%s/%s.txt" % (self._get_directory(), language), "r", encoding="utf-8"
-        ) as f:
-            self.wordlist = [w.strip() for w in f.readlines()]
-        if len(self.wordlist) != self.radix:
-            raise ConfigurationError(
-                "Wordlist should contain %d words, but it contains %d words."
-                % (self.radix, len(self.wordlist))
-            )
-
-    @staticmethod
-    def _get_directory() -> str:
-        return os.path.join(os.path.dirname(__file__), "wordlist")
+        d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
+        if os.path.exists(d) and os.path.isfile(d):
+            with open(d, "r", encoding="utf-8") as f:
+                self.wordlist = [w.strip() for w in f.readlines()]
+            if len(self.wordlist) != self.radix:
+                raise ConfigurationError(
+                    f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
+                )
+        else:
+            raise ConfigurationError("Language not detected")
 
     @classmethod
     def list_languages(cls) -> List[str]:
         return [
             f.split(".")[0]
-            for f in os.listdir(cls._get_directory())
+            for f in os.listdir(os.path.join(os.path.dirname(__file__), "wordlist"))
             if f.endswith(".txt")
         ]
 
@@ -124,7 +121,7 @@ class Mnemonic(object):
 
         If not provided, the default entropy length will be set to 128 bits.
 
-        The return is a list of words that encodes the entropy generated.
+        The return is a list of words that encodes the generated entropy.
 
         :param strength: Number of bytes used as entropy
         :type strength: int
@@ -192,8 +189,7 @@ class Mnemonic(object):
     def to_mnemonic(self, data: bytes) -> str:
         if len(data) not in [16, 20, 24, 28, 32]:
             raise ValueError(
-                "Data length should be one of the following: [16, 20, 24, 28, 32], but it is not (%d)."
-                % len(data)
+                f"Data length should be one of the following: [16, 20, 24, 28, 32], but it is not {len(data)}."
             )
         h = hashlib.sha256(data).hexdigest()
         b = (
@@ -205,7 +201,7 @@ class Mnemonic(object):
             idx = int(b[i * 11 : (i + 1) * 11], 2)
             result.append(self.wordlist[idx])
         if self.language == "japanese":  # Japanese must be joined by ideographic space.
-            result_phrase = u"\u3000".join(result)
+            result_phrase = "\u3000".join(result)
         else:
             result_phrase = " ".join(result)
         return result_phrase
