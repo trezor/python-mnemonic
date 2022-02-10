@@ -78,7 +78,16 @@ class Mnemonic(object):
                     f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
                 )
         else:
-            raise ConfigurationError("Language not detected")
+            d = language 
+            if os.path.exists(d):
+                with open(d, "r", encoding="utf-8") as f:
+                    self.wordlist = [w.strip() for w in f.readlines()]
+                if len(self.wordlist) != self.radix:
+                    raise ConfigurationError(
+                        f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
+                    )
+            else:
+                raise ConfigurationError("Language not detected")
 
     @classmethod
     def list_languages(cls) -> List[str]:
