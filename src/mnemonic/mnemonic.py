@@ -26,7 +26,7 @@ import itertools
 import os
 import secrets
 import unicodedata
-from typing import AnyStr, List, TypeVar, Union
+from typing import AnyStr, List, Optional, TypeVar, Union
 
 _T = TypeVar("_T")
 PBKDF2_ROUNDS = 2048
@@ -53,19 +53,22 @@ def b58encode(v: bytes) -> str:
 
 
 class Mnemonic(object):
-    def __init__(self, language: str = "english"):
-        self.language = language
+    def __init__(self, language: str = "english", wordlist: Optional[List[str]] = None):
         self.radix = 2048
-        d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
-        if os.path.exists(d) and os.path.isfile(d):
-            with open(d, "r", encoding="utf-8") as f:
-                self.wordlist = [w.strip() for w in f.readlines()]
-            if len(self.wordlist) != self.radix:
-                raise ConfigurationError(
-                    f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
-                )
-        else:
-            raise ConfigurationError("Language not detected")
+        self.language = language
+
+        if wordlist is None:
+            d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
+            if os.path.exists(d) and os.path.isfile(d):
+                with open(d, "r", encoding="utf-8") as f:
+                    wordlist = [w.strip() for w in f.readlines()]
+            else:
+                raise ConfigurationError("Language not detected")
+
+        if len(wordlist) != self.radix:
+            raise ConfigurationError(f"Wordlist must contain {self.radix} words.")
+
+        self.wordlist = wordlist
         # Japanese must be joined by ideographic space
         self.delimiter = "\u3000" if language == "japanese" else " "
 
