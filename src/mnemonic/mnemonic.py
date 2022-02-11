@@ -66,29 +66,23 @@ def b58encode(v: bytes) -> str:
 
 
 class Mnemonic(object):
-    def __init__(self, language: str = "english"):
+    def __init__(self, language: str = "english", wordlist: Optional[List[str]] = None):
         self.language = language
         self.radix = 2048
-        d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
-        if os.path.exists(d) and os.path.isfile(d):
-            with open(d, "r", encoding="utf-8") as f:
-                self.wordlist = [w.strip() for w in f.readlines()]
-            if len(self.wordlist) != self.radix:
-                raise ConfigurationError(
-                    f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
-                )
-        else:
-            d = language 
-            if os.path.exists(d):
+        if wordlist is None:
+            d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
+            if os.path.exists(d) and os.path.isfile(d):
                 with open(d, "r", encoding="utf-8") as f:
-                    self.wordlist = [w.strip() for w in f.readlines()]
-                if len(self.wordlist) != self.radix:
-                    raise ConfigurationError(
-                        f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
-                    )
+                    wordlist = [w.strip() for w in f.readlines()]
             else:
                 raise ConfigurationError("Language not detected")
-
+                
+        if len(wordlist) != self.radix:
+            raise ConfigurationError(
+                f"Wordlist should contain {self.radix} words, but it's {len(self.wordlist)} words long instead."
+            )
+            
+        self.wordlist = wordlist 
     @classmethod
     def list_languages(cls) -> List[str]:
         return [
