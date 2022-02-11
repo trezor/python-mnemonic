@@ -67,7 +67,6 @@ def b58encode(v: bytes) -> str:
 
 class Mnemonic(object):
     def __init__(self, language: str = "english"):
-        self.language = language
         self.radix = 2048
         d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
         if os.path.exists(d) and os.path.isfile(d):
@@ -79,6 +78,10 @@ class Mnemonic(object):
                 )
         else:
             raise ConfigurationError("Language not detected")
+        # We can use binary search for English language
+        self.use_binary_search = language == "english"
+        # Japanese must be joined by ideographic space
+        self.delimiter = "\u3000" if language == "japanese" else " "
 
     @classmethod
     def list_languages(cls) -> List[str]:
@@ -148,15 +151,11 @@ class Mnemonic(object):
         concatLenBits = len(words) * 11
         concatBits = [False] * concatLenBits
         wordindex = 0
-        if self.language == "english":
-            use_binary_search = True
-        else:
-            use_binary_search = False
         for word in words:
             # Find the words index in the wordlist
             ndx = (
                 binary_search(self.wordlist, word)
-                if use_binary_search
+                if self.use_binary_search
                 else self.wordlist.index(word)
             )
             if ndx < 0:
@@ -200,11 +199,7 @@ class Mnemonic(object):
         for i in range(len(b) // 11):
             idx = int(b[i * 11 : (i + 1) * 11], 2)
             result.append(self.wordlist[idx])
-        if self.language == "japanese":  # Japanese must be joined by ideographic space.
-            result_phrase = "\u3000".join(result)
-        else:
-            result_phrase = " ".join(result)
-        return result_phrase
+        return self.delimiter.join(result)
 
     def check(self, mnemonic: str) -> bool:
         mnemonic_list = self.normalize_string(mnemonic).split(" ")
