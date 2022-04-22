@@ -58,7 +58,13 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual("english", Mnemonic.detect_language("security"))
 
         with self.assertRaises(Exception):
-            Mnemonic.detect_language("xxxxxxx")
+            Mnemonic.detect_language("jaguar xxxxxxx") # Unrecognized in any known language
+
+        with self.assertRaises(Exception):
+            Mnemonic.detect_language("jaguar jaguar") # Ambiguous after examining all words
+
+        self.assertEqual("english", Mnemonic.detect_language("jaguar security"))
+        self.assertEqual("french", Mnemonic.detect_language("jaguar aboyer"))
 
     def test_utf8_nfkd(self) -> None:
         # The same sentence in various UTF-8 forms

@@ -101,16 +101,16 @@ class Mnemonic(object):
 
     @classmethod
     def detect_language(cls, code: str) -> str:
+        """Scan the Mnemonic until the language becomes unambiguous."""
         code = cls.normalize_string(code)
-        first = code.split(" ")[0]
-        languages = cls.list_languages()
-
-        for lang in languages:
-            mnemo = cls(lang)
-            if first in mnemo.wordlist:
-                return lang
-
-        raise ConfigurationError("Language not detected")
+        possible = set(cls(lang) for lang in cls.list_languages())
+        for word in code.split():
+            possible = set(p for p in possible if word in p.wordlist)
+            if not possible:
+                raise ConfigurationError(f"Language unrecognized: {word!r}")
+        if len( possible ) == 1:
+            return possible.pop().language
+        raise ConfigurationError(f"Language ambiguous: {', '.join( p.language for p in possible)}")
 
     def generate(self, strength: int = 128) -> str:
         """
