@@ -107,10 +107,10 @@ class Mnemonic(object):
         for word in code.split():
             possible = set(p for p in possible if word in p.wordlist)
             if not possible:
-                raise ConfigurationError(f"Language unrecognized: {word!r}")
+                raise ConfigurationError(f"Language unrecognized for {word!r}")
         if len( possible ) == 1:
             return possible.pop().language
-        raise ConfigurationError(f"Language ambiguous: {', '.join( p.language for p in possible)}")
+        raise ConfigurationError(f"Language ambiguous between {', '.join( p.language for p in possible)}")
 
     def generate(self, strength: int = 128) -> str:
         """
