@@ -3,3 +3,5 @@ build/
 dist/
 mnemonic.egg-info/
 .tox/
+.venv/
+.python-version
