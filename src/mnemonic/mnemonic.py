@@ -67,6 +67,7 @@ def b58encode(v: bytes) -> str:
 
 class Mnemonic(object):
     def __init__(self, language: str = "english"):
+        self.language = language
         self.radix = 2048
         d = os.path.join(os.path.dirname(__file__), f"wordlist/{language}.txt")
         if os.path.exists(d) and os.path.isfile(d):
