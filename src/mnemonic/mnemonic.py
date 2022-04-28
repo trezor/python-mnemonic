@@ -20,14 +20,13 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import bisect
 import hashlib
 import hmac
 import itertools
 import os
 import secrets
 import unicodedata
-from typing import AnyStr, List, Optional, Sequence, TypeVar, Union
+from typing import AnyStr, List, TypeVar, Union
 
 _T = TypeVar("_T")
 PBKDF2_ROUNDS = 2048
@@ -35,18 +34,6 @@ PBKDF2_ROUNDS = 2048
 
 class ConfigurationError(Exception):
     pass
-
-
-# From <https://stackoverflow.com/questions/212358/binary-search-bisection-in-python/2233940#2233940>
-def binary_search(
-    a: Sequence[_T],
-    x: _T,
-    lo: int = 0,
-    hi: Optional[int] = None,  # can't use a to specify default for hi
-) -> int:
-    hi = hi if hi is not None else len(a)  # hi defaults to len(a)
-    pos = bisect.bisect_left(a, x, lo, hi)  # find insertion position
-    return pos if pos != hi and a[pos] == x else -1  # don't walk off the end
 
 
 # Refactored code segments from <https://github.com/keis/base58>
@@ -79,8 +66,6 @@ class Mnemonic(object):
                 )
         else:
             raise ConfigurationError("Language not detected")
-        # We can use binary search for English language
-        self.use_binary_search = language == "english"
         # Japanese must be joined by ideographic space
         self.delimiter = "\u3000" if language == "japanese" else " "
 
@@ -156,11 +141,7 @@ class Mnemonic(object):
         wordindex = 0
         for word in words:
             # Find the words index in the wordlist
-            ndx = (
-                binary_search(self.wordlist, word)
-                if self.use_binary_search
-                else self.wordlist.index(word)
-            )
+            ndx = self.wordlist.index(word)
             if ndx < 0:
                 raise LookupError('Unable to find "%s" in word list.' % word)
             # Set the next 11 bits to the value of the index.
