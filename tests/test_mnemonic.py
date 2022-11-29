@@ -57,6 +57,16 @@ class MnemonicTest(unittest.TestCase):
     def test_detection(self) -> None:
         self.assertEqual("english", Mnemonic.detect_language("security"))
 
+        self.assertEqual(
+            "english", Mnemonic.detect_language("fruit wave dwarf")
+        )  # ambiguous up to wave
+        self.assertEqual(
+            "english", Mnemonic.detect_language("fru wago dw")
+        )  # ambiguous french/english up to dwarf prefix
+        self.assertEqual(
+            "french", Mnemonic.detect_language("fru wago dur enje")
+        )  # ambiguous french/english up to enjeu prefix
+
         with self.assertRaises(Exception):
             Mnemonic.detect_language(
                 "jaguar xxxxxxx"
@@ -67,8 +77,20 @@ class MnemonicTest(unittest.TestCase):
                 "jaguar jaguar"
             )  # Ambiguous after examining all words
 
+        # Allowing word prefixes in language detection presents ambiguity issues.  Require exactly
+        # one language that matches all prefixes, or one language matching some word(s) exactly.
         self.assertEqual("english", Mnemonic.detect_language("jaguar security"))
         self.assertEqual("french", Mnemonic.detect_language("jaguar aboyer"))
+        self.assertEqual("english", Mnemonic.detect_language("abandon about"))
+        self.assertEqual("french", Mnemonic.detect_language("abandon aboutir"))
+        self.assertEqual("french", Mnemonic.detect_language("fav financer"))
+        self.assertEqual("czech", Mnemonic.detect_language("fav finance"))
+        with self.assertRaises(Exception):
+            Mnemonic.detect_language("favor finan")
+        self.assertEqual("czech", Mnemonic.detect_language("flanel"))
+        self.assertEqual("portuguese", Mnemonic.detect_language("flanela"))
+        with self.assertRaises(Exception):
+            Mnemonic.detect_language("flane")
 
     def test_utf8_nfkd(self) -> None:
         # The same sentence in various UTF-8 forms
