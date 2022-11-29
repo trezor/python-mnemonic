@@ -57,6 +57,10 @@ class MnemonicTest(unittest.TestCase):
     def test_detection(self) -> None:
         self.assertEqual("english", Mnemonic.detect_language("security"))
 
+        self.assertEqual( "english", Mnemonic.detect_language( "fruit wave dwarf" ))  # ambiguous up to wave
+        self.assertEqual( "english", Mnemonic.detect_language( "fru wago dw" ))  # ambiguous french/english up to dwarf prefix
+        self.assertEqual( "french", Mnemonic.detect_language( "fru wago dur enje" ))  # ambiguous french/english up to enjeu prefix
+
         with self.assertRaises(Exception):
             Mnemonic.detect_language(
                 "jaguar xxxxxxx"

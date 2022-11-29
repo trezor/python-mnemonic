@@ -90,13 +90,16 @@ class Mnemonic(object):
 
     @classmethod
     def detect_language(cls, code: str) -> str:
-        """Scan the Mnemonic until the language becomes unambiguous."""
+        """Scan the Mnemonic until the language becomes unambiguous, including as abbreviation prefixes."""
         code = cls.normalize_string(code)
         possible = set(cls(lang) for lang in cls.list_languages())
         for word in code.split():
-            possible = set(p for p in possible if word in p.wordlist)
+            # possible languages have candidate(s) starting with the word/prefix
+            possible = set(p for p in possible if any(c.startswith( word ) for c in p.wordlist))
             if not possible:
                 raise ConfigurationError(f"Language unrecognized for {word!r}")
+            if len( possible ) < 2:
+                break
         if len(possible) == 1:
             return possible.pop().language
         raise ConfigurationError(
