@@ -1,0 +1,33 @@
+{
+    "FILLING_ORDER": [
+        "VERB",
+        "SUBJECT",
+        "PLACE"
+    ],
+    "NATURAL_ORDER": [
+        "SUBJECT",
+        "VERB",
+        "PLACE"
+    ],
+    "PLACE": {
+        "BIT_LENGTH": 1,
+        "RESTRICTED_BY": "SUBJECT",
+        "RESTRICTS": [],
+        "TOTAL_LIST": []
+    },
+    "SUBJECT": {
+        "BIT_LENGTH": 2,
+        "RESTRICTED_BY": "VERB",
+        "RESTRICTS": ["PLACE"],
+        "TOTAL_LIST": []
+    },
+    "VERB": {
+        "BIT_LENGTH": 1,
+        "RESTRICTED_BY": "NONE",
+        "RESTRICTS": ["SUBJECT"],
+        "TOTAL_LIST": []
+    },
+    "VERSION": {
+        "SHA256_CONDENSED_FULL": ""
+    }
+}
