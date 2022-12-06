@@ -1,0 +1,57 @@
+{
+    "ADJECTIVE": {
+        "BIT_LENGTH": 5,
+        "RESTRICTED_BY": "OBJECT",
+        "RESTRICTS": [],
+        "TOTAL_LIST": []
+    },
+    "FILLING_ORDER": [
+        "VERB",
+        "SUBJECT",
+        "OBJECT",
+        "POSSESSIVE",
+        "PLACE",
+        "ADJECTIVE"
+    ],
+    "NATURAL_ORDER": [
+        "SUBJECT",
+        "VERB",
+        "OBJECT",
+        "ADJECTIVE",
+        "PLACE",
+        "POSSESSIVE"
+    ],
+    "OBJECT": {
+        "BIT_LENGTH": 6,
+        "RESTRICTED_BY": "SUBJECT",
+        "RESTRICTS": [],
+        "TOTAL_LIST": []
+    },
+    "PLACE": {
+        "BIT_LENGTH": 5,
+        "RESTRICTED_BY": "POSSESSIVE",
+        "RESTRICTS": [],
+        "TOTAL_LIST": []
+    },
+    "POSSESSIVE": {
+        "BIT_LENGTH": 6,
+        "RESTRICTED_BY": "SUBJECT",
+        "RESTRICTS": ["PLACE"],
+        "TOTAL_LIST": []
+    },
+    "SUBJECT": {
+        "BIT_LENGTH": 6,
+        "RESTRICTED_BY": "VERB",
+        "RESTRICTS": ["OBJECT", "POSSESSIVE"],
+        "TOTAL_LIST": []
+    },
+    "VERB": {
+        "BIT_LENGTH": 5,
+        "RESTRICTED_BY": "NONE",
+        "RESTRICTS": ["SUBJECT"],
+        "TOTAL_LIST": []
+    },
+    "VERSION": {
+        "SHA256_CONDENSED_FULL": ""
+    }
+}

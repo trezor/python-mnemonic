@@ -1,0 +1,345 @@
+{
+    "main_test_ok": {
+        "FILLING_ORDER": [
+            "VERB",
+            "SUBJECT",
+            "PLACE"
+        ],
+        "NATURAL_ORDER": [
+            "SUBJECT",
+            "VERB",
+            "PLACE"
+        ],
+        "PLACE": {
+            "BIT_LENGTH": 1,
+            "RESTRICTED_BY": "SUBJECT",
+            "RESTRICTS": [],
+            "TOTAL_LIST": [
+                "harddisk",
+                "network"
+            ]
+        },
+        "SUBJECT": {
+            "BIT_LENGTH": 2,
+            "PLACE": {
+                "IMAGE": [
+                    "harddisk",
+                    "network"
+                ],
+                "MAPPING": {
+                    "developer": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "early_adopter": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "end_user": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "invader": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "theme_creator": [
+                        "harddisk",
+                        "network"
+                    ]
+                }
+            },
+            "RESTRICTED_BY": "VERB",
+            "RESTRICTS": [
+                "PLACE"
+            ],
+            "TOTAL_LIST": [
+                "developer",
+                "early_adopter",
+                "end_user",
+                "invader",
+                "theme_creator"
+            ]
+        },
+        "VERB": {
+            "BIT_LENGTH": 1,
+            "RESTRICTED_BY": "NONE",
+            "RESTRICTS": [
+                "SUBJECT"
+            ],
+            "SUBJECT": {
+                "IMAGE": [
+                    "developer",
+                    "early_adopter",
+                    "invader",
+                    "theme_creator"
+                ],
+                "MAPPING": {
+                    "encrypt_data": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ],
+                    "save_password": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ]
+                }
+            },
+            "TOTAL_LIST": [
+                "save_password",
+                "encrypt_data"
+            ]
+        },
+        "VERSION": {
+            "SHA256_CONDENSED_FULL": ""
+        }
+    },
+    "test_filling_sequence": {
+        "FILLING_ORDER": [
+            "VERB",
+            "PLACE",
+            "SUBJECT"
+        ]
+    },
+    "test_restriction_sequence": {
+        "SUBJECT": {
+            "BIT_LENGTH": 2,
+            "PLACE": {
+                "IMAGE": [
+                    "harddisk",
+                    "network"
+                ],
+                "MAPPING": {
+                    "developer": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "early_adopter": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "end_user": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "invader": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "theme_creator": [
+                        "harddisk",
+                        "network"
+                    ]
+                }
+            },
+            "RESTRICTED_BY": "VERB",
+            "RESTRICTS": [
+                "SUBJECT",
+                "PLACE"
+            ],
+            "TOTAL_LIST": [
+                "developer",
+                "early_adopter",
+                "end_user",
+                "invader",
+                "theme_creator"
+            ]
+        }
+    },
+    "test_image_list": {
+        "VERB": {
+            "BIT_LENGTH": 1,
+            "RESTRICTED_BY": "NONE",
+            "RESTRICTS": [
+                "SUBJECT"
+            ],
+            "SUBJECT": {
+                "IMAGE": [
+                    "developer",
+                    "early_adopter",
+                    "intentional_error",
+                    "theme_creator"
+                ],
+                "MAPPING": {
+                    "encrypt_data": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ],
+                    "save_password": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ]
+                }
+            },
+            "TOTAL_LIST": [
+                "save_password",
+                "encrypt_data"
+            ]
+        }
+    },
+    "test_keys_list": {
+        "SUBJECT": {
+            "BIT_LENGTH": 2,
+            "PLACE": {
+                "IMAGE": [
+                    "harddisk",
+                    "network"
+                ],
+                "MAPPING": {
+                    "developer": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "early_adopter": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "end_user": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "invader": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "theme_creator": [
+                        "harddisk",
+                        "network"
+                    ]
+                }
+            },
+            "RESTRICTED_BY": "VERB",
+            "RESTRICTS": [
+                "PLACE"
+            ],
+            "TOTAL_LIST": [
+                "developer",
+                "early_adopter",
+                "end_user",
+                "theme_creator"
+            ]
+        }
+    },
+    "test_enough_sublists": {
+        "VERB": {
+            "BIT_LENGTH": 2,
+            "RESTRICTED_BY": "NONE",
+            "RESTRICTS": [
+                "SUBJECT"
+            ],
+            "SUBJECT": {
+                "IMAGE": [
+                    "developer",
+                    "early_adopter",
+                    "invader",
+                    "theme_creator"
+                ],
+                "MAPPING": {
+                    "encrypt_data": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ],
+                    "save_password": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ]
+                }
+            },
+            "TOTAL_LIST": [
+                "save_password",
+                "encrypt_data"
+            ]
+        }
+    },
+    "test_enough_keys": {
+        "SUBJECT": {
+            "BIT_LENGTH": 3,
+            "PLACE": {
+                "IMAGE": [
+                    "harddisk",
+                    "network"
+                ],
+                "MAPPING": {
+                    "developer": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "early_adopter": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "end_user": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "invader": [
+                        "harddisk",
+                        "network"
+                    ],
+                    "theme_creator": [
+                        "harddisk",
+                        "network"
+                    ]
+                }
+            },
+            "RESTRICTED_BY": "VERB",
+            "RESTRICTS": [
+                "PLACE"
+            ],
+            "TOTAL_LIST": [
+                "developer",
+                "early_adopter",
+                "end_user",
+                "invader",
+                "theme_creator"
+            ]
+        }
+    },
+    "test_complete_list": {
+        "VERB": {
+            "BIT_LENGTH": 1,
+            "RESTRICTED_BY": "NONE",
+            "RESTRICTS": [
+                "SUBJECT"
+            ],
+            "SUBJECT": {
+                "IMAGE": [
+                    "developer",
+                    "early_adopter",
+                    "invader",
+                    "theme_creator"
+                ],
+                "MAPPING": {
+                    "encrypt_data": [
+                        "developer",
+                        "early_adopter",
+                        "invader",
+                        "theme_creator"
+                    ],
+                    "save_password": [
+                    "developer",
+                    "early_adopter",
+                    "intentional_error",
+                    "theme_creator"
+                    ]
+                }
+            },
+            "TOTAL_LIST": [
+                "save_password",
+                "encrypt_data"
+            ]
+        }
+    }
+}
