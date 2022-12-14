@@ -96,12 +96,10 @@ class Mnemonic(object):
         for word in code.split():
             # possible languages have candidate(s) starting with the word/prefix
             possible = set(p for p in possible if any(c.startswith( word ) for c in p.wordlist))
+            if len(possible) == 1:
+                return possible.pop().language
             if not possible:
                 raise ConfigurationError(f"Language unrecognized for {word!r}")
-            if len( possible ) < 2:
-                break
-        if len(possible) == 1:
-            return possible.pop().language
         raise ConfigurationError(
             f"Language ambiguous between {', '.join( p.language for p in possible)}"
         )
