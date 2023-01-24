@@ -1,1 +1,6 @@
 base58==2.1.1
+
+setuptools~=65.3.0
+PyQt5~=5.15.7
+pip~=22.2.2
+wheel~=0.37.1
