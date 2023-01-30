@@ -144,23 +144,6 @@ class ThemeDict(dict):
         restricted_by = self[self.RESTRICTED_KW] if self.RESTRICTED_KW in self.keys() else ""
         return restricted_by
 
-    def get_led_by_index(self, led_by: str) -> int:
-        """
-            Get the natural index of the leading word
-
-        Parameters
-        ----------
-        led_by : str
-            The leading word to get the natural index from
-        Returns
-        -------
-        int
-            The natural index of the leading word
-        """
-        syntactic_leads = self[led_by].restricted_by
-        led_by_index = self.natural_index(syntactic_leads)
-        return led_by_index
-
     def get_led_by_mapping(self, led_by: str) -> 'ThemeDict':
         """
             Get the mapping of the leading word
@@ -199,47 +182,6 @@ class ThemeDict(dict):
             error_message = "The theme is malformed"
             raise Exception(error_message)
         return words_per_phrase
-
-    def get_phrase_amount(self, mnemonic: Union[str, list[str]]) -> int:
-        """
-            Get how many phrases are in the given mnemonic
-
-        Parameters
-        ----------
-        mnemonic : Union[str, list[str]]
-            The mnemonic to get the amount of phrases, it can be a string or a list of words
-
-        Returns
-        -------
-        int
-            Return the amount of phrases of the given mnemonic
-        """
-        mnemonic = self.normalize_mnemonic(mnemonic)
-        mnemonic_size = len(mnemonic)
-        phrase_size = self.words_per_phrase
-        phrase_amount = mnemonic_size // phrase_size
-        return phrase_amount
-
-    def get_sentences(self, mnemonic: Union[str, list[str]]) -> list[list[str]]:
-        """
-            Split to list the sentences from a given mnemonic
-
-        Parameters
-        ----------
-        mnemonic : Union[str, list[str]]
-            The mnemonic to get the sentences from, it can be a str or a list of words
-
-        Returns
-        -------
-        list[list[str]]
-            Return a list of sentences with the lists of words from the mnemonic
-        """
-        mnemonic = self.normalize_mnemonic(mnemonic)
-        phrase_size = self.words_per_phrase
-        phrase_amount = self.get_phrase_amount(mnemonic)
-        sentences = [mnemonic[phrase_size*each_phrase:phrase_size*(each_phrase+1)]
-                     for each_phrase in range(phrase_amount)]
-        return sentences
 
     @property
     def wordlist(self) -> list[str]:
@@ -455,6 +397,47 @@ class ThemeDict(dict):
                              for each_index in self.natural_map]
         return word_fill_indexes
 
+    def get_phrase_amount(self, mnemonic: Union[str, list[str]]) -> int:
+        """
+            Get how many phrases are in the given mnemonic
+
+        Parameters
+        ----------
+        mnemonic : Union[str, list[str]]
+            The mnemonic to get the amount of phrases, it can be a string or a list of words
+
+        Returns
+        -------
+        int
+            Return the amount of phrases of the given mnemonic
+        """
+        mnemonic = self.normalize_mnemonic(mnemonic)
+        mnemonic_size = len(mnemonic)
+        phrase_size = self.words_per_phrase
+        phrase_amount = mnemonic_size // phrase_size
+        return phrase_amount
+
+    def get_sentences(self, mnemonic: Union[str, list[str]]) -> list[list[str]]:
+        """
+            Split to list the sentences from a given mnemonic
+
+        Parameters
+        ----------
+        mnemonic : Union[str, list[str]]
+            The mnemonic to get the sentences from, it can be a str or a list of words
+
+        Returns
+        -------
+        list[list[str]]
+            Return a list of sentences with the lists of words from the mnemonic
+        """
+        mnemonic = self.normalize_mnemonic(mnemonic)
+        phrase_size = self.words_per_phrase
+        phrase_amount = self.get_phrase_amount(mnemonic)
+        sentences = [mnemonic[phrase_size*each_phrase:phrase_size*(each_phrase+1)]
+                     for each_phrase in range(phrase_amount)]
+        return sentences
+
     def get_phrase_indexes(self, mnemonic: Union[str, list[str]]) -> list[int]:
         """
             Get the indexes of a given mnemonic from each sentence in it
@@ -476,6 +459,99 @@ class ThemeDict(dict):
         indexes = [each_fill_index for each_phrase in sentences
                    for each_fill_index in self.get_filling_indexes(each_phrase)]
         return indexes
+
+    def get_lead_mapping(self, syntactic_key):
+        lead_mapping = self[self[syntactic_key].restricted_by][syntactic_key].mapping
+        return lead_mapping
+
+    def get_led_by_index(self, syntactic_key: str):
+        """
+            Get the natural index of the leading word
+
+        Parameters
+        ----------
+        syntactic_key : str
+            The leading word to get the natural index from
+        Returns
+        -------
+        int
+            The natural index of the leading word
+        """
+        led_by_index = self.natural_index(self[syntactic_key].restricted_by)
+        return led_by_index
+
+    def get_lead_list(self, syntactic_key: str, sentence: list) -> list[str]:
+        """
+            Get the list of words led by the given syntactic word
+
+        Parameters
+        ----------
+        syntactic_key : str
+            The syntactic word which leads the list
+        sentence : list
+            The sentence to solve the leading when the desired list depends on the leading words
+        Returns
+        -------
+        list[str]
+            Return the list led by a syntactic word
+        """
+        if syntactic_key in self.prime_syntactic_leads:
+            lead_list = self[syntactic_key].total_words
+        else:
+            mapping = self.get_lead_mapping(syntactic_key)
+            leading_word = sentence[self.get_led_by_index(syntactic_key)]
+            lead_list = mapping[leading_word]
+        return lead_list
+
+    def assemble_sentence(self, data_bits: str) -> list[str]:
+        """
+            Build sentence using bits given following the dictionary filling order
+
+        Parameters
+        ----------
+        data_bits : str
+            The information as bits from the entropy and checksum
+            Each step from it represents an index to the list of restricted words
+
+        Returns
+        -------
+        list[str]
+            The resulting words ordered of sentence in natural language
+        """
+        bit_index = 0
+        current_sentence = [""] * len(self.filling_order)
+        for syntactic_key in self.filling_order:
+
+            bit_length = self[syntactic_key].bit_length
+            # Integer from substring of zeroes and ones representing index of current word within its list
+            word_index = int(data_bits[bit_index: bit_index + bit_length], 2)
+            bit_index += bit_length
+
+            list_of_words = self.get_lead_list(syntactic_key, current_sentence)
+            syntactic_order = self.natural_index(syntactic_key)
+            current_sentence[syntactic_order] = list_of_words[word_index]
+        return current_sentence
+
+    def get_sentences_from_bits(self, data_bits: str) -> list[str]:
+        """
+            Get the mnemonic sentences in the natural speech order from given string of bits
+
+        Parameters
+        ----------
+        data_bits : str
+            The bits of the entropy and checksum to get the sentences from
+        Returns
+        -------
+        list[str]
+            Return a list of words forming the sentences of the mnemonic
+        """
+        phrases_amount = len(data_bits) // self.bits_per_phrase
+        sentences = []
+        for phrase_index in range(phrases_amount):
+            sentence_index = self.bits_per_phrase * phrase_index
+            data_segment = data_bits[sentence_index: sentence_index + self.bits_per_phrase]
+            sentences += self.assemble_sentence(data_segment)
+        return sentences
 
 
 class Verifier:
@@ -905,57 +981,14 @@ class Mnemonic(object):
             error_message = "Number of bytes should be multiple of %s, but it is %s."
             raise ValueError(error_message % (least_multiple, len(data)))
 
-        bits_per_phrase = self.words_dictionary.bits_per_phrase
         hash_digest = hashlib.sha256(data).hexdigest()
         entropy_bits = bin(int.from_bytes(data, byteorder="big"))[2:].zfill(len(data) * 8)
         checksum_bits = bin(int(hash_digest, 16))[2:].zfill(256)[: len(data) * 8 // 32]
         data_bits = entropy_bits + checksum_bits
 
-        phrases_amount = len(data_bits) // bits_per_phrase
-        sentences = []
-        for phrase_index in range(phrases_amount):
-            sentence_index = bits_per_phrase * phrase_index
-            data_segment = data_bits[sentence_index: sentence_index + bits_per_phrase]
-            sentences += self.assemble_sentence(data_segment)
+        sentences = self.words_dictionary.get_sentences_from_bits(data_bits)
         mnemonic = self.delimiter.join(sentences)
         return mnemonic
-
-    def assemble_sentence(self, data_bits: str) -> list[str]:
-        """
-            Build sentence using bits given following the dictionary filling order
-
-        Parameters
-        ----------
-        data_bits : str
-            The information as bits from the entropy and checksum
-            Each step from it represents an index to the list of restricted words
-
-        Returns
-        -------
-        list[str]
-            The resulting words ordered of sentence in natural language
-        """
-        bit_index = 0
-        current_sentence = [""]*len(self.words_dictionary.filling_order)
-        for syntactic_key in self.words_dictionary.filling_order:
-            current_dictionary = self.words_dictionary[syntactic_key]
-
-            restricted_by = current_dictionary.restricted_by
-            if restricted_by != "NONE":
-                mapped_dictionary = self.words_dictionary[restricted_by][syntactic_key]
-                last_index = self.words_dictionary.natural_order.index(restricted_by)
-                last_word = current_sentence[last_index]
-                list_of_words = mapped_dictionary.mapping[last_word]
-            else:
-                list_of_words = current_dictionary.total_words
-
-            syntactic_order = self.words_dictionary.natural_order.index(syntactic_key)
-            bit_length = current_dictionary.bit_length
-            # Integer from substring of zeroes and ones representing index of current word within its list
-            word_dict_index = int(data_bits[bit_index: bit_index + bit_length], 2)
-            bit_index += bit_length
-            current_sentence[syntactic_order] = list_of_words[word_dict_index]
-        return current_sentence
 
     @staticmethod
     def convert_theme(mnemonic: Union[str, list[str]],
