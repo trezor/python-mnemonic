@@ -12,8 +12,8 @@
         ],
         "PLACE": {
             "BIT_LENGTH": 1,
-            "RESTRICTED_BY": "SUBJECT",
-            "RESTRICTS": [],
+            "LED_BY": "SUBJECT",
+            "LEADS": [],
             "TOTAL_LIST": [
                 "harddisk",
                 "network"
@@ -49,8 +49,8 @@
                     ]
                 }
             },
-            "RESTRICTED_BY": "VERB",
-            "RESTRICTS": [
+            "LED_BY": "VERB",
+            "LEADS": [
                 "PLACE"
             ],
             "TOTAL_LIST": [
@@ -63,8 +63,8 @@
         },
         "VERB": {
             "BIT_LENGTH": 1,
-            "RESTRICTED_BY": "NONE",
-            "RESTRICTS": [
+            "LED_BY": "NONE",
+            "LEADS": [
                 "SUBJECT"
             ],
             "SUBJECT": {
@@ -136,8 +136,8 @@
                     ]
                 }
             },
-            "RESTRICTED_BY": "VERB",
-            "RESTRICTS": [
+            "LED_BY": "VERB",
+            "LEADS": [
                 "SUBJECT",
                 "PLACE"
             ],
@@ -153,8 +153,8 @@
     "test_image_list": {
         "VERB": {
             "BIT_LENGTH": 1,
-            "RESTRICTED_BY": "NONE",
-            "RESTRICTS": [
+            "LED_BY": "NONE",
+            "LEADS": [
                 "SUBJECT"
             ],
             "SUBJECT": {
@@ -216,8 +216,8 @@
                     ]
                 }
             },
-            "RESTRICTED_BY": "VERB",
-            "RESTRICTS": [
+            "LED_BY": "VERB",
+            "LEADS": [
                 "PLACE"
             ],
             "TOTAL_LIST": [
@@ -231,8 +231,8 @@
     "test_enough_sublists": {
         "VERB": {
             "BIT_LENGTH": 2,
-            "RESTRICTED_BY": "NONE",
-            "RESTRICTS": [
+            "LED_BY": "NONE",
+            "LEADS": [
                 "SUBJECT"
             ],
             "SUBJECT": {
@@ -294,8 +294,8 @@
                     ]
                 }
             },
-            "RESTRICTED_BY": "VERB",
-            "RESTRICTS": [
+            "LED_BY": "VERB",
+            "LEADS": [
                 "PLACE"
             ],
             "TOTAL_LIST": [
@@ -310,8 +310,8 @@
     "test_complete_list": {
         "VERB": {
             "BIT_LENGTH": 1,
-            "RESTRICTED_BY": "NONE",
-            "RESTRICTS": [
+            "LED_BY": "NONE",
+            "LEADS": [
                 "SUBJECT"
             ],
             "SUBJECT": {

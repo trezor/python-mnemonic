@@ -7,8 +7,8 @@
     ],
     "WORDS": {
         "BIT_LENGTH": 11,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": [],
+        "LED_BY": "NONE",
+        "LEADS": [],
         "TOTAL_LIST": [
             "abandon",
 			"ability",

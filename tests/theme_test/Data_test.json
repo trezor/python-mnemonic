@@ -11,20 +11,20 @@
     ],
     "PLACE": {
         "BIT_LENGTH": 1,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "SUBJECT",
+        "LEADS": [],
         "TOTAL_LIST": []
     },
     "SUBJECT": {
         "BIT_LENGTH": 2,
-        "RESTRICTED_BY": "VERB",
-        "RESTRICTS": ["PLACE"],
+        "LED_BY": "VERB",
+        "LEADS": ["PLACE"],
         "TOTAL_LIST": []
     },
     "VERB": {
         "BIT_LENGTH": 1,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": ["SUBJECT"],
+        "LED_BY": "NONE",
+        "LEADS": ["SUBJECT"],
         "TOTAL_LIST": []
     },
     "VERSION": {

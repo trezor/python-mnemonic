@@ -227,8 +227,8 @@ def update_dictionary(main_dict, most_adequate_matrices_nc, relation_pairs, data
 
         if relation_pair[1] not in main_dict[relation_pair[0]].keys():
             main_dict[relation_pair[0]][relation_pair[1]] = {"IMAGE": [], "MAPPING": {}}
-        if relation_pair[1] not in main_dict[relation_pair[0]]["RESTRICTS"]:
-            main_dict[relation_pair[0]]["RESTRICTS"].append(relation_pair[1])
+        if relation_pair[1] not in main_dict[relation_pair[0]]["LEADS"]:
+            main_dict[relation_pair[0]]["LEADS"].append(relation_pair[1])
 
         # Create a list of unique values "IMAGE"
         image_list = [each_word for each_row in most_adequate_matrix_nc for each_word in each_row]
@@ -240,7 +240,7 @@ def update_dictionary(main_dict, most_adequate_matrices_nc, relation_pairs, data
         filling_order_index = [[each_row[0] for each_row in data_columns].index(each_word[0]) for each_word in
                                relation_pairs]
         main_dict[relation_pair[0]]["TOTAL_LIST"] = data_columns[filling_order_index[matrix_index]][1:]
-        if not main_dict[relation_pair[1]]["RESTRICTS"]:
+        if not main_dict[relation_pair[1]]["LEADS"]:
             main_dict[relation_pair[1]]["TOTAL_LIST"] = image_list
 
         # Insert word lists in dictionaries
@@ -346,15 +346,15 @@ def word_swap(file_name: str,
         loaded_dict = file_load
 
     key_existence_condition = [replace_by not in loaded_dict[syntactic_replace_by][each_restriction].keys() for
-                               each_restriction in loaded_dict[syntactic_replace_by]["RESTRICTS"]]
+                               each_restriction in loaded_dict[syntactic_replace_by]["LEADS"]]
 
-    condition = any(key_existence_condition) or len(loaded_dict[syntactic_replace_by]["RESTRICTS"]) == 0
+    condition = any(key_existence_condition) or len(loaded_dict[syntactic_replace_by]["LEADS"]) == 0
     if (replace_by not in loaded_dict[syntactic_replace_by]["TOTAL_LIST"] or not condition) and copy_from is None:
         raise ConfigurationError(
             "The key \"%s\" does not exist in the lists of \"%s\""
             % (replace_by, syntactic_replace_by)
         )
-    condition = all(key_existence_condition) or len(loaded_dict[syntactic_replace_by]["RESTRICTS"]) == 0
+    condition = all(key_existence_condition) or len(loaded_dict[syntactic_replace_by]["LEADS"]) == 0
     if replace_by in loaded_dict[syntactic_replace_by]["TOTAL_LIST"] and condition and copy_from is not None:
         raise ConfigurationError(
             "The key \"%s\" already exist in the lists of \"%s\""
@@ -398,7 +398,7 @@ def word_swap(file_name: str,
             [loaded_dict[syntactic_replace_by][each_restriction]["MAPPING"].update(
                 {replace_by: loaded_dict[syntactic_replace_by][each_restriction]["MAPPING"][copy_from]}
             ) for
-             each_restriction in loaded_dict[syntactic_replace_by]["RESTRICTS"]]
+             each_restriction in loaded_dict[syntactic_replace_by]["LEADS"]]
 
         save_files(loaded_dict, file_name)
 

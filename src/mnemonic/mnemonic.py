@@ -56,8 +56,8 @@ class ThemeDict(dict):
     """
     FILL_SEQUENCE_KEY = "FILLING_ORDER"
     NATURAL_SEQUENCE_KEY = "NATURAL_ORDER"
-    RESTRICTS_KW = "RESTRICTS"
-    RESTRICTED_KW = "RESTRICTED_BY"
+    LEADS_KW = "LEADS"
+    LED_KW = "LED_BY"
     TOTALS_KW = "TOTAL_LIST"
     IMAGE_KW = "IMAGE"
     MAPPING_KW = "MAPPING"
@@ -109,10 +109,10 @@ class ThemeDict(dict):
         return natural_order
 
     @property
-    def restricts(self) -> list:
-        """ The list of words restricted by this dictionary"""
-        restricts = self[self.RESTRICTS_KW] if self.RESTRICTS_KW in self.keys() else []
-        return restricts
+    def leads(self) -> list:
+        """ The list of words led by this dictionary"""
+        leads = self[self.LEADS_KW] if self.LEADS_KW in self.keys() else []
+        return leads
 
     @property
     def total_words(self) -> list:
@@ -122,13 +122,13 @@ class ThemeDict(dict):
 
     @property
     def image(self) -> list:
-        """ The list of all words restricted by current syntactic word"""
+        """ The list of all words led by current syntactic word"""
         image = self[self.IMAGE_KW] if self.IMAGE_KW in self.keys() else []
         return image
 
     @property
     def mapping(self) -> 'ThemeDict':
-        """ The list of all words restricted by this syntactic word"""
+        """ The list of all words led by this syntactic word"""
         mapping = ThemeDict(self[self.MAPPING_KW]) if self.MAPPING_KW in self.keys() else ThemeDict()
         return mapping
 
@@ -139,10 +139,10 @@ class ThemeDict(dict):
         return bit_length
 
     @property
-    def restricted_by(self) -> str:
-        """ The word that restricts this dictionary"""
-        restricted_by = self[self.RESTRICTED_KW] if self.RESTRICTED_KW in self.keys() else ""
-        return restricted_by
+    def led_by(self) -> str:
+        """ The word that leads this dictionary"""
+        led_by = self[self.LED_KW] if self.LED_KW in self.keys() else ""
+        return led_by
 
     def get_led_by_mapping(self, led_by: str) -> 'ThemeDict':
         """
@@ -158,7 +158,7 @@ class ThemeDict(dict):
         ThemeDict
             The dict with the mapping lists of words
         """
-        syntactic_leads = self[led_by].restricted_by
+        syntactic_leads = self[led_by].led_by
         led_by_mapping = self[syntactic_leads][led_by].mapping
         return led_by_mapping
 
@@ -198,7 +198,7 @@ class ThemeDict(dict):
         """ The list of restrictions used in this theme"""
         restriction_sequence = [(syntactic_word, each_restriction)
                                 for syntactic_word in self.filling_order
-                                for each_restriction in self[syntactic_word].restricts]
+                                for each_restriction in self[syntactic_word].leads]
         return restriction_sequence
 
     def natural_index(self, syntactic_word: str) -> int:
@@ -233,16 +233,16 @@ class ThemeDict(dict):
     @property
     def restriction_indexes(self) -> list[tuple[int, int]]:
         """ The indexes of the restriction sequence of the sentence in natural speech"""
-        restricts_indexes = [(self.natural_index(each_restrict[0]),
-                              self.natural_index(each_restrict[1]))
-                             for each_restrict in self.restriction_sequence]
-        return restricts_indexes
+        leads_indexes = [(self.natural_index(each_restrict[0]),
+                          self.natural_index(each_restrict[1]))
+                         for each_restrict in self.restriction_sequence]
+        return leads_indexes
 
     @property
     def prime_syntactic_leads(self) -> list[str]:
         """ Syntactic words which does not follow any other syntactic word"""
         prime_syntactic_leads = [each_word for each_word in self.filling_order
-                                 if self[each_word].restricted_by == "NONE"]
+                                 if self[each_word].led_by == "NONE"]
         return prime_syntactic_leads
 
     @staticmethod
@@ -294,7 +294,7 @@ class ThemeDict(dict):
         -------
         list[tuple[str, str]]
             The list of restriction relation of the words from the given sentence
-            ordered as a tuple of restricting word and restricted word respectively
+            ordered as a tuple of leading word and led word respectively
         """
         restriction_pairs = [(sentence[each_pair[0]],
                               sentence[each_pair[1]])
@@ -304,14 +304,14 @@ class ThemeDict(dict):
     def get_relation_indexes(self, relation: tuple) -> tuple[int, int]:
         """
             Give the indexes from a given tuple of relation syntactic and mnemonic words
-            If any word given only restricts and not restricted, find the indexes in the total_words list
+            If any word given only leads and not led, find the indexes in the total_words list
 
         Parameters
         ----------
         relation : tuple
             The relation given to find the index from the lists
-            It can be whether a tuple of syntactic restricts and the mnemonic restricts
-             or a tuple of tuples of syntactic restricts and restricted and mnemonic restricts and restricted
+            It can be whether a tuple of syntactic leads and the mnemonic leads
+             or a tuple of tuples of syntactic leads and led and mnemonic leads and led
              e.g. ("VERB", word_verb) or (("VERB", "SUBJECT"), (word_verb, word_subject))
 
         Returns
@@ -321,19 +321,19 @@ class ThemeDict(dict):
         """
         syntactic_relation, mnemonic_relation = relation
         if isinstance(syntactic_relation, str) and isinstance(mnemonic_relation, str):
-            synt_restricts = syntactic_relation
-            mnemo_restricts = mnemonic_relation
-            words_list = self[synt_restricts].total_words
+            synt_leads = syntactic_relation
+            mnemo_leads = mnemonic_relation
+            words_list = self[synt_leads].total_words
             mnemo_index = self.natural_index(syntactic_relation)
-            word_index = words_list.index(mnemo_restricts)
+            word_index = words_list.index(mnemo_leads)
         else:
             syntactic_relation, mnemonic_relation = relation
-            synt_restricts, synt_restricted = syntactic_relation
-            mnemo_restricts, mnemo_restricted = mnemonic_relation
-            mnemo_index = self.natural_index(synt_restricted)
-            restriction_dict = self[synt_restricts][synt_restricted].mapping
-            words_list = restriction_dict[mnemo_restricts]
-            word_index = words_list.index(mnemo_restricted)
+            synt_leads, synt_led = syntactic_relation
+            mnemo_leads, mnemo_led = mnemonic_relation
+            mnemo_index = self.natural_index(synt_led)
+            restriction_dict = self[synt_leads][synt_led].mapping
+            words_list = restriction_dict[mnemo_leads]
+            word_index = words_list.index(mnemo_led)
         return mnemo_index, word_index
 
     def get_natural_indexes(self, sentence: Union[str, list]) -> list[int]:
@@ -461,7 +461,7 @@ class ThemeDict(dict):
         return indexes
 
     def get_lead_mapping(self, syntactic_key):
-        lead_mapping = self[self[syntactic_key].restricted_by][syntactic_key].mapping
+        lead_mapping = self[self[syntactic_key].led_by][syntactic_key].mapping
         return lead_mapping
 
     def get_led_by_index(self, syntactic_key: str):
@@ -477,7 +477,7 @@ class ThemeDict(dict):
         int
             The natural index of the leading word
         """
-        led_by_index = self.natural_index(self[syntactic_key].restricted_by)
+        led_by_index = self.natural_index(self[syntactic_key].led_by)
         return led_by_index
 
     def get_lead_list(self, syntactic_key: str, sentence: list) -> list[str]:
@@ -511,7 +511,7 @@ class ThemeDict(dict):
         ----------
         data_bits : str
             The information as bits from the entropy and checksum
-            Each step from it represents an index to the list of restricted words
+            Each step from it represents an index to the list of led words
 
         Returns
         -------
@@ -563,7 +563,7 @@ class Verifier:
 
     @property
     def next_dictionary(self) -> ThemeDict:
-        """ The dictionary of the current restricted syntactic word"""
+        """ The dictionary of the current led syntactic word"""
         next_dictionary = ThemeDict(self.theme_loaded[self.current_restriction]) \
             if self.current_restriction in self.theme_loaded.keys() else ThemeDict()
         return next_dictionary
@@ -576,11 +576,11 @@ class Verifier:
         return current_dict
 
     @property
-    def restricted_words(self) -> ThemeDict:
+    def led_words(self) -> ThemeDict:
         """ The mapped words of the current dictionary"""
-        restricted_words = ThemeDict(self.current_dict[self.current_restriction]) \
+        led_words = ThemeDict(self.current_dict[self.current_restriction]) \
             if self.current_restriction in self.current_dict.keys() else ThemeDict()
-        return restricted_words
+        return led_words
 
     def set_verify_theme(self, theme_loaded: ThemeDict):
         """ Set the dictionary to be verified"""
@@ -597,7 +597,7 @@ class Verifier:
             self.check_filling_sequence()
             self.check_restriction_sequence()
 
-            for current_restriction in self.current_dict.restricts:
+            for current_restriction in self.current_dict.leads:
                 self.current_restriction = current_restriction
 
                 self.check_image_list()
@@ -610,7 +610,7 @@ class Verifier:
 
     def check_filling_sequence(self):
         """ Verify if the filling order has a consistence sequence with restriction sequence"""
-        restrict_by = self.current_dict.restricted_by
+        restrict_by = self.current_dict.led_by
         filling_order = self.theme_loaded.filling_order
         if restrict_by == "NONE":
             return
@@ -625,33 +625,33 @@ class Verifier:
         """ Verify if the restriction has a consistence sequence"""
         filling_order = self.theme_loaded.filling_order
         if any([filling_order.index(each_restriction) >= filling_order.index(each_next_restriction)
-                for each_restriction in self.current_dict.restricts
-                for each_next_restriction in self.theme_loaded[each_restriction].restricts]):
+                for each_restriction in self.current_dict.leads
+                for each_next_restriction in self.theme_loaded[each_restriction].leads]):
             error_message = "List sequence inconsistent restriction order for %s."
             raise VerificationFailed(error_message % self.current_word)
 
     def check_image_list(self):
         """ Verify if image contains all mapped words"""
         all_keys = {next_restriction: self.next_dictionary[next_restriction].mapping.keys()
-                    for next_restriction in self.next_dictionary.restricts}
+                    for next_restriction in self.next_dictionary.leads}
         if not all([image_word in each_restriction
-                    for image_word in self.restricted_words.image
+                    for image_word in self.led_words.image
                     for each_restriction in all_keys.values()]):
-            error_message = "A word from the image list of %s restricted by " \
+            error_message = "A word from the image list of %s led by " \
                             "%s is not contained in the mapping keys list"
             raise VerificationFailed(error_message % (self.current_restriction, self.current_word))
 
     def check_keys_list(self):
         """ Verify if all keys are within in the total lists"""
         if not all([each_map_key in self.current_dict.total_words
-                    for each_map_key in self.restricted_words.mapping.keys()]):
+                    for each_map_key in self.led_words.mapping.keys()]):
             error_message = "All keys should be listed in totals, but it is not, " \
                             "a key in dictionary of %s is not in total of %s keys."
             raise VerificationFailed(error_message % (self.current_restriction, self.current_word))
 
     def check_enough_sublists(self):
         """ Verify the amount of mapping keys"""
-        mapping_size = len(self.restricted_words.mapping.keys())
+        mapping_size = len(self.led_words.mapping.keys())
         bits_length = 2 ** self.current_dict.bit_length
         if not mapping_size >= bits_length:
             error_message = "The dictionary of %s should contain %d keys words in %s list, " \
@@ -666,7 +666,7 @@ class Verifier:
         # The length of the lists must be two raised to the number of bits
         line_bits_length = 2 ** self.next_dictionary.bit_length
         # Check for each line in the keys list
-        for mapping_key in self.restricted_words.mapping.keys():
+        for mapping_key in self.led_words.mapping.keys():
             self._check_enough_keys(mapping_key, line_bits_length)
             self._check_complete_list(mapping_key)
             self._check_space_char_specific(mapping_key)
@@ -682,7 +682,7 @@ class Verifier:
             The length of the list of mapped words
         """
         # Remove duplicates with dict.fromkeys(x)
-        list_length = len(dict.fromkeys(self.restricted_words.mapping[mapping_key]))
+        list_length = len(dict.fromkeys(self.led_words.mapping[mapping_key]))
         # Check whether length has correct value
         if list_length != line_bits_length:
             error_message = "Key %s, in %s restriction, should contain %d words, but it contains %d words."
@@ -690,7 +690,7 @@ class Verifier:
                                                       line_bits_length, list_length))
 
     def _check_alphabetically_order(self,  mapping_key: list[str]):
-        mapped_words = self.restricted_words.mapping[mapping_key]
+        mapped_words = self.led_words.mapping[mapping_key]
         if mapped_words != sorted(mapped_words):
             error_message = "The list of mapped words of %s, in %s restriction, is not alphabetically ordered"
             raise VerificationFailed(error_message % (mapping_key, self.current_restriction))
@@ -704,7 +704,7 @@ class Verifier:
             The list of mapped keys
         """
         if any([word not in self.next_dictionary.total_words
-                for word in self.restricted_words.mapping[mapping_key]]):
+                for word in self.led_words.mapping[mapping_key]]):
             error_message = "A word from %s dictionary is not found in list of total words in %s."
             raise VerificationFailed(error_message % (self.current_word, self.current_restriction))
 
@@ -726,7 +726,7 @@ class Verifier:
         mapping_key : list[str]
             The list of mapped keys
         """
-        sublists = self.restricted_words.mapping[mapping_key]
+        sublists = self.led_words.mapping[mapping_key]
         space_in_sublist = " " in "".join(sublists)
         if space_in_sublist:
             error_message = "Space character found in sublist of %s %s"

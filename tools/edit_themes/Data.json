@@ -1,8 +1,8 @@
 {
     "ADJECTIVE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "OBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "OBJECT",
+        "LEADS": [],
         "TOTAL_LIST": []
     },
     "FILLING_ORDER": [
@@ -23,32 +23,32 @@
     ],
     "OBJECT": {
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "SUBJECT",
+        "LEADS": [],
         "TOTAL_LIST": []
     },
     "PLACE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "POSSESSIVE",
-        "RESTRICTS": [],
+        "LED_BY": "POSSESSIVE",
+        "LEADS": [],
         "TOTAL_LIST": []
     },
     "POSSESSIVE": {
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": ["PLACE"],
+        "LED_BY": "SUBJECT",
+        "LEADS": ["PLACE"],
         "TOTAL_LIST": []
     },
     "SUBJECT": {
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "VERB",
-        "RESTRICTS": ["OBJECT", "POSSESSIVE"],
+        "LED_BY": "VERB",
+        "LEADS": ["OBJECT", "POSSESSIVE"],
         "TOTAL_LIST": []
     },
     "VERB": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": ["SUBJECT"],
+        "LED_BY": "NONE",
+        "LEADS": ["SUBJECT"],
         "TOTAL_LIST": []
     },
     "VERSION": {

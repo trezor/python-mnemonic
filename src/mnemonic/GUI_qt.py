@@ -897,10 +897,10 @@ class TableSelectorTab(BaseTab):
         for filling_order_word in filling_order[1:check_size]:
             if not all(value in natural_order[:check_size] for value in filling_order[:check_size]):
                 continue
-            restricted_by = themed_dict[filling_order_word].restricted_by
-            restricted_by_word = checklist[natural_order.index(restricted_by) + phrases_shift]
+            led_by = themed_dict[filling_order_word].led_by
+            led_by_word = checklist[natural_order.index(led_by) + phrases_shift]
             natural_index = themed_dict.natural_index(filling_order_word)
-            word_mapping = themed_dict[restricted_by][filling_order_word].mapping[restricted_by_word]
+            word_mapping = themed_dict[led_by][filling_order_word].mapping[led_by_word]
             state = False if checklist[natural_index + phrases_shift] not in word_mapping else state
 
         self.set_validation_colored_msg(state)

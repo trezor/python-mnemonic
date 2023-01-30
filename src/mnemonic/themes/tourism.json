@@ -1,8 +1,8 @@
 {
     "ADJECTIVE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "PLACE",
-        "RESTRICTS": [],
+        "LED_BY": "PLACE",
+        "LEADS": [],
         "TOTAL_LIST": [
             "abandoned",
             "adventurous",
@@ -79,8 +79,8 @@
     ],
     "OBJECT": {
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "SUBJECT",
+        "LEADS": [],
         "TOTAL_LIST": [
             "asthma_pump",
             "authentic_cuisine",
@@ -5675,8 +5675,8 @@
             }
         },
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "POSSESSIVE",
-        "RESTRICTS": [
+        "LED_BY": "POSSESSIVE",
+        "LEADS": [
             "ADJECTIVE"
         ],
         "TOTAL_LIST": [
@@ -10560,8 +10560,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [
+        "LED_BY": "SUBJECT",
+        "LEADS": [
             "PLACE"
         ],
         "TOTAL_LIST": [
@@ -28981,8 +28981,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "VERB",
-        "RESTRICTS": [
+        "LED_BY": "VERB",
+        "LEADS": [
             "OBJECT",
             "POSSESSIVE"
         ],
@@ -29128,8 +29128,8 @@
     },
     "VERB": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": [
+        "LED_BY": "NONE",
+        "LEADS": [
             "SUBJECT"
         ],
         "SUBJECT": {

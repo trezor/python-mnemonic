@@ -1,8 +1,8 @@
 {
     "ADJECTIVE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "OBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "OBJECT",
+        "LEADS": [],
         "TOTAL_LIST": [
             "autographed",
             "awesome",
@@ -1510,8 +1510,8 @@
             }
         },
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [
+        "LED_BY": "SUBJECT",
+        "LEADS": [
             "ADJECTIVE"
         ],
         "TOTAL_LIST": [
@@ -5931,8 +5931,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [
+        "LED_BY": "SUBJECT",
+        "LEADS": [
             "PLACE"
         ],
         "TOTAL_LIST": [
@@ -6005,8 +6005,8 @@
     },
     "PLACE": {
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "OTHER_PERSON",
-        "RESTRICTS": [],
+        "LED_BY": "OTHER_PERSON",
+        "LEADS": [],
         "TOTAL_LIST": [
             "airplane",
             "amusement_park",
@@ -12705,8 +12705,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "VERB",
-        "RESTRICTS": [
+        "LED_BY": "VERB",
+        "LEADS": [
             "OBJECT",
             "OTHER_PERSON"
         ],
@@ -12780,8 +12780,8 @@
     },
     "VERB": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": [
+        "LED_BY": "NONE",
+        "LEADS": [
             "SUBJECT"
         ],
         "SUBJECT": {

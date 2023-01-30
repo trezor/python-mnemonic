@@ -1,8 +1,8 @@
 {
     "ADJECTIVE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "OBJECT",
-        "RESTRICTS": [],
+        "LED_BY": "OBJECT",
+        "LEADS": [],
         "TOTAL_LIST": [
             "aboriginal",
             "acidic",
@@ -6698,8 +6698,8 @@
             }
         },
         "BIT_LENGTH": 6,
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [
+        "LED_BY": "SUBJECT",
+        "LEADS": [
             "ADJECTIVE"
         ],
         "TOTAL_LIST": [
@@ -6895,8 +6895,8 @@
     },
     "PLACE": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "POSSESSIVE",
-        "RESTRICTS": [],
+        "LED_BY": "POSSESSIVE",
+        "LEADS": [],
         "TOTAL_LIST": [
             "abyss",
             "ale_house",
@@ -14172,8 +14172,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "SUBJECT",
-        "RESTRICTS": [
+        "LED_BY": "SUBJECT",
+        "LEADS": [
             "PLACE"
         ],
         "TOTAL_LIST": [
@@ -41832,8 +41832,8 @@
                 ]
             }
         },
-        "RESTRICTED_BY": "VERB",
-        "RESTRICTS": [
+        "LED_BY": "VERB",
+        "LEADS": [
             "OBJECT",
             "POSSESSIVE"
         ],
@@ -42047,8 +42047,8 @@
     },
     "VERB": {
         "BIT_LENGTH": 5,
-        "RESTRICTED_BY": "NONE",
-        "RESTRICTS": [
+        "LED_BY": "NONE",
+        "LEADS": [
             "SUBJECT"
         ],
         "SUBJECT": {
