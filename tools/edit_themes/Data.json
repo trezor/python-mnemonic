@@ -9,46 +9,55 @@
         "VERB",
         "SUBJECT",
         "OBJECT",
-        "POSSESSIVE",
-        "PLACE",
-        "ADJECTIVE"
+        "ADJECTIVE",
+        "WILDCARD",
+        "PLACE"
     ],
     "NATURAL_ORDER": [
         "SUBJECT",
         "VERB",
-        "OBJECT",
         "ADJECTIVE",
-        "PLACE",
-        "POSSESSIVE"
+        "OBJECT",
+        "WILDCARD",
+        "PLACE"
     ],
     "OBJECT": {
         "BIT_LENGTH": 6,
         "LED_BY": "SUBJECT",
-        "LEADS": [],
+        "LEADS": [
+            "ADJECTIVE"
+        ],
         "TOTAL_LIST": []
     },
     "PLACE": {
         "BIT_LENGTH": 5,
-        "LED_BY": "POSSESSIVE",
+        "LED_BY": "WILDCARD",
         "LEADS": [],
         "TOTAL_LIST": []
     },
-    "POSSESSIVE": {
+    "WILDCARD": {
         "BIT_LENGTH": 6,
         "LED_BY": "SUBJECT",
-        "LEADS": ["PLACE"],
+        "LEADS": [
+            "PLACE"
+        ],
         "TOTAL_LIST": []
     },
     "SUBJECT": {
         "BIT_LENGTH": 6,
         "LED_BY": "VERB",
-        "LEADS": ["OBJECT", "POSSESSIVE"],
+        "LEADS": [
+            "OBJECT",
+            "WILDCARD"
+        ],
         "TOTAL_LIST": []
     },
     "VERB": {
         "BIT_LENGTH": 5,
         "LED_BY": "NONE",
-        "LEADS": ["SUBJECT"],
+        "LEADS": [
+            "SUBJECT"
+        ],
         "TOTAL_LIST": []
     },
     "VERSION": {

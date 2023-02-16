@@ -146,80 +146,59 @@ def remove_collisions(most_adequate_matrices, adequacy_matrices, data_rows):
             % (len(most_adequate_matrices), len(data_rows))
         )
 
-    adequacy_matrices_nc = []
-    for relation_index in range(len(most_adequate_matrices)):
-        each_adequate_matrix = most_adequate_matrices[relation_index]
-
-        # Concatenate first two letters of each word
-        first_letters = [[each_column[row_index][:2]
-                          for row_index in range(len(each_column))]
-                         for each_column in each_adequate_matrix]
-        first_letters_string = [" ".join(each_two_letters) for each_two_letters in first_letters]
-
-        # Remove collisions of the first two letters
-        adequacy_matrix_nc = []
-        for word_index in range(len(first_letters_string)):
-            adequacy_index = []
-            for char_index in range(len(each_adequate_matrix[word_index])):
-                n = 2
-                sub = 0
-                while n < (char_index + 0) * 3:
-                    if str(first_letters_string[word_index][:n]).__contains__(
-                            each_adequate_matrix[word_index][char_index][:2]):
-                        sub = 1
-                        break
-                    n += 3
-                adequacy_index.append(
-                    adequacy_matrices[relation_index][word_index][data_rows[relation_index].index(
-                        each_adequate_matrix[word_index][char_index]) - 1] - sub)
-            adequacy_matrix_nc.append(adequacy_index)
-        adequacy_matrices_nc.append(adequacy_matrix_nc)
-    return adequacy_matrices_nc
-
-
-def sort_adequate(main_dict, adequacy_matrices, data_rows, relation_pairs):
-    # It sorts the most adequate values without collisions
-    if len(adequacy_matrices) != len(data_rows):
-        error_message = "Number of adequacy matrices %d is different than data rows %d"
-        raise ValueError(error_message % (len(adequacy_matrices), len(data_rows)))
-    if len(adequacy_matrices) != len(relation_pairs):
-        error_message = "Number of adequacy matrices %d is different than the relation_pairs %d"
-        raise ValueError(error_message % (len(adequacy_matrices), len(relation_pairs)))
-
     most_adequate_matrices_nc = []
-    for each_matrix_nc in adequacy_matrices:
-        each_matrix_index = adequacy_matrices.index(each_matrix_nc)
-        adequacy_matrix = adequacy_matrices[each_matrix_index]
-        bits = 2 ** (main_dict[relation_pairs[each_matrix_index][1]]["BIT_LENGTH"])
+    for each_adequate_matrix in most_adequate_matrices:
         most_adequate_matrix_nc = []
-        for column_index in range(len(each_matrix_nc)):
-            adequacy_sorted = sorted(each_matrix_nc[column_index], reverse=True)
-            index_of_sorted = [adequacy_matrix[column_index].index(adequacy_sorted[each_bit]) + 1
-                               for each_bit in range(bits)]
-            most_adequate_row = [data_rows[each_matrix_index][index_of_sorted[each_bit]]
-                                 for each_bit in range(bits)]
-            most_adequate_matrix_nc.append(most_adequate_row)
+        for each_column in each_adequate_matrix:
+            # Copying the list without referencing it
+            column_nc = list(each_column)
+            first_letters = []
+            for each_word in each_column:
+                if each_word[0:2] in first_letters:
+                    # Pop the word and send it to the end of the list
+                    column_nc.append(column_nc.pop(column_nc.index(each_word)))
+                first_letters.append(each_word[0:2])
+            most_adequate_matrix_nc.append(column_nc)
         most_adequate_matrices_nc.append(most_adequate_matrix_nc)
     return most_adequate_matrices_nc
 
 
-def update_dictionary(main_dict, most_adequate_matrices_nc, relation_pairs, data_columns):
+def sort_adequate(main_dict, most_adequate_matrices, relation_pairs):
+    # It sorts the most adequate values without collisions
+    if len(most_adequate_matrices) != len(relation_pairs):
+        error_message = "Number of adequate matrices %d is different than the relation pairs %d"
+        raise ValueError(error_message % (len(most_adequate_matrices), len(relation_pairs)))
+
+    sorted_matrices_nc = []
+    for matrix_index in range(len(most_adequate_matrices)):
+        each_matrix_nc = most_adequate_matrices[matrix_index]
+        bits = main_dict[relation_pairs[matrix_index][1]]["BIT_LENGTH"]
+        final_length = 2 ** bits
+        sorted_matrix_nc = []
+        for each_column in each_matrix_nc:
+            adequate_sorted = sorted(each_column[:final_length], reverse=True)
+            sorted_matrix_nc.append(adequate_sorted)
+        sorted_matrices_nc.append(sorted_matrix_nc)
+    return sorted_matrices_nc
+
+
+def update_dictionary(main_dict, most_adequate_matrices, relation_pairs, data_columns):
     # It formats the dictionary with keys and lists of words
-    if len(most_adequate_matrices_nc) != len(data_columns):
+    if len(most_adequate_matrices) != len(data_columns):
         raise ValueError(
             "Number of non-conflicted matrices \"%d\" is different than data columns \"%d\","
-            % (len(most_adequate_matrices_nc), len(data_columns))
+            % (len(most_adequate_matrices), len(data_columns))
         )
-    if len(most_adequate_matrices_nc) != len(relation_pairs):
+    if len(most_adequate_matrices) != len(relation_pairs):
         raise ValueError(
             "Number of non-conflicted matrices \"%d\" is different than the relation_pairs \"%d\","
-            % (len(most_adequate_matrices_nc), len(relation_pairs))
+            % (len(most_adequate_matrices), len(relation_pairs))
         )
 
     least_adequate_dict = {"ID": "least_adequate"}
-    for matrix_index in range(len(most_adequate_matrices_nc)):
+    for matrix_index in range(len(most_adequate_matrices)):
         relation_pair = relation_pairs[matrix_index]
-        most_adequate_matrix_nc = most_adequate_matrices_nc[matrix_index]
+        most_adequate_matrix_nc = most_adequate_matrices[matrix_index]
         if relation_pair[0] not in least_adequate_dict.keys():
             least_adequate_dict[relation_pair[0]] = {relation_pair[1]: {}}
         else:
@@ -261,7 +240,7 @@ def serialize_dict(dict_to_serialize: dict):
     serialization = ""
     for each_key in dict_to_serialize:
         if each_key == "VERSION":
-            return serialization
+            continue
         serialization += each_key
         if type(dict_to_serialize[each_key]) == dict:
             serialization += serialize_dict(dict_to_serialize[each_key])
@@ -301,25 +280,23 @@ def save_files(main_dict, file_name, themes_directory=None):
 def main():
     themes_directory = Path("edit_themes")
     main_dict, relation_matrices_string = open_files(themes_directory)
-    # global loaded_dict
-    # loaded_dict = main_dict
+
     start_indexes, end_indexes, relation_indexes = find_header_indexes(main_dict, relation_matrices_string)
     words_matrices, relation_matrices, relation_pairs = split_matrices(
         relation_matrices_string, start_indexes, end_indexes, relation_indexes
     )
     adequacy_matrices, data_columns, data_rows = matrix_product(words_matrices, relation_matrices)
     most_adequate_matrices = most_adequate(adequacy_matrices, data_rows)
-    adequacy_matrices_nc = remove_collisions(most_adequate_matrices, adequacy_matrices, data_rows)
-    # global most_adequate_matrices_nc
-    most_adequate_matrices_nc = sort_adequate(main_dict, adequacy_matrices_nc, data_rows, relation_pairs)
+    most_adequate_matrices_nc = remove_collisions(most_adequate_matrices, adequacy_matrices, data_rows)
+    most_adequate_matrices_nc = sort_adequate(main_dict, most_adequate_matrices_nc, relation_pairs)
     main_dict = update_dictionary(
         main_dict, most_adequate_matrices_nc, relation_pairs, data_columns
     )
-    # serialized_dict = serialize_dict(main_dict)
-    # bytes_dict = dict_to_bytes(serialized_dict)
-    # main_dict = calculate_version(bytes_dict, main_dict)
+
+    serialized_dict = serialize_dict(main_dict)
+    bytes_dict = dict_to_bytes(serialized_dict)
+    main_dict = calculate_version(bytes_dict, main_dict)
     save_files(main_dict, "main.json", themes_directory)
-    # return main_dict, most_adequate_matrices_nc
 
 
 def word_swap(file_name: str,
