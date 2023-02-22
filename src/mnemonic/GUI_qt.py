@@ -93,7 +93,6 @@ class MnemonicGeneratorTab(BaseTab):
         self.last_text = ""
         self.password_lines = []
         self.last_n_phrases = 0
-        self.valid_checkboxes = True
 
         # Widgets instantiation
         self.text_box = QTextEdit(self)
@@ -108,9 +107,7 @@ class MnemonicGeneratorTab(BaseTab):
         self.save_button = QPushButton(self)
         self.save_msg = QLabel(self)
         self.copy_msg = QLabel(self)
-        self.check_case.setEnabled(False)
-        self.check_char.setEnabled(False)
-        self.check_number.setEnabled(False)
+        self.enable_checkboxes()
 
     def config_tab(self):
         """ Set up widgets, config texts, commands and variables """
@@ -177,13 +174,18 @@ class MnemonicGeneratorTab(BaseTab):
         self.select_phrases.setValue(default_value)
         self.select_phrases.setWrapping(True)
 
-    def enable_checkboxes(self):
-        """ Enable or disable the checkboxes according to the theme selected and previous phrase generations"""
-        if self.valid_checkboxes:
-            state = self.is_bip39_theme
-            self.check_case.setEnabled(not state)
-            self.check_char.setEnabled(not state)
-            self.check_number.setEnabled(not state)
+    def enable_checkboxes(self, enable: bool = True):
+        """
+            Enable or disable the password checkboxes all together
+
+        Parameters
+        ----------
+        enable : bool
+            Enable or disable the checkboxes
+        """
+        self.check_case.setEnabled(enable)
+        self.check_char.setEnabled(enable)
+        self.check_number.setEnabled(enable)
 
     def generate_text(self):
         """ Call generate_format which build a mnemonic phrase in Formosa standard then updates displayed text"""
@@ -199,12 +201,16 @@ class MnemonicGeneratorTab(BaseTab):
         self.last_n_phrases = phrase_size
 
         self.update_text()
-        if not self.is_bip39_theme and self.valid_checkboxes:
+        self.change_password()
+
+    def change_password(self):
+        """ Change characters in passwords all together"""
+        if self.check_number.isChecked():
             self.insert_number()
+        if self.check_char.isChecked():
             self.insert_spc_char()
+        if self.check_case.isChecked():
             self.insert_swap_case()
-        else:
-            self.valid_checkboxes = False
 
     def update_text(self):
         """ Insert text in the box of Mnemonic Generator tab"""
@@ -223,7 +229,6 @@ class MnemonicGeneratorTab(BaseTab):
 
     def clear_text(self):
         """ Clear out the text box, copy label and save label in the Mnemonic Generator tab"""
-        self.valid_checkboxes = True
         self.enable_checkboxes()
         self.save_msg.hide()
         self.copy_msg.hide()
@@ -239,14 +244,14 @@ class MnemonicGeneratorTab(BaseTab):
 
     def insert_number(self):
         """ Change an ordinary character to a number"""
-        to_replace = ["a", "e", "i", "o", "b", "g", "t"]
-        replace_by = ["4", "3", "1", "0", "8", "6", "7"]
+        to_replace = ["a", "b", "e", "g", "i", "o", "q", "s", "t"]
+        replace_by = ["4", "8", "3", "6", "1", "0", "9", "5", "7"]
         self.insert_character(to_replace, replace_by, self.check_number.isChecked())
 
     def insert_spc_char(self):
         """ Change an ordinary character to a special character"""
-        to_replace = ["c", "h", "l", "s", "j"]
-        replace_by = ["¢", "#", "£", "$", "!"]
+        to_replace = ["a", "c", "e", "h", "j", "l", "s", "t", "z"]
+        replace_by = ["@", "¢", "&", "#", "!", "£", "$", "+", "%"]
         self.insert_character(to_replace, replace_by, self.check_char.isChecked())
 
     def insert_swap_case(self):
@@ -258,7 +263,7 @@ class MnemonicGeneratorTab(BaseTab):
     def insert_character(self, to_replace: list, replace_by: list, check_box_var: bool):
         """
             Find out if the text in the texbox is written as natural or edited
-            and calls method replace_characters() with correct order of variables
+            and calls method replace_characters() with correct order of lists
 
         Parameters
         ----------
@@ -269,16 +274,15 @@ class MnemonicGeneratorTab(BaseTab):
         check_box_var : bool
             This variable tells if the word is written as natural, or it is already edited
         """
-        array_criteria = [each_char in self.last_text for each_char in to_replace]
-        if check_box_var and any(array_criteria):
-            self.replace_characters(replace_by, to_replace, False)
-        elif not check_box_var:
-            self.replace_characters(to_replace, replace_by, True)
+        array_criteria = any([each_char in self.last_text for each_char in to_replace])
+        if array_criteria:
+            replacement_order = (replace_by, to_replace) if check_box_var else (to_replace, replace_by)
+            self.replace_characters(replacement_order[0], replacement_order[1], not check_box_var)
         self.update_text()
 
-    def replace_characters(self, insert: list[str], remove: list[str], check_var: bool = False):
+    def replace_characters(self, insert: list[str], remove: list[str], checkbox_selected: bool = False):
         """
-            Replace a character given by another character given
+            Replace in the password a character by another character
 
         Parameters
         ----------
@@ -286,21 +290,27 @@ class MnemonicGeneratorTab(BaseTab):
             The list of characters to be inserted
         remove : list[str]
             The list of characters to be removed
-        check_var : bool
-            Controls which criteria are used, if it is any or none element in the list
+        checkbox_selected : bool
+            Indicate the respective checkbox selection, it prevents a changed character to be stuck
         """
         lines = self.last_text.splitlines(False)
         for line_index in self.password_lines:
-            # If there is any character to be removed in the line and
-            # there is any or none character inserted in the line depending on the control variable "check_var"
-            if any([each_char in lines[line_index] for each_char in remove]) and \
-                    check_var == any([each_char in lines[line_index] for each_char in insert]):
-                index_list = []
-                [index_list.append(lines[line_index].find(each_char)) for each_char in remove]
-                lesser_char = min([each_index for each_index in index_list if each_index >= 0])
-                lesser_char_index = remove.index(lines[line_index][lesser_char])
-                new_line = lines[line_index].replace(remove[lesser_char_index], insert[lesser_char_index], 1)
-                self.last_text = self.last_text.replace(lines[line_index], new_line)
+            password_line = lines[line_index]
+            character_index = [remove.index(each_char) for each_char in list(password_line) if each_char in remove]
+            changed_character = [each_char for each_char in list(password_line) if each_char in insert]
+
+            if not character_index:
+                continue
+
+            remove_char = remove[character_index[0]]
+            insert_char = insert[character_index[0]]
+
+            # If there is a changed character then skip it, preventing it to get stuck
+            if changed_character and not checkbox_selected:
+                if password_line.index(changed_character[0]) < password_line.index(remove_char):
+                    continue
+            new_line = password_line.replace(remove_char, insert_char, 1)
+            self.last_text = self.last_text.replace(password_line, new_line)
 
 
 class ThemeConverterTab(BaseTab):
