@@ -239,7 +239,7 @@ class Mnemonic(object):
         # Compute HMAC-SHA512 of seed
         seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
 
-        # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#Serialization_format
+        # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
         xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet
         if testnet:
             xprv = b"\x04\x35\x83\x94"  # Version for private testnet
