@@ -53,6 +53,7 @@ class Verifier:
 
             self.check_filling_sequence()
             self.check_restriction_sequence()
+            self.check_total_words()
 
             for current_restriction in self.current_dict.leads:
                 self.current_restriction = current_restriction
@@ -86,6 +87,15 @@ class Verifier:
                 for each_next_restriction in self.theme_loaded[each_restriction].leads]):
             error_message = "List sequence inconsistent restriction order for %s."
             raise VerificationFailed(error_message % self.current_word)
+
+    def check_total_words(self):
+        """ Verify if the total words has enough words"""
+        bits_length = 2 ** self.current_dict.bit_length
+        total_words = self.current_dict.total_words
+        if len(total_words) < bits_length:
+            error_message = "The total words of %s are not enough for the theme, " \
+                            "it should have %d words but it has %d words."
+            raise VerificationFailed(error_message % (self.current_word.lower(), bits_length, len(total_words)))
 
     def check_image_list(self):
         """ Verify if image contains all mapped words"""
@@ -282,8 +292,10 @@ class VerifierTestCase(unittest.TestCase):
         theme : str
             The name of the theme to be verified
         """
-        formosa_path = Path(__file__).parent.parent.absolute()
-        theme_file = formosa_path / Path("src") / Path("mnemonic") / Path("themes") / Path("%s.json" % theme)
+        root_path = Path(__file__).parent.parent.absolute()
+        themes_path = Path("src") / Path("mnemonic") / Path("themes")
+        theme_file = root_path / themes_path / Path(theme + ".json")
+
         if Path.exists(theme_file) and Path.is_file(theme_file):
             with open(theme_file) as json_file:
                 self.words_dictionary = ThemeDict(json.load(json_file))
