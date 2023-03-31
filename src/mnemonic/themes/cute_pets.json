@@ -103,7 +103,7 @@
         ]
     },
     "ADJECTIVE_WILDCARD": {
-        "BIT_LENGTH": 6,
+        "BIT_LENGTH": 5,
         "LEADS": [],
         "LED_BY": "SUBJECT_WILDCARD",
         "TOTAL_LIST": [
