@@ -1,6 +1,6 @@
 # Formosa
 
-Formosa is a password format that maximizes the ratio of password strength to user effort.
+[Formosa](https://formosadefense.com/) is a password format that maximizes the ratio of password strength to user effort.
 
 The password generation process consists of mapping input into meaningful mnemonic sentences, that are, then, condensed into the password.
 
@@ -219,3 +219,9 @@ This work has been brought to you by [Onyxcorp](https://onyxcorp.com/).
 * **Ideation and management**: [Yuri S Villas Boas](https://t3infosecurity.com/en/)
 * **Software development**: André Fidencio Gonçalves
 * **Themes design**: Yuri S Villas Boas, André Fidencio Gonçalves, [Erik Braga](https://www.instagram.com/suaterapia.financeira/)
+
+Special thanks to:
+* [Edson Cilos](https://www.linkedin.com/in/edson-cilos-032a66162/)
+* [Daniel Santos](https://www.linkedin.com/in/daniel-san/)
+
+For more information and to collaborate, visit [https://formosadefense.com/][(https://formosadefense.com/).
