@@ -49,6 +49,8 @@ Initialize class instance, picking from available dictionaries:
 - japanese
 - korean 
 - spanish
+- czech
+- portuguese
 
 .. code-block:: python
 

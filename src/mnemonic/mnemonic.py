@@ -48,7 +48,7 @@ def b58encode(v: bytes) -> str:
     string = ""
     while acc:
         acc, idx = divmod(acc, 58)
-        string = alphabet[idx : idx + 1] + string
+        string = alphabet[idx: idx + 1] + string
     return string
 
 
@@ -128,7 +128,7 @@ class Mnemonic(object):
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words: Union[List[str], str]) -> bytearray:
         if not isinstance(words, list):
-            words = words.split(" ")
+            words = words.split(self.delimiter)
         if len(words) not in [12, 15, 18, 21, 24]:
             raise ValueError(
                 "Number of words must be one of the following: [12, 15, 18, 21, 24], but it is not (%d)."
@@ -146,7 +146,8 @@ class Mnemonic(object):
                 raise LookupError('Unable to find "%s" in word list.' % word)
             # Set the next 11 bits to the value of the index.
             for ii in range(11):
-                concatBits[(wordindex * 11) + ii] = (ndx & (1 << (10 - ii))) != 0
+                concatBits[(wordindex * 11) + ii] = (ndx &
+                                                     (1 << (10 - ii))) != 0
             wordindex += 1
         checksumLengthBits = concatLenBits // 33
         entropyLengthBits = concatLenBits - checksumLengthBits
@@ -181,7 +182,7 @@ class Mnemonic(object):
         )
         result = []
         for i in range(len(b) // 11):
-            idx = int(b[i * 11 : (i + 1) * 11], 2)
+            idx = int(b[i * 11: (i + 1) * 11], 2)
             result.append(self.wordlist[idx])
         return self.delimiter.join(result)
 
@@ -192,23 +193,26 @@ class Mnemonic(object):
             return False
         try:
             idx = map(
-                lambda x: bin(self.wordlist.index(x))[2:].zfill(11), mnemonic_list
+                lambda x: bin(self.wordlist.index(x))[
+                    2:].zfill(11), mnemonic_list
             )
             b = "".join(idx)
         except ValueError:
             return False
         l = len(b)  # noqa: E741
         d = b[: l // 33 * 32]
-        h = b[-l // 33 :]
+        h = b[-l // 33:]
         nd = int(d, 2).to_bytes(l // 33 * 4, byteorder="big")
-        nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[2:].zfill(256)[: l // 33]
+        nh = bin(int(hashlib.sha256(nd).hexdigest(), 16))[
+            2:].zfill(256)[: l // 33]
         return h == nh
 
     def expand_word(self, prefix: str) -> str:
         if prefix in self.wordlist:
             return prefix
         else:
-            matches = [word for word in self.wordlist if word.startswith(prefix)]
+            matches = [
+                word for word in self.wordlist if word.startswith(prefix)]
             if len(matches) == 1:  # matched exactly one word in the wordlist
                 return matches[0]
             else:
@@ -237,7 +241,8 @@ class Mnemonic(object):
             raise ValueError("Provided seed should have length of 64")
 
         # Compute HMAC-SHA512 of seed
-        seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
+        seed = hmac.new(b"Bitcoin seed", seed,
+                        digestmod=hashlib.sha512).digest()
 
         # Serialization format can be found at: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
         xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet
