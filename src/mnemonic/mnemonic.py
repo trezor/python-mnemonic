@@ -186,7 +186,7 @@ class Mnemonic(object):
         return self.delimiter.join(result)
 
     def check(self, mnemonic: str) -> bool:
-        mnemonic_list = self.normalize_string(mnemonic).split(" ")
+        mnemonic_list = self.normalize_string(mnemonic).split(self.delimiter)
         # list of valid mnemonic lengths
         if len(mnemonic_list) not in [12, 15, 18, 21, 24]:
             return False
@@ -217,7 +217,7 @@ class Mnemonic(object):
                 return prefix
 
     def expand(self, mnemonic: str) -> str:
-        return " ".join(map(self.expand_word, mnemonic.split(" ")))
+        return " ".join(map(self.expand_word, mnemonic.split(self.delimiter)))
 
     @classmethod
     def to_seed(cls, mnemonic: str, passphrase: str = "") -> bytes:
