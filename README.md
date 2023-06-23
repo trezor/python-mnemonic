@@ -216,7 +216,8 @@ For example, say the first chunk determines the verb and the second chunk determ
 
 This work has been brought to you by [Onyxcorp](https://onyxcorp.com/).
 
-* **Ideation and management**: [Yuri S Villas Boas](https://t3infosecurity.com/en/)
+* **Ideation**: [Yuri S Villas Boas](https://t3infosecurity.com/en/), André Fidencio Gonçalves
+* **Management**: Yuri S Villas Boas
 * **Software development**: André Fidencio Gonçalves
 * **Themes design**: Yuri S Villas Boas, André Fidencio Gonçalves, [Erik Braga](https://www.instagram.com/suaterapia.financeira/)
 
