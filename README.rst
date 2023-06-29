@@ -49,6 +49,7 @@ Initialize class instance, picking from available dictionaries:
 - japanese
 - korean 
 - spanish
+- turkish
 - czech
 - portuguese
 
