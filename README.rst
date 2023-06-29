@@ -50,6 +50,8 @@ Initialize class instance, picking from available dictionaries:
 - korean 
 - spanish
 - turkish
+- czech
+- portuguese
 
 .. code-block:: python
 
