@@ -47,7 +47,7 @@ Initialize class instance, picking from available dictionaries:
 - french
 - italian
 - japanese
-- korean 
+- korean
 - spanish
 - turkish
 - czech
@@ -63,12 +63,12 @@ Generate word list given the strength (128 - 256):
 .. code-block:: python
 
    words = mnemo.generate(strength=256)
-  
+
 Given the word list and custom passphrase (empty in example), generate seed:
 
 .. code-block:: python
 
-   seed = mnemo.to_seed(words, passphrase="") 
+   seed = mnemo.to_seed(words, passphrase="")
 
 Given the word list, calculate original entropy:
 
