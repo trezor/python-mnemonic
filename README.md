@@ -225,4 +225,7 @@ Special thanks to:
 * [Edson Cilos](https://www.linkedin.com/in/edson-cilos-032a66162/)
 * [Daniel Santos](https://www.linkedin.com/in/daniel-san/)
 
-For more information and to collaborate, visit [https://formosadefense.com/](https://formosadefense.com/).
+For more information and to collaborate:
+* visit [https://formosadefense.com/](https://formosadefense.com/);
+* follow us at: [https://twitter.com/yurivillasboas](https://twitter.com/yurivillasboas);
+* contribute at:[https://geyser.fund/project/formosa](https://geyser.fund/project/formosa).
