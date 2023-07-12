@@ -36,21 +36,10 @@ It is intuitively easier to recall meaningful phrases than it is to remember a s
 
 ## Installation
 
-### For non-programmers 
-#### To download a Windows executable (may not work on all systems)
-1. Go to the [executables folder on the project's main page](https://gitlab.com/t3-infosec/formosa/-/tree/main/executables)
-2. Click on the Windows version
-3. Click on the download button at the center of the screen
-4.  Click twice on the downloaded file to run
-#### To download a Linux executable (may not work on all systems)
-1. Go to the [executables folder on the project's main page](https://gitlab.com/t3-infosec/formosa/-/tree/main/executables)
-2. Click on the Linux version
-3. Click on the download button at the center of the screen
-4.  Click on the downloaded file to run
 ### For tech-savvy people
 Clone the release branch by running the following command on the terminal:
 ```console
-git clone https://gitlab.com/t3-infosec/formosa.git
+git clone https://github.com/Yuri-SVB/formosa.git
 ```
 #### To run graphical user interface on your own environment
 1. Navigate to the "mnemonic" folder
