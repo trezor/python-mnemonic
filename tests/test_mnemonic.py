@@ -36,10 +36,10 @@ class MnemonicTest(unittest.TestCase):
             code = mnemo.to_mnemonic(bytes.fromhex(v[0]))
             seed = Mnemonic.to_seed(code, passphrase="TREZOR")
             xprv = Mnemonic.to_hd_master_key(seed)
-            self.assertIs(mnemo.check(v[1]), True)
-            self.assertEqual(v[1], code)
-            self.assertEqual(v[2], seed.hex())
-            self.assertEqual(v[3], xprv)
+            self.assertIs(mnemo.check(v[1]), True, language)
+            self.assertEqual(v[1], code, language)
+            self.assertEqual(v[2], seed.hex(), language)
+            self.assertEqual(v[3], xprv, language)
 
     def test_vectors(self) -> None:
         with open("vectors.json", "r") as f:
