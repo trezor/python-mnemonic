@@ -128,7 +128,7 @@ class Mnemonic(object):
     # Adapted from <http://tinyurl.com/oxmn476>
     def to_entropy(self, words: Union[List[str], str]) -> bytearray:
         if not isinstance(words, list):
-            words = words.split(self.delimiter)
+            words = words.split(" ")
         if len(words) not in [12, 15, 18, 21, 24]:
             raise ValueError(
                 "Number of words must be one of the following: [12, 15, 18, 21, 24], but it is not (%d)."
@@ -186,7 +186,7 @@ class Mnemonic(object):
         return self.delimiter.join(result)
 
     def check(self, mnemonic: str) -> bool:
-        mnemonic_list = self.normalize_string(mnemonic).split(self.delimiter)
+        mnemonic_list = self.normalize_string(mnemonic).split(" ")
         # list of valid mnemonic lengths
         if len(mnemonic_list) not in [12, 15, 18, 21, 24]:
             return False
@@ -217,7 +217,7 @@ class Mnemonic(object):
                 return prefix
 
     def expand(self, mnemonic: str) -> str:
-        return " ".join(map(self.expand_word, mnemonic.split(self.delimiter)))
+        return " ".join(map(self.expand_word, mnemonic.split(" ")))
 
     @classmethod
     def to_seed(cls, mnemonic: str, passphrase: str = "") -> bytes:
