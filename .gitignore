@@ -21,5 +21,10 @@ venvformosa/*
 # edition folder
 tools/edit_themes/*
 
+# secret themes
+src/mnemonic/themes/xxx.json
+src/mnemonic/themes/drafts/xxx.ods
+src/mnemonic/themes/drafts/xxx.py
+
 # IDE folder
 .idea/
