@@ -1,6 +1,6 @@
 # Formosa
 
-Formosa is a password format that maximizes the ratio of password strength to user effort.
+[Formosa](https://formosadefense.com/) is a password format that maximizes the ratio of password strength to user effort.
 
 The password generation process consists of mapping input into meaningful mnemonic sentences, that are, then, condensed into the password.
 
@@ -23,7 +23,7 @@ This is an improvement on the BIP-0039 method — which provides sequences of se
   Pretty hard to remember, right? And it's still weaker than the one our generator created! Hence, by using our method, you'll be guaranteed to get both strong and easy-to-recall passwords for all your protected data.
 
 - **Self-checking passwords:** the check-sum technology embedded in the password helps you detect typos.
-- **Multi-use:** our algorithm can also be used to turn electronic addresses (such as Bitcoin addresses) into mnemonic sentences. This feature is only available on the graphical user interface.
+- **0 adoption barrier:** any legacy BIP39 user can keep their keys and addresses and convert their seed to any Formosa theme. Backwards conversion to original BIP39 is set before KDF proper, so resulting keys end up being the same.
 ## Motivation
 
 For reasons beyond the scope of this work, the use of passwords is a very popular and widely employed component of information security systems. At the same time, in general, as with information security, human components tend to be the ones most susceptible to failure.
@@ -36,41 +36,23 @@ It is intuitively easier to recall meaningful phrases than it is to remember a s
 
 ## Installation
 
-### For non-programmers 
-#### To download a Windows executable (may not work on all systems)
-1. Go to the [executables folder on the project's main page](https://gitlab.com/t3-infosec/formosa/-/tree/main/executables)
-2. Click on the Windows version
-3. Click on the download button at the center of the screen
-4.  Click twice on the downloaded file to run
-#### To download a Linux executable (may not work on all systems)
-1. Go to the [executables folder on the project's main page](https://gitlab.com/t3-infosec/formosa/-/tree/main/executables)
-2. Click on the Linux version
-3. Click on the download button at the center of the screen
-4.  Click on the downloaded file to run
 ### For tech-savvy people
 Clone the release branch by running the following command on the terminal:
 ```console
-git clone https://gitlab.com/t3-infosec/formosa.git
+git clone https://github.com/Yuri-SVB/formosa.git
 ```
 #### To run graphical user interface on your own environment
 1. Navigate to the "mnemonic" folder
-2. Run the GUI.py file on Python
+2. Run the GUI_qt.py file on Python
 
 #### To run source code on terminal
 1. In your local repository, navigate to the "mnemonic" folder
 2. On Python, run the following command:
 
 ```console
-generator.py
+python3 mnemonic.py theme cryptographic_strength
 ```
-
-This will generate eight finances-themed mnemonic sentences and its derived password by default. To change the number of phrases and/or theme, use the following arguments:
-
-```console
-python3 generator.py theme digit_number_of_phrases
-```
-
-Available themes include:
+This will generate eight finances-themed mnemonic sentences and its derived password by default. To change the number of phrases and/or theme, use the following arguments. Available themes include:
 
 - role_play
 - sci-fi
@@ -78,30 +60,11 @@ Available themes include:
 - tourism
 - finances
 
-The number of phrases can be set from 1 to 8.
-
-**Warning**: you can either run the program without any arguments (hence, with the default of 8 finances mnemonic sentences) or with both of them. Specifying only one of the arguments will result in an error.
-### Usage examples 
-**Command**
-```console
-python3 generator.py
-```
-**Output**
-```
-seseacecccfrhoalstdofrtepaagmawabataciacsynesapeseinlespselibuliacexclmytrbecodicicihapraghyhabe
-seller sell active economy cco frankfurt
-holder allocate stable dow_jones franchisee tel_aviv
-partner agree marginal wage banker taipei
-cio accept systemic new_growth_theory salesman penthouse
-seller invest_in lender speculation seller liberland
-businessman liquidate active exports client mykonos
-trader bet complementary discount_rate cio city_of_london
-handler predict aggregate hyper_inflation handler bern
-```
+The cryptographic strength argument refers to how hard it is to crack the password by brute-force. It is a multiple of 32 between 32 and 256. Thumb rule is 64 is good for non critical password and 128 is good enough for most applications. In fact 128 bits of entropy is, in fact, the most used standard for cryptocurrency seeds, as deemed adequate by the author. From 160 to 256 is tin-foil hat territory.
 
 **Command**
 ```console
-python3 generator.py sci-fi 5
+python3 mnemonic.py sci-fi 160
 ```
 **Output**
 ```
@@ -115,7 +78,7 @@ green_man operate ion emitter overmind goldilock_zone
 
 **Command**
 ```console
-python3 generator.py copy_left 3
+python3 mnemonic.py copy_left 96
 ```
 
 **Output**
@@ -140,12 +103,12 @@ legolas pull icy gem hades kitchen
 3. Enter the following command:
 
 ```console
-pyinstaller --paths C:\Windows\System32\downlevel --paths C:\Windows\SysWOW64\downlevel --onefile -w --add-data 'themes\copy_left\;themes\copy_left\' --add-data 'themes\finances\;themes\finances\' --add-data 'themes\role_play\;themes\role_play\' --add-data 'themes\sci-fi\;themes\sci-fi\' --add-data 'themes\tourism\*;themes\tourism\' GUI.py
+pyinstaller --paths C:\Windows\System32\downlevel --paths C:\Windows\SysWOW64\downlevel --onefile -w --add-data 'themes\copy_left\;themes\copy_left\' --add-data 'themes\finances\;themes\finances\' --add-data 'themes\role_play\;themes\role_play\' --add-data 'themes\sci-fi\;themes\sci-fi\' --add-data 'themes\tourism\*;themes\tourism\' GUI_qt.py
 ```
 If the former doesn't work, try this:
 
 ```console
-python -m PyInstaller --paths C:\Windows\System32\downlevel --paths C:\Windows\SysWOW64\downlevel --onefile -w --add-data 'themes\copy_left\;themes\copy_left\' --add-data 'themes\finances\;themes\finances\' --add-data 'themes\role_play\;themes\role_play\' --add-data 'themes\sci-fi\;themes\sci-fi\' --add-data 'themes\tourism\*;themes\tourism\' GUI.py
+python -m PyInstaller --paths C:\Windows\System32\downlevel --paths C:\Windows\SysWOW64\downlevel --onefile -w --add-data 'themes\copy_left\;themes\copy_left\' --add-data 'themes\finances\;themes\finances\' --add-data 'themes\role_play\;themes\role_play\' --add-data 'themes\sci-fi\;themes\sci-fi\' --add-data 'themes\tourism\*;themes\tourism\' GUI_qt.py
 ```
 4. Two new directories will be created: build and dist. The build folder can be deleted, while dist will contain your executable.
 
@@ -162,7 +125,7 @@ python3 -m PyInstaller --onefile \
   --add-data 'themes/role_play/*:themes/role_play/' \
   --add-data 'themes/sci-fi/*:themes/sci-fi/' \
   --add-data 'themes/tourism/*:themes/tourism/' \
-  -w GUI.py
+  -w GUI_qt.py
 ```
 4. Two new directories will be created: build and dist. The build folder can be deleted, while dist will contain your executable.
 
@@ -216,6 +179,17 @@ For example, say the first chunk determines the verb and the second chunk determ
 
 This work has been brought to you by [Onyxcorp](https://onyxcorp.com/).
 
-* **Ideation and management**: [Yuri S Villas Boas](https://t3infosecurity.com/en/)
+* **Ideation**: [Yuri S Villas Boas](https://t3infosecurity.com/en/), André Fidencio Gonçalves
+* **Management**: Yuri S Villas Boas
 * **Software development**: André Fidencio Gonçalves
 * **Themes design**: Yuri S Villas Boas, André Fidencio Gonçalves, [Erik Braga](https://www.instagram.com/suaterapia.financeira/)
+
+Special thanks to:
+* [Edson Cilos](https://www.linkedin.com/in/edson-cilos-032a66162/)
+* [Daniel Santos](https://www.linkedin.com/in/daniel-san/)
+
+For more information and to collaborate:
+* visit: [formosadefense.com/](https://formosadefense.com/);
+* read the article on Toptal's technology block: [toptal.com/cryptocurrency/formosa-crypto-wallet-management](https://www.toptal.com/cryptocurrency/formosa-crypto-wallet-management);
+* follow us on Twitter at: [@yurivillasboas](https://twitter.com/yurivillasboas);
+* contribute at: [geyser.fund/project/formosa](https://geyser.fund/project/formosa).
