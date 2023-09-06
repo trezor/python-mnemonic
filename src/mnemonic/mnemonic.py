@@ -887,9 +887,8 @@ class Mnemonic(object):
         leading_sequence = words_dict.restriction_sequence
         expanded_mnemonic = []
         for each_phrase in sentences:
-            expanded_phrase = [""]*phrase_size
+            expanded_phrase = [""] * phrase_size
             pairs = words_dict.restriction_pairs(each_phrase)
-
             for each_pair, each_sequence in zip(pairs, leading_sequence):
                 syntactic_leads, syntactic_led = each_sequence
                 mnemonic_leads, mnemonic_led = each_pair
@@ -905,6 +904,14 @@ class Mnemonic(object):
                     expanded_phrase[word_index] = self.expand_word(mnemonic_led)
                 else:
                     expanded_phrase[word_index] = mnemonic_led
+            # Complement for non-restricted themes
+            for syntactic_leads in list(set(words_dict.prime_syntactic_leads) - set([each_leads[0]
+                                                                                     for each_leads in
+                                                                                     leading_sequence])):
+                word_index = words_dict.natural_index(syntactic_leads)
+                each_leads = each_phrase[words_dict.filling_order.index(syntactic_leads)]
+                self.wordlist = words_dict[syntactic_leads].total_words
+                expanded_phrase[word_index] = self.expand_word(each_leads)
 
             expanded_mnemonic += expanded_phrase
         expanded_mnemonic = " ".join(expanded_mnemonic)
