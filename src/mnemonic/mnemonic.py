@@ -90,16 +90,34 @@ class Mnemonic(object):
 
     @classmethod
     def detect_language(cls, code: str) -> str:
-        """Scan the Mnemonic until the language becomes unambiguous, including as abbreviation prefixes."""
+        """Scan the Mnemonic until the language becomes unambiguous, including as abbreviation prefixes.
+
+        Unfortunately, there are valid words that are ambiguous between languages, which are complete words
+        in one language and are prefixes in another:
+
+            english: abandon ... about
+            french:  abandon ... aboutir
+
+        If prefixes remain ambiguous, require exactly one language where word(s) match exactly.
+        """
         code = cls.normalize_string(code)
         possible = set(cls(lang) for lang in cls.list_languages())
-        for word in code.split():
+        words = set(code.split())
+        for word in words:
             # possible languages have candidate(s) starting with the word/prefix
             possible = set(p for p in possible if any(c.startswith( word ) for c in p.wordlist))
-            if len(possible) == 1:
-                return possible.pop().language
             if not possible:
                 raise ConfigurationError(f"Language unrecognized for {word!r}")
+        if len(possible) == 1:
+            return possible.pop().language
+        # Multiple languages match: A prefix in many, but an exact match in one determines language.
+        complete = set()
+        for word in words:
+            exact = set(p for p in possible if word in p.wordlist)
+            if len(exact) == 1:
+               complete.update(exact)
+        if len(complete) == 1:
+            return complete.pop().language
         raise ConfigurationError(
             f"Language ambiguous between {', '.join( p.language for p in possible)}"
         )
