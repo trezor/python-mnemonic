@@ -100,7 +100,7 @@ class Mnemonic(object):
         if len(possible) == 1:
             return possible.pop().language
         raise ConfigurationError(
-            f"Language ambiguous between {', '.join( p.language for p in possible)}"
+            f"Language ambiguous between {', '.join(p.language for p in possible)}"
         )
 
     def generate(self, strength: int = 128) -> str:
