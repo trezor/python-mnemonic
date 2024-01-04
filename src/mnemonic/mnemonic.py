@@ -141,7 +141,7 @@ class Mnemonic(object):
         wordindex = 0
         for word in words:
             # Find the words index in the wordlist
-            ndx = self.wordlist.index(word)
+            ndx = self.wordlist.index(self.normalize_string(word))
             if ndx < 0:
                 raise LookupError('Unable to find "%s" in word list.' % word)
             # Set the next 11 bits to the value of the index.
