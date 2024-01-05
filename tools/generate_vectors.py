@@ -4,6 +4,7 @@ import json
 from random import choice, seed
 
 from bip32utils import BIP32Key
+
 from mnemonic import Mnemonic
 
 

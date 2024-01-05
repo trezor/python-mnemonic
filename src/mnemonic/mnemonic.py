@@ -19,16 +19,16 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
+from __future__ import annotations
 
 import hashlib
 import hmac
 import itertools
 import os
 import secrets
+import typing as t
 import unicodedata
-from typing import AnyStr, List, Optional, TypeVar, Union
 
-_T = TypeVar("_T")
 PBKDF2_ROUNDS = 2048
 
 
@@ -53,7 +53,7 @@ def b58encode(v: bytes) -> str:
 
 
 class Mnemonic(object):
-    def __init__(self, language: str = "english", wordlist: Optional[List[str]] = None):
+    def __init__(self, language: str = "english", wordlist: list[str] | None = None):
         self.radix = 2048
         self.language = language
 
@@ -73,7 +73,7 @@ class Mnemonic(object):
         self.delimiter = "\u3000" if language == "japanese" else " "
 
     @classmethod
-    def list_languages(cls) -> List[str]:
+    def list_languages(cls) -> list[str]:
         return [
             f.split(".")[0]
             for f in os.listdir(os.path.join(os.path.dirname(__file__), "wordlist"))
@@ -81,7 +81,7 @@ class Mnemonic(object):
         ]
 
     @staticmethod
-    def normalize_string(txt: AnyStr) -> str:
+    def normalize_string(txt: t.AnyStr) -> str:
         if isinstance(txt, bytes):
             utxt = txt.decode("utf8")
         elif isinstance(txt, str):
@@ -129,7 +129,7 @@ class Mnemonic(object):
         return self.to_mnemonic(secrets.token_bytes(strength // 8))
 
     # Adapted from <http://tinyurl.com/oxmn476>
-    def to_entropy(self, words: Union[List[str], str]) -> bytearray:
+    def to_entropy(self, words: list[str] | str) -> bytearray:
         if not isinstance(words, list):
             words = words.split(" ")
         if len(words) not in [12, 15, 18, 21, 24]:
