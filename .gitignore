@@ -5,3 +5,4 @@ mnemonic.egg-info/
 .tox/
 .venv/
 .python-version
+poetry.lock

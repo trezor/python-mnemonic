@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "mnemonic"
+version = "0.21"
+description = "Implementation of Bitcoin BIP-0039"
+authors = ["Trezor <info@trezor.io>"]
+license = "MIT"
+readme = [
+    "README.rst",
+    "CHANGELOG.rst",
+]
+include = [
+    { path = "tests", format = "sdist" },
+    { path = "tools", format = "sdist" },
+    { path = "AUTHORS", format = "sdist" },
+    { path = "tox.ini", format = "sdist" },
+    { path = "vectors.json", format = "sdist" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8.1"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^23.12.1"
+pyright = "^1.1.344"
+flake8 = "^7.0.0"
+bip32utils = "^0.3.post4"
+tox = "^4.11.4"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

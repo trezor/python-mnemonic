@@ -1,7 +1,0 @@
-include tools/*
-graft src
-graft tests
-include vectors.json
-
-include AUTHORS LICENSE README.rst CHANGELOG.rst
-include tox.ini

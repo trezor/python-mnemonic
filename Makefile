@@ -1,21 +1,17 @@
 PYTHON=python3
-SETUP=$(PYTHON) setup.py
+POETRY=poetry
 
 EXCLUDES=.vscode
 
-STYLE_TARGETS=src tests tools *.py
+STYLE_TARGETS=src tests tools
 
 all: build
 
 build:
-	$(SETUP) build
+	$(POETRY) build
 
 install:
-	$(SETUP) install
-
-dist: clean
-	$(SETUP) sdist
-	$(SETUP) bdist_wheel
+	$(POETRY) install
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -43,11 +39,12 @@ git-clean:
 
 style:
 	black $(STYLE_TARGETS)
+	isort $(STYLE_TARGETS)
 	make style_check
 
 style_check:
 	black --check $(STYLE_TARGETS)
 	flake8 $(STYLE_TARGETS)
-	mypy $(STYLE_TARGETS)
+	pyright $(STYLE_TARGETS)
 
 .PHONY: all build install clean style style_check git-clean clean-build clean-pyc clean-test
