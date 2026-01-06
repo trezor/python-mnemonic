@@ -18,6 +18,10 @@ include = [
 
 [tool.poetry.dependencies]
 python = ">=3.8.1"
+click = "^8.0"
+
+[tool.poetry.scripts]
+mnemonic = "mnemonic.cli:cli"
 
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13.2"

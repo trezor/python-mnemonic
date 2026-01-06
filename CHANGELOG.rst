@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_, and this project adheres to
 `Semantic Versioning`_.
 
+`0.22`_ - Unreleased
+--------------------
+
+.. _0.22: https://github.com/trezor/python-mnemonic/compare/v0.21...HEAD
+
+Added
+~~~~~
+
+- Command-line interface with ``create``, ``check``, and ``to-seed`` commands
+- Click as a runtime dependency
+
 `0.21`_ - 2024-01-05
 --------------------
 

@@ -26,7 +26,10 @@ import random
 import unittest
 from typing import List
 
+from click.testing import CliRunner
+
 from mnemonic import Mnemonic
+from mnemonic.cli import cli
 
 
 class MnemonicTest(unittest.TestCase):
@@ -147,6 +150,139 @@ class MnemonicTest(unittest.TestCase):
         self.assertEqual(
             "access access acb acc act action", m.expand("access acce acb acc act acti")
         )
+
+
+class CLITest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.runner = CliRunner()
+
+    def test_create_generates_valid_mnemonic(self) -> None:
+        result = self.runner.invoke(cli, ["create"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Mnemonic:", result.output)
+        self.assertIn("Seed:", result.output)
+        # Extract mnemonic and verify it's valid
+        mnemonic_line = result.output.split("\n")[0]
+        mnemonic = mnemonic_line.replace("Mnemonic: ", "")
+        mnemo = Mnemonic("english")
+        self.assertTrue(mnemo.check(mnemonic))
+
+    def test_create_with_strength(self) -> None:
+        result = self.runner.invoke(cli, ["create", "-s", "256"])
+        self.assertEqual(result.exit_code, 0)
+        mnemonic_line = result.output.split("\n")[0]
+        mnemonic = mnemonic_line.replace("Mnemonic: ", "")
+        # 256 bits = 24 words
+        self.assertEqual(len(mnemonic.split()), 24)
+
+    def test_create_invalid_strength(self) -> None:
+        result = self.runner.invoke(cli, ["create", "-s", "100"])
+        self.assertNotEqual(result.exit_code, 0)
+
+    def test_create_invalid_language(self) -> None:
+        result = self.runner.invoke(cli, ["create", "-l", "klingon"])
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("Error", result.output)
+
+    def test_check_valid_mnemonic(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["check"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Valid mnemonic", result.output)
+
+    def test_check_invalid_mnemonic(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon wrong"
+        result = self.runner.invoke(cli, ["check"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("Invalid mnemonic checksum", result.output)
+
+    def test_check_stdin(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["check"], input=mnemonic)
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Valid mnemonic", result.output)
+
+    def test_check_empty_input(self) -> None:
+        result = self.runner.invoke(cli, ["check"], input="")
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("No mnemonic provided", result.output)
+
+    def test_to_seed_valid_mnemonic(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["to-seed"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 0)
+        expected_seed = "5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4"
+        self.assertEqual(result.output.strip(), expected_seed)
+
+    def test_to_seed_with_passphrase(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["to-seed", "-p", "TREZOR"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 0)
+        expected_seed = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04"
+        self.assertEqual(result.output.strip(), expected_seed)
+
+    def test_to_seed_with_env_passphrase(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(
+            cli, ["to-seed"] + mnemonic.split(), env={"MNEMONIC_PASSPHRASE": "TREZOR"}
+        )
+        self.assertEqual(result.exit_code, 0)
+        expected_seed = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04"
+        self.assertEqual(result.output.strip(), expected_seed)
+
+    def test_to_seed_invalid_mnemonic(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon wrong"
+        result = self.runner.invoke(cli, ["to-seed"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("Invalid mnemonic checksum", result.output)
+
+    def test_to_seed_stdin(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["to-seed"], input=mnemonic)
+        self.assertEqual(result.exit_code, 0)
+        expected_seed = "5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc19a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4"
+        self.assertEqual(result.output.strip(), expected_seed)
+
+    def test_check_with_language_option(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["check", "-l", "english"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Valid mnemonic", result.output)
+
+    def test_check_with_invalid_language(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(cli, ["check", "-l", "klingon"] + mnemonic.split())
+        self.assertEqual(result.exit_code, 1)
+
+    def test_create_with_prompt_passphrase(self) -> None:
+        result = self.runner.invoke(cli, ["create", "-P"], input="test_passphrase\n")
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Mnemonic:", result.output)
+        self.assertIn("Seed:", result.output)
+
+    def test_to_seed_with_prompt_passphrase(self) -> None:
+        mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+        result = self.runner.invoke(
+            cli, ["to-seed", "-P"] + mnemonic.split(), input="TREZOR\n"
+        )
+        self.assertEqual(result.exit_code, 0)
+        expected_seed = "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04"
+        self.assertIn(expected_seed, result.output)
+
+    def test_prompt_passphrase_warning_when_both_set(self) -> None:
+        result = self.runner.invoke(
+            cli,
+            ["create", "-p", "existing", "-P"],
+            input="new_passphrase\n",
+        )
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Warning", result.output)
+
+    def test_create_hide_seed(self) -> None:
+        result = self.runner.invoke(cli, ["create", "--hide-seed"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertIn("Mnemonic:", result.output)
+        self.assertNotIn("Seed:", result.output)
 
 
 def __main__() -> None:
