@@ -141,12 +141,58 @@ class MnemonicTest(unittest.TestCase):
             "action", m.expand_word("acti")
         )  # unique prefix expanded to word in list
 
+    def test_japanese_vectors_to_entropy(self) -> None:
+        # the ideographic space separates words on every path, not only in
+        # to_mnemonic; see #110, whose fix split on self.delimiter and was
+        # reverted because NFKD had already turned U+3000 into a space
+        with open("vectors.json", "r") as f:
+            vectors = json.load(f)
+        m = Mnemonic("japanese")
+        for v in vectors["japanese"]:
+            self.assertIn("\u3000", v[1])
+            entropy = bytes(m.to_entropy(v[1]))
+            self.assertEqual(v[0], entropy.hex())
+            self.assertEqual(v[1], m.to_mnemonic(entropy))
+
+    def test_whitespace_runs(self) -> None:
+        # check(), to_entropy() and to_seed() read the same separator: any
+        # run of unicode whitespace, once NFKD has been applied
+        m = Mnemonic("english")
+        canonical = "abandon " * 11 + "about"
+        entropy = m.to_entropy(canonical)
+        seed = Mnemonic.to_seed(canonical)
+        for variant in (
+            " " + canonical,
+            canonical + "\n",
+            canonical.replace("abandon about", "abandon  about"),
+            canonical.replace(" ", "\t"),
+            canonical.replace(" ", "\u3000"),
+            canonical.replace(" ", "\u00a0"),
+        ):
+            self.assertIs(m.check(variant), True)
+            self.assertEqual(entropy, m.to_entropy(variant))
+            self.assertEqual(seed, Mnemonic.to_seed(variant))
+
     def test_expand(self) -> None:
         m = Mnemonic("english")
         self.assertEqual("access", m.expand("access"))
         self.assertEqual(
             "access access acb acc act action", m.expand("access acce acb acc act acti")
         )
+
+    def test_expand_whitespace(self) -> None:
+        # expand() separates words the way check() and to_entropy() do: on
+        # any run of unicode whitespace. Splitting on " " alone leaves a
+        # tab-separated sentence one token, which expand_word can only hand
+        # back unexpanded, and a japanese sentence with it
+        m = Mnemonic("english")
+        self.assertEqual("access action", m.expand("acce\tacti"))
+        self.assertEqual("access action", m.expand("acce  acti"))
+
+        # the words come back joined with a plain space, as expand() has
+        # always joined them; to_mnemonic() is what writes the delimiter
+        m = Mnemonic("japanese")
+        self.assertEqual("あいこくしん あおぞら", m.expand("あいこくし　あおぞら"))
 
 
 def __main__() -> None:
